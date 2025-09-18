@@ -10,12 +10,7 @@ import lombok.Getter;
 public class ProductCategoryResponseDTO {
     private final String id;
 
-    private String name;
-
-    public ProductCategoryResponseDTO(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private final String name;
 
     public static ProductCategoryResponseDTO fromEntity(ProductCategoryEntity category) {
         return new ProductCategoryResponseDTO(category.getId(), category.getName());
