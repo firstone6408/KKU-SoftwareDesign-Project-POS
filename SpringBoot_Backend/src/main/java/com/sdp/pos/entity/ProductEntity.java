@@ -55,16 +55,16 @@ public class ProductEntity {
      * Spring Data JPA จะ map ค่าเวลาจาก database column → type ที่คุณใช้
      */
     @CreatedDate
-    @Column(name = "order_date", updatable = false)
-    private LocalDateTime orderDate;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     /*
      * @LastModifiedDate → เวลา update entity → ค่า timestamp
      * จะถูกอัปเดตเป็นเวลาล่าสุดอัตโนมัติ
      */
     @LastModifiedDate
-    @Column(name = "delivery_date")
-    private LocalDateTime deliveryDate;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     /*
      * @JoinColumn
