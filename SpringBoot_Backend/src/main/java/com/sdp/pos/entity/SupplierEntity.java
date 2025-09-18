@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "supplier")
+@Table(name = "suppliers")
 public class SupplierEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

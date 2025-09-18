@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class) // เพิ่มให้ timestamp อัปเดต auto
-@Table(name = "product")
+@Table(name = "products")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
