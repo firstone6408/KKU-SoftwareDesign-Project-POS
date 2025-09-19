@@ -7,9 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class OrderItemRequestDTO {
-    @NotBlank(message = "orderId is requird")
-    private final String orderId;
+public class OrderItemCreateRequestDTO {
 
     @NotBlank(message = "productId is requird")
     private final String productId;

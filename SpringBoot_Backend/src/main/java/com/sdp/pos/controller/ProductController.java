@@ -3,7 +3,9 @@ package com.sdp.pos.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
+import com.sdp.pos.dto.product.UpdateProductRequestDTO;
 import com.sdp.pos.service.contract.ProductService;
 import com.sdp.pos.util.ApiResponse;
 
@@ -43,8 +45,17 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable String id, @RequestBody ProductRequestDTO requestDTO) {
+    public ResponseEntity<?> updateProduct(@PathVariable String id,
+            @Valid @RequestBody UpdateProductRequestDTO requestDTO) {
         return ApiResponse.success("Product updated success", productService.update(id, requestDTO));
+    }
+
+    @PutMapping("/adjust-stock/{id}")
+    public ResponseEntity<?> adjustStockProduct(@PathVariable String id,
+            @RequestBody AdjustStockProductRequestDTO requestDTO) {
+
+        productService.adjustStock(id, requestDTO);
+        return ApiResponse.success("Adjust stock product success");
     }
 
     @DeleteMapping("/{id}")

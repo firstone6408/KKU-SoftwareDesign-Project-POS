@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,18 @@ public class OrderItemEntity {
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private OrderEntity order;
 
+    @OneToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private ProductEntity product;
+
     public OrderItemEntity() {
+    }
+
+    public void decreaseQuantity(int qty) {
+        this.quantity -= qty;
+    }
+
+    public void increaseQuantity(int qty) {
+        this.quantity += qty;
     }
 }

@@ -52,7 +52,10 @@ public class OrderEntity {
     private LocalDateTime orderDate;
 
     @LastModifiedDate
-    @Column(name = "delivery_date")
+    @Column(name = "updated_at")
+    private LocalDateTime updateAt;
+
+    @Column(name = "delivery_date", updatable = false)
     private LocalDateTime deliveryDate;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -61,5 +64,12 @@ public class OrderEntity {
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private CustomerEntity customer;
+
+    public void recalculateTotalAmount() {
+        double total = items.stream()
+                .mapToDouble(item -> item.getUnitPrice() * item.getQuantity())
+                .sum();
+        this.totalAmount = Math.max(total - discount, 0);
+    }
 
 }

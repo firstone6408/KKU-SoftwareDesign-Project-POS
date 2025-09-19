@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class CreateOrderRequestDTO {
+public class OrderCreateRequestDTO {
     @NotBlank(message = "customerId is requird")
     private final String customerId;
 

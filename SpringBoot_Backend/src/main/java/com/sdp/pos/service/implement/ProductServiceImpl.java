@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
 import com.sdp.pos.dto.product.ProductResponseDTO;
+import com.sdp.pos.dto.product.UpdateProductRequestDTO;
 import com.sdp.pos.entity.ProductCategoryEntity;
 import com.sdp.pos.entity.ProductEntity;
 import com.sdp.pos.entity.SupplierEntity;
@@ -66,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
 
         @Override
         @Transactional
-        public ProductResponseDTO update(String id, ProductRequestDTO requestDTO) {
+        public ProductResponseDTO update(String id, UpdateProductRequestDTO requestDTO) {
                 ProductEntity productToUpdate = productRepository.findById(id)
                                 .orElseThrow(() -> new ProductNotFoundException(id));
 
@@ -78,7 +80,6 @@ public class ProductServiceImpl implements ProductService {
                 productToUpdate.setName(requestDTO.getName());
                 productToUpdate.setDescription(requestDTO.getDescription());
                 productToUpdate.setUnitPrice(requestDTO.getUnitPrice());
-                productToUpdate.setStockLevel(requestDTO.getStockLevel());
                 productToUpdate.setCategory(category);
                 productToUpdate.setSupplier(supplier);
 
@@ -96,5 +97,19 @@ public class ProductServiceImpl implements ProductService {
 
                 // delete
                 productRepository.delete(productToDelete);
+        }
+
+        @Override
+        @Transactional
+        public void adjustStock(String id, AdjustStockProductRequestDTO requestDTO) {
+                // check product
+                ProductEntity productToAdjust = productRepository.findById(id)
+                                .orElseThrow(() -> new ProductNotFoundException(id));
+
+                // adjust
+                requestDTO.getAdjustStockType().apply(productToAdjust, requestDTO.getQuantity());
+
+                // save
+                productRepository.save(productToAdjust);
         }
 }
