@@ -3,7 +3,6 @@ package com.sdp.pos.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +29,7 @@ public class SupplierEntity {
     @Column(name = "contact_info")
     private String contactInfo;
 
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "supplier")
     private List<ProductEntity> products = new ArrayList<>();
 
     public SupplierEntity() {

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
 import com.sdp.pos.dto.product.UpdateProductRequestDTO;
-import com.sdp.pos.service.contract.ProductService;
+import com.sdp.pos.service.product.contract.ProductService;
 import com.sdp.pos.util.ApiResponse;
 
 import jakarta.validation.Valid;
@@ -50,7 +50,7 @@ public class ProductController {
         return ApiResponse.success("Product updated success", productService.update(id, requestDTO));
     }
 
-    @PutMapping("/adjust-stock/{id}")
+    @PutMapping("/{id}/adjust-stock")
     public ResponseEntity<?> adjustStockProduct(@PathVariable String id,
             @RequestBody AdjustStockProductRequestDTO requestDTO) {
 

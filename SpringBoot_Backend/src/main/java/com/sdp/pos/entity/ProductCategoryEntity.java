@@ -3,7 +3,6 @@ package com.sdp.pos.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +36,8 @@ public class ProductCategoryEntity {
      * ส่งผลไปยัง Product ด้วย
      * เช่น ลบ Category → ลบ Product ทั้งหมดที่อยู่ในนั้น (ถ้า FK/constraint อนุญาต)
      */
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    // @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category")
     private List<ProductEntity> products = new ArrayList<>();
 
     public ProductCategoryEntity() {

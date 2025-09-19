@@ -22,6 +22,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,9 @@ public class OrderEntity {
     @Column(name = "discount", nullable = false)
     private double discount;
 
+    @Column(name = "note")
+    private String note;
+
     @CreatedDate
     @Column(name = "order_date", updatable = false)
     private LocalDateTime orderDate;
@@ -55,21 +59,24 @@ public class OrderEntity {
     @Column(name = "updated_at")
     private LocalDateTime updateAt;
 
-    @Column(name = "delivery_date", updatable = false)
+    @Column(name = "delivery_date")
     private LocalDateTime deliveryDate;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order")
     private List<OrderItemEntity> items = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private CustomerEntity customer;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private SaleInoviceEntity saleInovice;
+
     public void recalculateTotalAmount() {
-        double total = items.stream()
+        this.totalAmount = items.stream()
                 .mapToDouble(item -> item.getUnitPrice() * item.getQuantity())
                 .sum();
-        this.totalAmount = Math.max(total - discount, 0);
+        // this.totalAmount = Math.max(total - discount, 0);
     }
 
 }

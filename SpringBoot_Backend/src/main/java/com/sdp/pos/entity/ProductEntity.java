@@ -1,6 +1,8 @@
 package com.sdp.pos.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,7 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +43,9 @@ public class ProductEntity {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     /*
      * @CreatedDate → เวลา persist entity ครั้งแรก (insert row) → ค่า timestamp
@@ -86,8 +91,8 @@ public class ProductEntity {
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private SupplierEntity supplier;
 
-    @OneToOne(mappedBy = "product")
-    private OrderItemEntity orderItem;
+    @OneToMany(mappedBy = "product")
+    private List<OrderItemEntity> orderItems = new ArrayList<>();
 
     public ProductEntity() {
     }
