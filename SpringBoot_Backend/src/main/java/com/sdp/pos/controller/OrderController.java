@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.order.OrderCreateRequestDTO;
+import com.sdp.pos.dto.order.OrderResponseDTO;
 import com.sdp.pos.dto.order.OrderSaveRequestDTO;
 import com.sdp.pos.dto.order.item.OrderItemCreateRequestDTO;
 import com.sdp.pos.dto.order.item.OrderItemRemoveRequestDTO;
@@ -14,6 +15,8 @@ import com.sdp.pos.service.saleinovice.contract.SaleInoviceService;
 import com.sdp.pos.util.ApiResponse;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,37 +42,38 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getOrderList() {
+    public ResponseEntity<ApiResponse<List<OrderResponseDTO>>> getOrderList() {
         return ApiResponse.success(orderService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getOrderById(@PathVariable String id) {
+    public ResponseEntity<ApiResponse<OrderResponseDTO>> getOrderById(@PathVariable String id) {
         return ApiResponse.success(orderService.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> createOrder(@Valid @RequestBody OrderCreateRequestDTO requestDTO) {
+    public ResponseEntity<ApiResponse<Object>> createOrder(@Valid @RequestBody OrderCreateRequestDTO requestDTO) {
         orderService.create(requestDTO);
         return ApiResponse.success(HttpStatus.CREATED, "Order created success");
     }
 
     @PostMapping("/{orderId}/payment")
-    public ResponseEntity<?> paymentOrder(@PathVariable String orderId,
+    public ResponseEntity<ApiResponse<Object>> paymentOrder(@PathVariable String orderId,
             @Valid @RequestBody PaymentRequestDTO requestDTO) {
         saleInoviceService.payment(orderId, requestDTO);
         return ApiResponse.success("Save payment order success");
     }
 
     @PutMapping("/{orderId}/add-item")
-    public ResponseEntity<?> addItem(@PathVariable String orderId,
+    public ResponseEntity<ApiResponse<Object>> addItem(@PathVariable String orderId,
             @Valid @RequestBody OrderItemCreateRequestDTO requestDTO) {
         orderItemService.addItem(orderId, requestDTO);
         return ApiResponse.success(HttpStatus.CREATED, "Add item success");
     }
 
     @PutMapping("/{orderId}/remove-item/{orderItemId}")
-    public ResponseEntity<?> removeItem(@PathVariable String orderId, @PathVariable String orderItemId,
+    public ResponseEntity<ApiResponse<Object>> removeItem(@PathVariable String orderId,
+            @PathVariable String orderItemId,
             @Valid @RequestBody OrderItemRemoveRequestDTO requestDTO) {
 
         orderItemService.removeItem(orderId, orderItemId, requestDTO);
@@ -77,21 +81,21 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/save")
-    public ResponseEntity<?> saveOrder(@PathVariable String orderId,
+    public ResponseEntity<ApiResponse<Object>> saveOrder(@PathVariable String orderId,
             @Valid @RequestBody OrderSaveRequestDTO requestDTO) {
         orderService.save(orderId, requestDTO);
         return ApiResponse.success("Saved order success");
     }
 
     @PutMapping("/{orderId}/close")
-    public ResponseEntity<?> closeOrder(@PathVariable String orderId) {
+    public ResponseEntity<ApiResponse<Object>> closeOrder(@PathVariable String orderId) {
         orderService.close(orderId);
 
         return ApiResponse.success("Closed order success");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteOrder(@PathVariable String id) {
+    public ResponseEntity<ApiResponse<Object>> deleteOrder(@PathVariable String id) {
         orderService.delete(id);
         return ApiResponse.success("Deleted order success");
     }

@@ -5,11 +5,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
+import com.sdp.pos.dto.product.ProductResponseDTO;
 import com.sdp.pos.dto.product.UpdateProductRequestDTO;
 import com.sdp.pos.service.product.contract.ProductService;
 import com.sdp.pos.util.ApiResponse;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,28 +33,29 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getProductList() {
+    public ResponseEntity<ApiResponse<List<ProductResponseDTO>>> getProductList() {
         return ApiResponse.success(productService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable String id) {
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> getProductById(@PathVariable String id) {
         return ApiResponse.success(productService.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequestDTO requestDTO) {
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> createProduct(
+            @Valid @RequestBody ProductRequestDTO requestDTO) {
         return ApiResponse.success(HttpStatus.CREATED, "Product created success", productService.create(requestDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable String id,
+    public ResponseEntity<ApiResponse<ProductResponseDTO>> updateProduct(@PathVariable String id,
             @Valid @RequestBody UpdateProductRequestDTO requestDTO) {
         return ApiResponse.success("Product updated success", productService.update(id, requestDTO));
     }
 
     @PutMapping("/{id}/adjust-stock")
-    public ResponseEntity<?> adjustStockProduct(@PathVariable String id,
+    public ResponseEntity<ApiResponse<Object>> adjustStockProduct(@PathVariable String id,
             @RequestBody AdjustStockProductRequestDTO requestDTO) {
 
         productService.adjustStock(id, requestDTO);
@@ -59,7 +63,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
+    public ResponseEntity<ApiResponse<Object>> deleteProduct(@PathVariable String id) {
         productService.delete(id);
         return ApiResponse.success("Product deleted success");
     }
