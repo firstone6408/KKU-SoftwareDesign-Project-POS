@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.product.ProductRequestDTO;
-import com.sdp.pos.service.ProductService;
+import com.sdp.pos.service.contract.ProductService;
 import com.sdp.pos.util.ApiResponse;
 
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(String id) {
+    public ResponseEntity<?> getProductById(@PathVariable String id) {
         return ApiResponse.success(productService.getById(id));
     }
 
@@ -48,7 +48,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(String id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
         productService.delete(id);
         return ApiResponse.success("Product deleted success");
     }

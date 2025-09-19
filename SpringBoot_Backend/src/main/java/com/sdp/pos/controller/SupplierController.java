@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.supplier.SupplierRequestDTO;
-import com.sdp.pos.service.SupplierService;
+import com.sdp.pos.service.contract.SupplierService;
 import com.sdp.pos.util.ApiResponse;
 
 import jakarta.validation.Valid;

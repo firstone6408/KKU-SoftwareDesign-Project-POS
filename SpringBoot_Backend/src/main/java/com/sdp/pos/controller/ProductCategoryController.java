@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.product.category.ProductCategoryRequestDTO;
-import com.sdp.pos.service.ProductCategoryService;
+import com.sdp.pos.service.contract.ProductCategoryService;
 import com.sdp.pos.util.ApiResponse;
 
 import jakarta.validation.Valid;

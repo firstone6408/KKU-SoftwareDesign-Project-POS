@@ -41,4 +41,9 @@ public class GlobalExceptionHandler {
         return ApiResponse.error(status, ex.getReason());
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
+        return ApiResponse.error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
 }

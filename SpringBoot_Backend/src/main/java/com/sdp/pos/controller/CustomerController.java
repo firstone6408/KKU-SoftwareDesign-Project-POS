@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.customer.CustomerRequestDTO;
-import com.sdp.pos.service.CustomerService;
+import com.sdp.pos.service.contract.CustomerService;
 import com.sdp.pos.util.ApiResponse;
 
 import org.springframework.http.HttpStatus;

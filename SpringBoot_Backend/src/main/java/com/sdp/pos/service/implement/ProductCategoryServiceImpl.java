@@ -1,38 +1,41 @@
-package com.sdp.pos.service;
+package com.sdp.pos.service.implement;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.sdp.pos.dto.product.category.ProductCategoryRequestDTO;
 import com.sdp.pos.dto.product.category.ProductCategoryResponseDTO;
 import com.sdp.pos.entity.ProductCategoryEntity;
 import com.sdp.pos.repository.ProductCategoryRepository;
+import com.sdp.pos.service.contract.ProductCategoryService;
+import com.sdp.pos.service.exception.product.category.CategoryNotFoundException;
 
 @Service
-public class ProductCategoryService {
+public class ProductCategoryServiceImpl implements ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
 
-    public ProductCategoryService(ProductCategoryRepository productCategoryRepository) {
+    public ProductCategoryServiceImpl(ProductCategoryRepository productCategoryRepository) {
         this.productCategoryRepository = productCategoryRepository;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<ProductCategoryResponseDTO> getAll() {
         List<ProductCategoryEntity> categories = productCategoryRepository.findAll();
         return categories.stream().map(ProductCategoryResponseDTO::fromEntity).toList();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public ProductCategoryResponseDTO getById(String id) {
         ProductCategoryEntity category = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category ID not found"));
+                .orElseThrow(() -> new CategoryNotFoundException(id));
         return ProductCategoryResponseDTO.fromEntity(category);
     }
 
+    @Override
     @Transactional
     public ProductCategoryResponseDTO create(ProductCategoryRequestDTO requestDTO) {
         ProductCategoryEntity categoryEntity = new ProductCategoryEntity(requestDTO.getName());
@@ -40,11 +43,12 @@ public class ProductCategoryService {
         return ProductCategoryResponseDTO.fromEntity(created);
     }
 
+    @Override
     @Transactional
     public ProductCategoryResponseDTO update(String id, ProductCategoryRequestDTO requestDTO) {
         // check category
         ProductCategoryEntity categoryToUpdate = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category ID not found"));
+                .orElseThrow(() -> new CategoryNotFoundException(id));
 
         // update
         categoryToUpdate.setName(requestDTO.getName());
@@ -55,11 +59,12 @@ public class ProductCategoryService {
         return ProductCategoryResponseDTO.fromEntity(updated);
     }
 
+    @Override
     @Transactional
     public void delete(String id) {
         // check category
         ProductCategoryEntity categoryToDelete = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category ID not found"));
+                .orElseThrow(() -> new CategoryNotFoundException(id));
 
         // delete
         productCategoryRepository.delete(categoryToDelete);

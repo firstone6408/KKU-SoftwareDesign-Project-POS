@@ -1,25 +1,26 @@
-package com.sdp.pos.service;
+package com.sdp.pos.service.implement;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.sdp.pos.dto.customer.CustomerRequestDTO;
 import com.sdp.pos.dto.customer.CustomerResponseDTO;
 import com.sdp.pos.entity.CustomerEntity;
 import com.sdp.pos.repository.CustomerRepository;
+import com.sdp.pos.service.contract.CustomerService;
+import com.sdp.pos.service.exception.customer.CustomerNotFoundException;
 
 @Service
-public class CustomerService {
+public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<CustomerResponseDTO> getAll() {
         List<CustomerEntity> customers = customerRepository.findAll();
@@ -27,14 +28,16 @@ public class CustomerService {
         return customers.stream().map(CustomerResponseDTO::fromEntitty).toList();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public CustomerResponseDTO getById(String id) {
         CustomerEntity customer = customerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer ID not found"));
+                .orElseThrow(() -> new CustomerNotFoundException(id));
 
         return CustomerResponseDTO.fromEntitty(customer);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<CustomerResponseDTO> searchCustomer(String keyword) {
         List<CustomerEntity> customers = customerRepository.searchByNameOrContact(keyword);
@@ -42,6 +45,7 @@ public class CustomerService {
         return customers.stream().map(CustomerResponseDTO::fromEntitty).toList();
     }
 
+    @Override
     @Transactional
     public CustomerResponseDTO create(CustomerRequestDTO requestDTO) {
         // create
@@ -53,11 +57,12 @@ public class CustomerService {
         return CustomerResponseDTO.fromEntitty(created);
     }
 
+    @Override
     @Transactional
     public CustomerResponseDTO update(String id, CustomerRequestDTO requestDTO) {
         // check customer
         CustomerEntity customerToUpdate = customerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer ID not found"));
+                .orElseThrow(() -> new CustomerNotFoundException(id));
 
         // update
         customerToUpdate.setName(requestDTO.getName());
@@ -69,11 +74,12 @@ public class CustomerService {
         return CustomerResponseDTO.fromEntitty(updated);
     }
 
+    @Override
     @Transactional
     public void delete(String id) {
         // check customer
         CustomerEntity customerToDelete = customerRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer ID not found"));
+                .orElseThrow(() -> new CustomerNotFoundException(id));
 
         // delete
         customerRepository.delete(customerToDelete);
