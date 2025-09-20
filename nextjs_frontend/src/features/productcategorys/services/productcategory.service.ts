@@ -1,14 +1,14 @@
 import axios from "axios";
-import { createCustomerSchema } from "../schemas/create-productcategory.schema";
-import { ICreateCustomer, ICustomer } from "./productcategory.interface";
+import { createProductCategorySchema } from "../schemas/create-productcategory.schema";
+import { ICreateProductCategory, IProductCategory } from "./productcategory.interface";
 import { API_CONFIG } from "@/configs/api.config";
 import { withApiHandling } from "@/utils/api.utils";
 import { configureCache } from "@/utils/cache.utils";
-import { getCustomerGlobalTag } from "./productcategory.cache";
+import { getProductCategoryGlobalTag } from "./productcategory.cache";
 
-export async function createCustomer(input: ICreateCustomer) {
+export async function createProductCategory(input: ICreateProductCategory) {
   try {
-    const { success, error, data } = createCustomerSchema.safeParse(input);
+    const { success, error, data } = createProductCategorySchema.safeParse(input);
     if (success === false) {
       return {
         message: "กรุณากรอกข้อมูลให้ถูกต้อง",
@@ -18,11 +18,10 @@ export async function createCustomer(input: ICreateCustomer) {
 
     const requsetBody = {
       name: data.name,
-      contactInfo: data.contract,
     };
 
     const { error: resErr } = await withApiHandling(
-      axios.post(API_CONFIG.BASE_URL + "/api/customers", requsetBody)
+      axios.post(API_CONFIG.BASE_URL + "/api/productcategorys", requsetBody)
     );
 
     if (resErr.status === "error") {
@@ -41,15 +40,15 @@ export async function createCustomer(input: ICreateCustomer) {
   }
 }
 
-export async function getCustomerList() {
+export async function getProductCategoryList() {
   "use cache";
   configureCache({
     life: "hours",
-    tag: getCustomerGlobalTag(),
+    tag: getProductCategoryGlobalTag(),
   });
   try {
     const { result, error } = await withApiHandling(
-      axios.get(API_CONFIG.BASE_URL + "/api/customers")
+      axios.get(API_CONFIG.BASE_URL + "/api/productcategorys")
     );
 
     if (error.status === "error") {
@@ -57,7 +56,7 @@ export async function getCustomerList() {
       return [];
     }
 
-    return result.data.data as ICustomer[];
+    return result.data.data as IProductCategory[];
   } catch (error) {
     console.error(error);
     return [];

@@ -6,32 +6,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ICustomer } from "../services/productcategory.interface";
-import { CustomerAction } from "./action/customer-action";
+import { IProductCategory } from "../services/productcategory.interface";
+import { ProductCategoryAction } from "./action/productcategory-action";
+//import { CustomerAction } from "./action/customer-action";
 
-interface CustomerListTableProps {
-  customers: ICustomer[];
+interface ProductCategoryListTableProps {
+  productcategorys: IProductCategory[];
 }
 
-export function CustomerListTable({ customers }: CustomerListTableProps) {
+export function ProductCategoryListTable({ productcategorys }: ProductCategoryListTableProps) {
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="text-end">ลำดับ</TableHead>
-          <TableHead>ชื่อ</TableHead>
-          <TableHead>ติดต่อ</TableHead>
+          <TableHead>ชื่อประเภท</TableHead>
           <TableHead className="text-center w-[20%]">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {customers.map((customer, index) => (
-          <TableRow key={customer.id}>
+        {productcategorys.map((productcategory, index) => (
+          <TableRow key={productcategory.id}>
             <TableCell className="text-end">{index + 1}</TableCell>
-            <TableCell>{customer.name}</TableCell>
-            <TableCell>{customer.contactInfo}</TableCell>
+            <TableCell>{productcategory.name}</TableCell>
             <TableCell>
-              <CustomerAction customer={customer} />
+              <ProductCategoryAction productcategory={productcategory} />
             </TableCell>
           </TableRow>
         ))}

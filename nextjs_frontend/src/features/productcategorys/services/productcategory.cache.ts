@@ -2,16 +2,16 @@ import { getGlobalTag, getIdTag } from "@/utils/cache.utils";
 import { revalidateTag } from "next/cache";
 
 // เก็บข้อมูล Array
-export function getCustomerGlobalTag() {
-  return getGlobalTag("customers");
+export function getProductCategoryGlobalTag() {
+  return getGlobalTag("product-types");
 }
 
 // ข้อมูลเดัียว
-export function getCustomerIdTag(customerId: string) {
-  return getIdTag("customers", customerId);
+export function getProductCategoryIdTag(productcategoryId: string) {
+  return getIdTag("product-types", productcategoryId);
 }
 
-export function revalidateCustomerCache(customerId: string) {
-  revalidateTag(getCustomerGlobalTag());
-  revalidateTag(getCustomerIdTag(customerId));
+export function revalidateProductCategoryCache(productcategoryId: string) {
+  revalidateTag(getProductCategoryGlobalTag());
+  revalidateTag(getProductCategoryIdTag(productcategoryId));
 }

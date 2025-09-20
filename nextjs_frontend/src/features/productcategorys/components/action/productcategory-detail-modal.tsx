@@ -9,17 +9,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ModalType } from "@/interfaces/components/modal";
-import { ICustomer } from "../../services/productcategory.interface";
+import { IProductCategory } from "../../services/productcategory.interface";
 
-interface CustomerDetailModalProps extends ModalType {
-  customer: ICustomer | null;
+interface ProductCategoryDetailModalProps extends ModalType {
+  productcategory: IProductCategory | null;
 }
 
-export function CustomerDetailModal({
+export function ProductCategoryDetailModal({
   onOpenChange,
   open,
-  customer,
-}: CustomerDetailModalProps) {
+  productcategory,
+}: ProductCategoryDetailModalProps) {
+  // ตรวจสอบว่า productcategory มีค่าหรือไม่
+  if (!productcategory) {
+    return null; // หรือแสดง loading/empty state
+  }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">

@@ -1,6 +1,5 @@
 import z from "zod";
 
-export const createCustomerSchema = z.object({
+export const createProductCategorySchema = z.object({
   name: z.string(),
-  contract: z.string(),
 });

@@ -1,12 +1,10 @@
-export interface ICreateCustomer {
+export interface ICreateProductCategory {
   name: string;
-  contract: string;
 }
 
-export interface ICustomer {
+export interface IProductCategory {
   id: string;
   name: string;
-  contactInfo: string;
   createdAt: string;
   updatedAt: string;
 }
