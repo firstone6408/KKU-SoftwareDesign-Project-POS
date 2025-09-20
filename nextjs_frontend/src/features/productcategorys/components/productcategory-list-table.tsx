@@ -19,8 +19,8 @@ export function ProductCategoryListTable({ productcategorys }: ProductCategoryLi
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="text-end">ลำดับ</TableHead>
-          <TableHead>ชื่อประเภท</TableHead>
+          <TableHead className="text-center">ลำดับ</TableHead>
+          <TableHead>ชื่อ</TableHead>
           <TableHead className="text-center w-[20%]">Action</TableHead>
         </TableRow>
       </TableHeader>
