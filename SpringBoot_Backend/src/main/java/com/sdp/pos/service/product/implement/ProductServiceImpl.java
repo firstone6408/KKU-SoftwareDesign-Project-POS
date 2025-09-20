@@ -16,11 +16,13 @@ import com.sdp.pos.repository.ProductRepository;
 import com.sdp.pos.service.product.contract.ProductService;
 import com.sdp.pos.service.product.exception.ProductNotFoundException;
 import com.sdp.pos.service.product.validator.ProductValidator;
+import com.sdp.pos.util.ImageFileHandler;
 
 @Service
 public class ProductServiceImpl implements ProductService {
         private final ProductRepository productRepository;
         private final ProductValidator productValidator;
+        private final ImageFileHandler imageFileHandler = new ImageFileHandler("products");
 
         public ProductServiceImpl(ProductRepository productRepository, ProductValidator productValidator) {
                 this.productRepository = productRepository;
@@ -60,6 +62,12 @@ public class ProductServiceImpl implements ProductService {
                 productToCreate.setCategory(category);
                 productToCreate.setSupplier(supplier);
 
+                // save image
+                if (requestDTO.getImageFile() != null) {
+                        String path = imageFileHandler.uploadFile(requestDTO.getImageFile());
+                        productToCreate.setImageUrl(path);
+                }
+
                 // save
                 ProductEntity created = productRepository.save(productToCreate);
 
@@ -83,6 +91,13 @@ public class ProductServiceImpl implements ProductService {
                 productToUpdate.setCategory(category);
                 productToUpdate.setSupplier(supplier);
 
+                // update image
+                if (requestDTO.getImageFile() != null) {
+                        String path = imageFileHandler.replaceFile(productToUpdate.getImageUrl(),
+                                        requestDTO.getImageFile());
+                        productToUpdate.setImageUrl(path);
+                }
+
                 // save
                 ProductEntity updated = productRepository.save(productToUpdate);
 
@@ -94,6 +109,9 @@ public class ProductServiceImpl implements ProductService {
         public void delete(String id) {
                 ProductEntity productToDelete = productRepository.findById(id)
                                 .orElseThrow(() -> new ProductNotFoundException(id));
+
+                // delete image
+                imageFileHandler.deleteFile(productToDelete.getImageUrl());
 
                 // delete
                 productRepository.delete(productToDelete);

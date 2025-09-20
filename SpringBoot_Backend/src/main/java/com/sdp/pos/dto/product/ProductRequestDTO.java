@@ -1,5 +1,7 @@
 package com.sdp.pos.dto.product;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -14,6 +16,8 @@ public class ProductRequestDTO {
     private final String name;
 
     private final String description;
+
+    private final MultipartFile imageFile;
 
     @Min(value = 0, message = "unitPrice must be at least 0")
     private final double unitPrice;

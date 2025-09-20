@@ -15,9 +15,11 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -42,21 +44,21 @@ public class ProductController {
         return ApiResponse.success(productService.getById(id));
     }
 
-    @PostMapping
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<ApiResponse<ProductResponseDTO>> createProduct(
-            @Valid @RequestBody ProductRequestDTO requestDTO) {
+            @Valid @RequestBody @ModelAttribute ProductRequestDTO requestDTO) {
         return ApiResponse.success(HttpStatus.CREATED, "Product created success", productService.create(requestDTO));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<ApiResponse<ProductResponseDTO>> updateProduct(@PathVariable String id,
-            @Valid @RequestBody UpdateProductRequestDTO requestDTO) {
+            @Valid @RequestBody @ModelAttribute UpdateProductRequestDTO requestDTO) {
         return ApiResponse.success("Product updated success", productService.update(id, requestDTO));
     }
 
     @PutMapping("/{id}/adjust-stock")
     public ResponseEntity<ApiResponse<Object>> adjustStockProduct(@PathVariable String id,
-            @RequestBody AdjustStockProductRequestDTO requestDTO) {
+            @Valid @RequestBody AdjustStockProductRequestDTO requestDTO) {
 
         productService.adjustStock(id, requestDTO);
         return ApiResponse.success("Adjust stock product success");

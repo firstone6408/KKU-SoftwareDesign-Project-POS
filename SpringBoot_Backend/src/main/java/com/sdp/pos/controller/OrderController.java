@@ -19,6 +19,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -57,9 +59,9 @@ public class OrderController {
         return ApiResponse.success(HttpStatus.CREATED, "Order created success");
     }
 
-    @PostMapping("/{orderId}/payment")
+    @PostMapping(value = "/{orderId}/payment", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<ApiResponse<Object>> paymentOrder(@PathVariable String orderId,
-            @Valid @RequestBody PaymentRequestDTO requestDTO) {
+            @Valid @ModelAttribute @RequestBody PaymentRequestDTO requestDTO) {
         saleInoviceService.payment(orderId, requestDTO);
         return ApiResponse.success("Save payment order success");
     }

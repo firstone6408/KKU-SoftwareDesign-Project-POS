@@ -10,6 +10,7 @@ import com.sdp.pos.repository.OrderRepository;
 import com.sdp.pos.repository.SaleInoviceRepository;
 import com.sdp.pos.service.order.validator.OrderValidator;
 import com.sdp.pos.service.saleinovice.contract.SaleInoviceService;
+import com.sdp.pos.util.ImageFileHandler;
 
 @Service
 public class SaleInoviceServiceImpl implements SaleInoviceService {
@@ -17,6 +18,7 @@ public class SaleInoviceServiceImpl implements SaleInoviceService {
     private final OrderRepository orderRepository;
     private final SaleInoviceRepository saleInoviceRepository;
     private final OrderValidator orderValidator;
+    private final ImageFileHandler imageFileHandler = new ImageFileHandler("saleinovice");
 
     public SaleInoviceServiceImpl(SaleInoviceRepository saleInoviceRepository, OrderValidator orderValidator,
             OrderRepository orderRepository) {
@@ -45,6 +47,15 @@ public class SaleInoviceServiceImpl implements SaleInoviceService {
         saleInovice.setTotalAmount(order.getTotalAmount());
         saleInovice.setDiscount(requestDTO.getDiscount());
         saleInovice.setInoviceDate(requestDTO.getInoviceDate());
+
+        // save slip
+        String slipPath;
+        if (saleInovice.getSlipImageUrl() == null) {
+            slipPath = imageFileHandler.uploadFile(requestDTO.getSlipImage());
+        } else {
+            slipPath = imageFileHandler.replaceFile(saleInovice.getSlipImageUrl(), requestDTO.getSlipImage());
+        }
+        saleInovice.setSlipImageUrl(slipPath);
 
         // update order if discount is not equal
         if (order.getDiscount() != requestDTO.getDiscount()) {
