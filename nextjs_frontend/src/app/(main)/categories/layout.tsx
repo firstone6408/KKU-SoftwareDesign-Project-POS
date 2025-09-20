@@ -1,0 +1,34 @@
+//import { MainContent } from "@/components/layouts/main/content";
+import { MainHeader } from "@/components/layouts/main/header/header";
+import MainSidebar from "@/components/layouts/main/sidebar/sidebar";
+import { SidebarProvider } from "@/components/providers/sidebar-provider";
+import { ProductCategoryForm } from "@/features/productcategorys/components/productcategory-form";
+import { ProductCategoryListTable } from "@/features/productcategorys/components/productcategory-list-table";
+import { getProductCategoryList } from "@/features/productcategorys/services/productcategory.service";
+// import { IProductCategory } from "@/features/productcategorys/services/productcategory.interface";
+// import { IProductCategory } from "@/features/productcategorys/services/productcategory.interface";
+export default async function ProductCategoryPage() {
+  const categories = await getProductCategoryList();
+
+  return (
+  <SidebarProvider>
+    <div className="min-h-svh flex">
+      <MainSidebar />
+      <div className="flex-1 flex flex-col overflow-hidden ">
+        <MainHeader />
+        <div className="main-container space-y-6">
+          <div>
+            <h1 className="text-2xl font-bold mb-4">ประเภทสินค้า</h1>
+            <ProductCategoryForm />
+          </div>
+
+          <div>
+            <h2 className="text-xl font-semibold mb-4">รายการประเภทสินค้า</h2>
+            <ProductCategoryListTable productcategorys={categories} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </SidebarProvider>
+);
+}

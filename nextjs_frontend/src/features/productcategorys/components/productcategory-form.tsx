@@ -12,11 +12,10 @@ export function ProductCategoryForm() {
     <div>
       <Form action={formAction}>
         <div>
-          <div>ชื่อลูกค้า</div>
+          <div>ประเภทของสินค้า</div>
           <Input name="productcategory-name" />
         </div>
-
-        <Button type="submit">Submit</Button>
+          <Button type="submit" >Submit</Button>
       </Form>
     </div>
   );

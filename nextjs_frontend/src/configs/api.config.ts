@@ -1,10 +1,7 @@
 // หน้าแรก
 export const API_CONFIG = {
-  BASE_URL: "http://localhost:3000",
+  BASE_URL: "http://localhost:8080",
   ENDPOINTS: {
-    CATEGORIES: "/categories",
-    CUSTOMERS: "/customers",
-    PRODUCTS: "/products",
-    // เพิ่ม endpoints อื่นๆ ตามต้องการ
+    CATEGORIES: "/product-categories",
   }
 } as const;

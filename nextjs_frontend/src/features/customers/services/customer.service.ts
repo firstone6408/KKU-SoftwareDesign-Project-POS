@@ -22,7 +22,7 @@ export async function createCustomer(input: ICreateCustomer) {
     };
 
     const { error: resErr } = await withApiHandling(
-      axios.post(API_CONFIG.BASE_URL + "/api/productcategorys", requsetBody)
+      axios.post(API_CONFIG.BASE_URL + "/api/customers", requsetBody)
     );
 
     if (resErr.status === "error") {
