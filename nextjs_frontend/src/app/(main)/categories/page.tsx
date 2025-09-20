@@ -17,7 +17,7 @@ export default async function ProductCategoryPage() {
               <MainHeader />
               <div className="main-container space-y-6">
                 <div>
-                  <h1 className="text-2xl font-bold mb-4">ประเภทสินค้า</h1>
+                  <h1 className="text-2xl font-bold mb-4">Product Category</h1>
                   <ProductCategoryForm />
                 </div>
                 <div>

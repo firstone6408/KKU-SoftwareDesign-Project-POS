@@ -19,8 +19,9 @@ export function CustomerForm() {
           <div>ติดต่อ</div>
           <Input name="customer-contract" />
         </div>
-
-        <Button type="submit">Submit</Button>
+        <div className="mt-8">
+          <Button type="submit">Submit</Button>
+        </div>
       </Form>
     </div>
   );

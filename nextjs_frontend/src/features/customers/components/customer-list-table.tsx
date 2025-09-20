@@ -18,7 +18,7 @@ export function CustomerListTable({ customers }: CustomerListTableProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="text-end">ลำดับ</TableHead>
+          <TableHead className="text-center">ลำดับ</TableHead>
           <TableHead>ชื่อ</TableHead>
           <TableHead>ติดต่อ</TableHead>
           <TableHead className="text-center w-[20%]">Action</TableHead>

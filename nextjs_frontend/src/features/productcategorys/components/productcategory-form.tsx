@@ -15,7 +15,9 @@ export function ProductCategoryForm() {
           <div>ประเภทของสินค้า</div>
           <Input name="productcategory-name" />
         </div>
+        <div className="mt-8">
           <Button type="submit" >Submit</Button>
+        </div>
       </Form>
     </div>
   );
