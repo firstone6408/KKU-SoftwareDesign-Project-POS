@@ -21,7 +21,7 @@ export async function createProductCategory(input: ICreateProductCategory) {
     };
 
     const { error: resErr } = await withApiHandling(
-      axios.post(API_CONFIG.BASE_URL + "/api/productcategorys", requsetBody)
+      axios.post(API_CONFIG.BASE_URL + "/api/categories", requsetBody)
     );
 
     if (resErr.status === "error") {
@@ -48,7 +48,7 @@ export async function getProductCategoryList() {
   });
   try {
     const { result, error } = await withApiHandling(
-      axios.get(API_CONFIG.BASE_URL + "/api/productcategorys")
+      axios.get(API_CONFIG.BASE_URL + "/api/categories")
     );
 
     if (error.status === "error") {
