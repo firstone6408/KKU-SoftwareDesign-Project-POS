@@ -8,6 +8,8 @@ import com.sdp.pos.dto.customer.CustomerResponseDTO;
 import com.sdp.pos.service.customer.contract.CustomerService;
 import com.sdp.pos.util.ApiResponse;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -45,13 +47,14 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CustomerResponseDTO>> createCustomer(@RequestBody CustomerRequestDTO requestDTO) {
+    public ResponseEntity<ApiResponse<CustomerResponseDTO>> createCustomer(
+            @Valid @RequestBody CustomerRequestDTO requestDTO) {
         return ApiResponse.success(HttpStatus.CREATED, "Customer created success", customerService.create(requestDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CustomerResponseDTO>> updateCustomer(@PathVariable String id,
-            @RequestBody CustomerRequestDTO requestDTO) {
+            @Valid @RequestBody CustomerRequestDTO requestDTO) {
         return ApiResponse.success("Customer updated success", customerService.update(id, requestDTO));
     }
 

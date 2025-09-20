@@ -1,0 +1,41 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ICustomer } from "../services/customer.interface";
+import { CustomerAction } from "./action/customer-action";
+
+interface CustomerListTableProps {
+  customers: ICustomer[];
+}
+
+export function CustomerListTable({ customers }: CustomerListTableProps) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-end">ลำดับ</TableHead>
+          <TableHead>ชื่อ</TableHead>
+          <TableHead>ติดต่อ</TableHead>
+          <TableHead className="text-center w-[20%]">Action</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {customers.map((customer, index) => (
+          <TableRow key={customer.id}>
+            <TableCell className="text-end">{index + 1}</TableCell>
+            <TableCell>{customer.name}</TableCell>
+            <TableCell>{customer.contactInfo}</TableCell>
+            <TableCell>
+              <CustomerAction customer={customer} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
