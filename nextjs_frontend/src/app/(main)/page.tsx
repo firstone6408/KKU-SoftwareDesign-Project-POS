@@ -1,27 +1,13 @@
-// export default function Home() {
-//   return (
-//   <div className="main-container">Hello World</div>;
-// }
-import { MainContent } from "@/components/layouts/main/content";
-import { MainHeader } from "@/components/layouts/main/header/header";
-import MainSidebar from "@/components/layouts/main/sidebar/sidebar";
-import { SidebarProvider } from "@/components/providers/sidebar-provider";
+import { Header } from "@/components/shared/header/header";
+import { Separator } from "@/components/ui/separator";
+import { getAuthenticatedUser } from "@/utils/auth.utils";
 
-interface MainLayoutProps {
-  children: React.ReactNode;
-}
-
-export default function MainLayout({ children }: MainLayoutProps) {
+export default async function HomePage() {
+  const {} = await getAuthenticatedUser();
   return (
-    <SidebarProvider>
-      <div className="min-h-svh flex">
-        <MainSidebar />
-        <div className="flex-1 flex flex-col overflow-hidden ">
-          <MainHeader />
-          <div className="main-container">Hello World</div>
-          <MainContent>{children}</MainContent>
-        </div>
-      </div>
-    </SidebarProvider>
+    <div className="main-container">
+      <Header title="Dashboard" description="แสดงการรายงานผลทั้งหมด" />
+      <Separator />
+    </div>
   );
 }
