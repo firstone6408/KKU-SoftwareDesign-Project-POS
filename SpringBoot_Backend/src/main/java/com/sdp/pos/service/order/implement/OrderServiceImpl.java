@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderResponseDTO> getAll() {
-        List<OrderEntity> orders = orderRepository.findAll();
+        List<OrderEntity> orders = orderRepository.findByOrderByOrderDateDesc();
         return orders.stream().map(OrderResponseDTO::fromEntity).toList();
     }
 

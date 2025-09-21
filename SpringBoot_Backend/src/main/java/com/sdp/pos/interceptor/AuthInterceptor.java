@@ -56,7 +56,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         // save payload
         String userId = jwtUtil.getDataFromToken(token);
         if (userId == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token payload");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid tokenpayload");
         }
 
         request.setAttribute("user-id", userId);

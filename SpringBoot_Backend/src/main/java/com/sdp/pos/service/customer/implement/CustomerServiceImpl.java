@@ -23,7 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional(readOnly = true)
     public List<CustomerResponseDTO> getAll() {
-        List<CustomerEntity> customers = customerRepository.findAll();
+        List<CustomerEntity> customers = customerRepository.findAllByOrderByCreatedAtDesc();
 
         return customers.stream().map(CustomerResponseDTO::fromEntitty).toList();
     }

@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
         @Override
         @Transactional(readOnly = true)
         public List<ProductResponseDTO> getAll() {
-                List<ProductEntity> products = productRepository.findAll();
+                List<ProductEntity> products = productRepository.findAllByOrderByCreatedAtDesc();
 
                 return products.stream().map(ProductResponseDTO::fromEntity).toList();
         }

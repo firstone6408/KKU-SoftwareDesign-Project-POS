@@ -13,4 +13,6 @@ import com.sdp.pos.entity.CustomerEntity;
 public interface CustomerRepository extends JpaRepository<CustomerEntity, String> {
     @Query("SELECT c FROM CustomerEntity c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(c.contactInfo) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<CustomerEntity> searchByNameOrContact(@Param("keyword") String keyword);
+
+    List<CustomerEntity> findAllByOrderByCreatedAtDesc();
 }

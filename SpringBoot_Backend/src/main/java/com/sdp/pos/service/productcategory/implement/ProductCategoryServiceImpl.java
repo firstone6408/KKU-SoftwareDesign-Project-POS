@@ -23,7 +23,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     @Transactional(readOnly = true)
     public List<ProductCategoryResponseDTO> getAll() {
-        List<ProductCategoryEntity> categories = productCategoryRepository.findAll();
+        List<ProductCategoryEntity> categories = productCategoryRepository.findAllByOrderByNameAsc();
         return categories.stream().map(ProductCategoryResponseDTO::fromEntity).toList();
     }
 
