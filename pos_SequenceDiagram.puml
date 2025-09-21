@@ -1,0 +1,21 @@
+@startuml pos_sequence
+skinparam defaultFontName "Tahoma"
+
+actor "พนักงาน" as Cashier
+participant "ระบบ Point of Sale" as POS
+participant "สินค้า" as Product
+participant "ใบเสร็จ" as Receipt
+
+Cashier -> POS : เข้าสู่ระบบ
+POS -> Cashier : ยืนยันการเข้าสู่ระบบ
+
+Cashier -> POS : จัดการการขาย
+POS -> Product : ค้นหาสินค้า
+POS -> Product : สแกนสินค้า
+POS -> POS : คำนวณยอดรวม
+
+Cashier -> POS : รับชำระเงิน
+POS -> Receipt : ออกใบเสร็จ
+POS -> Cashier : ส่งใบเสร็จ
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml pos_activity
+skinparam defaultFontName "Tahoma"
+start
+:เข้าสู่ระบบ;
+:ค้นหาสินค้า;
+:สแกนสินค้า;
+:คำนวณยอดรวม;
+
+if (ยืนยันการขาย?) then (ใช่)
+  :รับชำระเงิน;
+  :ออกใบเสร็จ;
+else (ไม่ใช่)
+  if (คืนสินค้า?) then (ใช่)
+    :คืนสินค้า;
+  else (ไม่ใช่)
+    :ยกเลิกการขาย;
+  endif
+endif
+end
+@enduml
