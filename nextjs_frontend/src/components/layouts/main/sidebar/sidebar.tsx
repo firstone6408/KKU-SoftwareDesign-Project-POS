@@ -32,27 +32,27 @@ const SIDE_BAR_LINKS: SidebarLinkType[] = [
     icon: <LayoutDashboard size={20} />,
   },
   {
-    label: "Customers",
+    label: "ลูกค้า",
     href: "/customers",
     icon: <Users size={20} />,
   },
   {
-    label: "Categories",
+    label: "ประเภทสินค้า",
     href: "/categories",
     icon: <FolderTree size={20} />,
   },
   {
-    label: "Products",
+    label: "สินค้า",
     href: "/products",
     icon: <ShoppingCart size={20} />,
   },
   {
-    label: "Orders",
+    label: "รายการสั่งซื้อ",
     href: "/orders",
     icon: <Clipboard size={20} />,
   },
   {
-    label: "Suppliers",
+    label: "ผู้จัดจำหน่าย",
     href: "/suppliers",
     icon: <User size={20} />,
   },
@@ -78,7 +78,7 @@ export default function MainSidebar() {
       <aside
         // การกำหนดการ หุบของ sidebar ถ้ามือถือให้หุบ ถ้าจอใหญ่ไม่ต้องหุบ
         className={cn(
-          "fixed md:static top-0 start-0 z-40 h-svh w-64 bg-card border-r rounded-r-xl md:rounded-none flex flex-col transition-all duration-300",
+          "fixed top-0 start-0 z-40 h-svh w-64 bg-card border-r rounded-r-xl md:rounded-none flex flex-col transition-all duration-300",
           isSidebarOpen
             ? "translate-x-0"
             : "-translate-x-full md:translate-x-0"
@@ -87,7 +87,7 @@ export default function MainSidebar() {
         {/* Header */}
         <div className="flex items-center justify-between h-16 px-4 border-b bg-log">
           {/* Logo */}
-          <Link href={"/admin"} className="flex items-center gap-2">
+          <Link href={"/"} className="flex items-center gap-2">
             <div className="bg-primary p-1 rounded-md">
               <span className="text-secondary font-bold">KKU</span>
             </div>

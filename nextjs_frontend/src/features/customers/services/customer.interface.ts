@@ -1,12 +1,8 @@
-export interface ICreateCustomer {
-  name: string;
-  contract: string;
+export interface IUpsertCustomer {
+  customerName: string;
+  customerContactInfo: string | null;
 }
 
-export interface ICustomer {
-  id: string;
-  name: string;
-  contactInfo: string;
-  createdAt: string;
-  updatedAt: string;
+export interface IDeleteCustomer {
+  customerId: string;
 }
