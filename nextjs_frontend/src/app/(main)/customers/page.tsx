@@ -3,9 +3,11 @@ import { Separator } from "@/components/ui/separator";
 import { CustomerForm } from "@/features/customers/components/customer-form";
 import { CustomerListTable } from "@/features/customers/components/customer-list-table";
 import { getCustomerList } from "@/features/customers/services/customer.service";
+import { getAuthenticatedUser } from "@/utils/auth.utils";
 
 export default async function CustomerPage() {
-  const customers = await getCustomerList();
+  const { token } = await getAuthenticatedUser();
+  const customers = await getCustomerList(token);
 
   return (
     <div className="main-container">

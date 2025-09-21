@@ -3,9 +3,11 @@ import { Separator } from "@/components/ui/separator";
 import { ProductCategoryForm } from "@/features/product-categories/components/product-category-form";
 import { ProductCategoryListTable } from "@/features/product-categories/components/product-category-list-table";
 import { getProductCategoryList } from "@/features/product-categories/services/product-category.service";
+import { getAuthenticatedUser } from "@/utils/auth.utils";
 
 export default async function ProductCategoryPage() {
-  const categories = await getProductCategoryList();
+  const { token } = await getAuthenticatedUser();
+  const categories = await getProductCategoryList(token);
 
   return (
     <div className="main-container">

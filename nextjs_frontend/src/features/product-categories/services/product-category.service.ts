@@ -17,11 +17,16 @@ import {
 import { ACTION_CONFIG } from "@/configs/action.config";
 import { productCategorySchema } from "../schemas/product-category.schema";
 import z from "zod";
+import { serviceUtil } from "@/utils/service.utils";
+import { buildHeadersUtil } from "@/utils/http-headers.utils";
 
 export async function createProductCategory(
   input: IUpsertProductCategory
 ) {
   try {
+    //get token
+    const token = await serviceUtil.getToken();
+
     const { success, error, data } =
       upsertProductCategorySchema.safeParse(input);
     if (success === false) {
@@ -38,7 +43,8 @@ export async function createProductCategory(
     const { result, error: resErr } = await withApiHandling(
       axios.post(
         API_CONFIG.BASE_URL + "/api/product-categories",
-        requsetBody
+        requsetBody,
+        { headers: buildHeadersUtil({ token: token }) }
       ),
       {
         option: {
@@ -70,11 +76,17 @@ export async function deleteProductCategory(
   input: IDeleteProductCategory
 ) {
   try {
+    //get token
+    const token = await serviceUtil.getToken();
+
     const { error } = await withApiHandling(
       axios.delete(
         API_CONFIG.BASE_URL +
           "/api/product-categories/" +
-          input.productCategoryId
+          input.productCategoryId,
+        {
+          headers: buildHeadersUtil({ token: token }),
+        }
       )
     );
 
@@ -100,6 +112,9 @@ export async function updateProductCategory(
   input: IUpsertProductCategory
 ) {
   try {
+    // get token
+    const token = await serviceUtil.getToken();
+
     // validate
     const { success, error, data } =
       upsertProductCategorySchema.safeParse(input);
@@ -121,7 +136,8 @@ export async function updateProductCategory(
         API_CONFIG.BASE_URL +
           "/api/product-categories/" +
           productCategoryId,
-        requsetBody
+        requsetBody,
+        { headers: buildHeadersUtil({ token: token }) }
       )
     );
 
@@ -142,7 +158,7 @@ export async function updateProductCategory(
   }
 }
 
-export async function getProductCategoryList() {
+export async function getProductCategoryList(token: string) {
   "use cache";
   configureCache({
     life: "hours",
@@ -150,7 +166,9 @@ export async function getProductCategoryList() {
   });
   try {
     const { result, error } = await withApiHandling(
-      axios.get(API_CONFIG.BASE_URL + "/api/product-categories"),
+      axios.get(API_CONFIG.BASE_URL + "/api/product-categories", {
+        headers: buildHeadersUtil({ token: token }),
+      }),
       {
         option: {
           validateResponse: templateValidateResponse(

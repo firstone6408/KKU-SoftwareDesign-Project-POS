@@ -71,16 +71,10 @@ export async function logout() {
   }
 }
 
-export async function getCurrentUser(): Promise<IUser | null> {
+export async function getCurrentUser(
+  token: string
+): Promise<IUser | null> {
   try {
-    // get token
-    const token = await CookieUtil.getToken();
-
-    // check
-    if (!token) {
-      return null;
-    }
-
     // api
     const { result, error } = await withApiHandling(
       axios.get(API_CONFIG.BASE_URL + "/api/auth/current-user", {

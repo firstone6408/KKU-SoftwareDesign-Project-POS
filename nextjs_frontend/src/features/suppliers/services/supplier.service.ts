@@ -14,9 +14,14 @@ import {
 } from "./supplier.cache";
 import { supplierSchema } from "../schemas/supplier.schema";
 import z from "zod";
+import { serviceUtil } from "@/utils/service.utils";
+import { buildHeadersUtil } from "@/utils/http-headers.utils";
 
 export async function createSupplier(input: IUpsertSupplier) {
   try {
+    // get token
+    const token = await serviceUtil.getToken();
+
     // validate
     const { success, error, data } = upsertSupplierSchema.safeParse(input);
     if (!success) {
@@ -34,7 +39,9 @@ export async function createSupplier(input: IUpsertSupplier) {
 
     // api
     const { result, error: responseError } = await withApiHandling(
-      axios.post(API_CONFIG.BASE_URL + "/api/suppliers", requestBody),
+      axios.post(API_CONFIG.BASE_URL + "/api/suppliers", requestBody, {
+        headers: buildHeadersUtil({ token: token }),
+      }),
       {
         option: {
           validateResponse: templateValidateResponse(supplierSchema),
@@ -59,9 +66,13 @@ export async function createSupplier(input: IUpsertSupplier) {
 
 export async function deleteSupplier(input: IDeleteSupplier) {
   try {
+    // get token
+    const token = await serviceUtil.getToken();
+
     const { error } = await withApiHandling(
       axios.delete(
-        API_CONFIG.BASE_URL + "/api/suppliers/" + input.supplierId
+        API_CONFIG.BASE_URL + "/api/suppliers/" + input.supplierId,
+        { headers: buildHeadersUtil({ token: token }) }
       )
     );
 
@@ -87,6 +98,9 @@ export async function updateSupplier(
   input: IUpsertSupplier
 ) {
   try {
+    // get token
+    const token = await serviceUtil.getToken();
+
     // validate
     const { success, error, data } = upsertSupplierSchema.safeParse(input);
     if (!success) {
@@ -105,7 +119,8 @@ export async function updateSupplier(
     const { error: responseError } = await withApiHandling(
       axios.put(
         API_CONFIG.BASE_URL + "/api/suppliers/" + supplierId,
-        requestBody
+        requestBody,
+        { headers: buildHeadersUtil({ token: token }) }
       )
     );
 
@@ -126,7 +141,7 @@ export async function updateSupplier(
   }
 }
 
-export async function getSupplierList() {
+export async function getSupplierList(token: string) {
   "use cache";
   configureCache({
     life: "hours",
@@ -135,7 +150,9 @@ export async function getSupplierList() {
 
   try {
     const { result, error } = await withApiHandling(
-      axios.get(API_CONFIG.BASE_URL + "/api/suppliers"),
+      axios.get(API_CONFIG.BASE_URL + "/api/suppliers", {
+        headers: buildHeadersUtil({ token: token }),
+      }),
       {
         option: {
           validateResponse: templateValidateResponse(

@@ -14,9 +14,14 @@ import {
 import z from "zod";
 import { customerSchema } from "../schemas/customer.schema";
 import { ACTION_CONFIG } from "@/configs/action.config";
+import { serviceUtil } from "@/utils/service.utils";
+import { buildHeadersUtil } from "@/utils/http-headers.utils";
 
 export async function createCustomer(input: IUpsertCustomer) {
   try {
+    // get token
+    const token = await serviceUtil.getToken();
+
     const { success, error, data } = upsertCustomerSchema.safeParse(input);
     console.log(error);
     if (!success) {
@@ -32,7 +37,9 @@ export async function createCustomer(input: IUpsertCustomer) {
     };
 
     const { result, error: resErr } = await withApiHandling(
-      axios.post(API_CONFIG.BASE_URL + "/api/customers", requsetBody),
+      axios.post(API_CONFIG.BASE_URL + "/api/customers", requsetBody, {
+        headers: buildHeadersUtil({ token: token }),
+      }),
       {
         option: {
           validateResponse: templateValidateResponse(customerSchema),
@@ -60,9 +67,13 @@ export async function createCustomer(input: IUpsertCustomer) {
 
 export async function deleteCustomer(input: IDeleteCustomer) {
   try {
+    // get token
+    const token = await serviceUtil.getToken();
+
     const { error } = await withApiHandling(
       axios.delete(
-        API_CONFIG.BASE_URL + "/api/customers/" + input.customerId
+        API_CONFIG.BASE_URL + "/api/customers/" + input.customerId,
+        { headers: buildHeadersUtil({ token: token }) }
       )
     );
 
@@ -86,6 +97,9 @@ export async function updateCustomer(
   input: IUpsertCustomer
 ) {
   try {
+    // get token
+    const token = await serviceUtil.getToken();
+
     // validate
     const { success, error, data } = upsertCustomerSchema.safeParse(input);
     if (!success) {
@@ -105,7 +119,8 @@ export async function updateCustomer(
     const { error: resErr } = await withApiHandling(
       axios.put(
         API_CONFIG.BASE_URL + "/api/customers/" + customerId,
-        requsetBody
+        requsetBody,
+        { headers: buildHeadersUtil({ token: token }) }
       )
     );
 
@@ -125,7 +140,7 @@ export async function updateCustomer(
   }
 }
 
-export async function getCustomerList() {
+export async function getCustomerList(token: string) {
   "use cache";
   configureCache({
     life: "hours",
@@ -133,7 +148,9 @@ export async function getCustomerList() {
   });
   try {
     const { result, error } = await withApiHandling(
-      axios.get(API_CONFIG.BASE_URL + "/api/customers"),
+      axios.get(API_CONFIG.BASE_URL + "/api/customers", {
+        headers: buildHeadersUtil({ token: token }),
+      }),
       {
         option: {
           validateResponse: templateValidateResponse(

@@ -8,11 +8,11 @@ export async function getAuthenticatedUser() {
     redirect("/auth/sign-in");
   }
 
-  const user = await getCurrentUser();
+  const user = await getCurrentUser(token);
   if (!user) {
     await CookieUtil.deleteToken();
     redirect("/auth/sign-in");
   }
 
-  return { user };
+  return { user, token };
 }
