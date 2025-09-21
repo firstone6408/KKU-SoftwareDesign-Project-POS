@@ -1,8 +1,9 @@
-@startuml pos_usecase
+@startuml pos_usecase_noCustomer
+skinparam defaultFontName "Tahoma"
 left to right direction
-actor "พนักงาน/ผู้ใช้งาน" as cashier
+actor "พนักงาน" as cashier
 actor "ผู้ดูแลระบบ" as admin
-actor "ลูกค้า" as customer
+' actor "ลูกค้า" as customer
 
 rectangle "ระบบ Point of Sale" {
   usecase "เข้าสู่ระบบ/ออกจากระบบ" as login
@@ -21,8 +22,8 @@ rectangle "ระบบ Point of Sale" {
   usecase "ดูรายงานการขาย" as viewReports
   usecase "จัดการสต็อกสินค้า" as manageStock
   usecase "สำรองข้อมูล/กู้คืนข้อมูล" as backupRestore
-  usecase "ชำระเงิน" as makePayment
-  usecase "รับใบเสร็จ" as receiveReceipt
+  ' usecase "ชำระเงิน" as makePayment
+  ' usecase "รับใบเสร็จ" as receiveReceipt
 }
 
 cashier -- login
@@ -46,7 +47,7 @@ admin -- backupRestore
 
 manageProducts ..> manageCategories : <<include>>
 
-customer -- makePayment
-customer -- receiveReceipt
+' customer -- makePayment
+' customer -- receiveReceipt
 
 @enduml
