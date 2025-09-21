@@ -1,7 +1,8 @@
-package com.sdp.pos.dto.auth;
+package com.sdp.pos.dto.user;
 
 import com.sdp.pos.constant.UserRoleEnum;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -9,9 +10,13 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class RegisterRequestDTO {
-    @NotBlank(message = "username is required")
-    private final String username;
+public class UserRequestDTO {
+    @NotBlank(message = "email is required")
+    @Email(message = "Invalid email format")
+    private final String email;
+
+    @NotBlank(message = "name is required")
+    private final String name;
 
     private final String password;
 

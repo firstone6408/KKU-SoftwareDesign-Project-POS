@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sdp.pos.dto.auth.LoginRequestDTO;
 import com.sdp.pos.dto.auth.LoginResponseDTO;
-import com.sdp.pos.dto.auth.RegisterRequestDTO;
+import com.sdp.pos.dto.user.UserRequestDTO;
 import com.sdp.pos.entity.UserEntity;
 import com.sdp.pos.repository.UserRepository;
 import com.sdp.pos.service.auth.contract.AuthService;
@@ -32,11 +32,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public void register(RegisterRequestDTO requestDTO) {
+    public void register(UserRequestDTO requestDTO) {
         // check user is exists
-        UserEntity existinUser = userRepository.findByUsername(requestDTO.getUsername());
+        UserEntity existinUser = userRepository.findByEmail(requestDTO.getEmail());
         if (existinUser != null) {
-            throw new UserAlreadyExistsException("Username already taken");
+            throw new UserAlreadyExistsException("Email already taken");
         }
 
         // hash password
@@ -44,7 +44,8 @@ public class AuthServiceImpl implements AuthService {
 
         // create instance
         UserEntity userToCreate = new UserEntity();
-        userToCreate.setUsername(requestDTO.getUsername());
+        userToCreate.setEmail(requestDTO.getEmail());
+        userToCreate.setName(requestDTO.getName());
         userToCreate.setRole(requestDTO.getRole());
         userToCreate.setPassword(hashedPassword);
 
@@ -56,9 +57,9 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public LoginResponseDTO login(LoginRequestDTO requestDTO) {
         // check user
-        UserEntity userToLogin = userRepository.findByUsername(requestDTO.getUsername());
+        UserEntity userToLogin = userRepository.findByEmail(requestDTO.getEmail());
         if (userToLogin == null) {
-            throw new UserNotFoundException(requestDTO.getUsername());
+            throw new UserNotFoundException(requestDTO.getEmail());
         }
 
         // check password

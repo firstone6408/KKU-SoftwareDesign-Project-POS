@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.auth.LoginRequestDTO;
 import com.sdp.pos.dto.auth.LoginResponseDTO;
-import com.sdp.pos.dto.auth.RegisterRequestDTO;
+import com.sdp.pos.dto.user.UserRequestDTO;
 import com.sdp.pos.service.auth.contract.AuthService;
 import com.sdp.pos.util.ApiResponse;
 
@@ -25,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<Object>> register(@Valid @RequestBody RegisterRequestDTO requestDTO) {
+    public ResponseEntity<ApiResponse<Object>> register(@Valid @RequestBody UserRequestDTO requestDTO) {
         authService.register(requestDTO);
         return ApiResponse.success("Registerd success");
     }
