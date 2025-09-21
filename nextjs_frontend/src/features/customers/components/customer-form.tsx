@@ -16,6 +16,23 @@ export function CustomerForm({ ...props }: BaseCardProps) {
   });
 
   return (
+<<<<<<< HEAD
+    <div>
+      <Form action={formAction}>
+        <div>
+          <div>ชื่อลูกค้า</div>
+          <Input name="customer-name" />
+        </div>
+        <div>
+          <div>ติดต่อ</div>
+          <Input name="customer-contract" />
+        </div>
+        <div className="mt-8">
+          <Button type="submit">Submit</Button>
+        </div>
+      </Form>
+    </div>
+=======
     <BaseCard
       headerTitleIcon={Plus}
       headerTitle="แบบฟอร์มเพิ่มลูกค้า"
@@ -51,5 +68,6 @@ export function CustomerForm({ ...props }: BaseCardProps) {
         </Form>
       }
     />
+>>>>>>> origin/main
   );
 }

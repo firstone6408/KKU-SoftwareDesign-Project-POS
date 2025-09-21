@@ -1,3 +1,7 @@
+// export default function Home() {
+//   return (
+//   <div className="main-container">Hello World</div>;
+// }
 import { MainContent } from "@/components/layouts/main/content";
 import { MainHeader } from "@/components/layouts/main/header/header";
 import MainSidebar from "@/components/layouts/main/sidebar/sidebar";
@@ -14,6 +18,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <MainSidebar />
         <div className="flex-1 flex flex-col overflow-hidden ">
           <MainHeader />
+          <div className="main-container">Hello World</div>
           <MainContent>{children}</MainContent>
         </div>
       </div>
