@@ -40,6 +40,7 @@ import { BaseCardProps } from "@/interfaces/components/card";
  */
 export function BaseCard({
   card,
+  headerTitleIcon,
   headerTitle,
   headerDescription,
   content,
@@ -63,6 +64,8 @@ export function BaseCard({
     footer: hasFooter,
   } = card;
 
+  const HeaderTitleIcon = headerTitleIcon;
+
   const inner = (
     <>
       {/* ถ้ามี customHeader ใช้อันนั้น, ไม่งั้น fallback */}
@@ -71,9 +74,16 @@ export function BaseCard({
           <CardHeader className={headerClassName}>
             {headerTitle && (
               <CardTitle
-                className={cn("card-title", headerTitleClassName)}
+                className={cn(
+                  "text-lg sm:text-xl",
+                  headerTitleClassName,
+                  HeaderTitleIcon && "flex items-center gap-2"
+                )}
               >
-                {headerTitle}
+                <span className="font-bold">
+                  {HeaderTitleIcon && <HeaderTitleIcon size={20} />}
+                </span>
+                <span>{headerTitle}</span>
               </CardTitle>
             )}
             {headerDescription && (

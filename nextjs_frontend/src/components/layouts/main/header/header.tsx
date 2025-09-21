@@ -12,7 +12,7 @@ export function MainHeader() {
     <header
       className={`fixed top-0 inset-x-0 ${
         isSidebarOpen ? "md:ms-64" : "ms-0 md:ms-16"
-      } h-16 border-b z-10 md:static
+      } h-16 border-b z-10
     backdrop-blur-sm shadow-sm transition-all duration-300`}
     >
       <div className="flex justify-between items-center h-full px-4">

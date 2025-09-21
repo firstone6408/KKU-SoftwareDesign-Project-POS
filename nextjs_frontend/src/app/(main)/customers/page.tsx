@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { MainHeader } from "@/components/layouts/main/header/header";
 import MainSidebar from "@/components/layouts/main/sidebar/sidebar";
 import { SidebarProvider } from "@/components/providers/sidebar-provider";
+=======
+import { Header } from "@/components/shared/header/header";
+import { Separator } from "@/components/ui/separator";
+>>>>>>> origin/main
 import { CustomerForm } from "@/features/customers/components/customer-form";
 import { CustomerListTable } from "@/features/customers/components/customer-list-table";
 import { getCustomerList } from "@/features/customers/services/customer.service";
@@ -10,6 +15,7 @@ export default async function CustomerPage() {
 
   return (
     <div className="main-container">
+<<<<<<< HEAD
       <SidebarProvider>
           <div className="min-h-svh flex">
             <MainSidebar />
@@ -28,6 +34,28 @@ export default async function CustomerPage() {
             </div>
           </div>
         </SidebarProvider>
+=======
+      <Header
+        title="ลูกค้า"
+        description="สำหรับการเพิ่ม ลบ แก้ไข เกี่ยวกับลูกค้า"
+      />
+      <Separator />
+      <CustomerForm
+        card={{
+          container: true,
+          header: true,
+          content: true,
+        }}
+      />
+      <CustomerListTable
+        card={{
+          container: true,
+          header: true,
+          content: true,
+        }}
+        customers={customers}
+      />
+>>>>>>> origin/main
     </div>
   );
 }

@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export function Header({ title, description, className }: HeaderProps) {
   return (
-    <div className={cn("pb-6 flex gap-2", className)}>
+    <div className={cn("flex gap-2", className)}>
       {/* Title */}
       <div className="space-y-1">
         <h1 className="text-2xl sm:text-3xl font-bold">{title}</h1>

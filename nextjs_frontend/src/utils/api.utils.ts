@@ -4,15 +4,13 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { z } from "zod";
 
-export function templateResponse<T>(zodSchema: z.ZodSchema<T>) {
+export function templateValidateResponse<T>(zodSchema: z.ZodSchema<T>) {
   return z.object({
     ok: z.boolean(),
     status: z.number(),
     message: z.string(),
-    data: z.object({
-      data: zodSchema,
-    }),
-    timestamp: z.date(),
+    data: zodSchema,
+    timestamp: z.string(),
   });
 }
 
@@ -21,11 +19,10 @@ function validateResponseFromServer<T>(
   responseSchema: z.ZodSchema<T>
 ) {
   //  console.log(axiosResponse.data);
+
   const validatedResult = responseSchema.safeParse(axiosResponse.data);
   if (!validatedResult.success) {
-    const errorMessage = String(
-      validatedResult.error.flatten().fieldErrors
-    );
+    const errorMessage = validatedResult.error.message;
     console.log(errorMessage);
     throw new Error(errorMessage);
   }
@@ -64,7 +61,6 @@ export async function withApiHandling<T>(
     if (config) {
       const { option } = config;
       if (option?.validateResponse) {
-        console.log(1);
         result = validateResponseFromServer(
           result,
           option.validateResponse

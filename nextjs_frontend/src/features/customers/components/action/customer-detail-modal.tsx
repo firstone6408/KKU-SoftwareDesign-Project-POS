@@ -1,17 +1,11 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { ModalType } from "@/interfaces/components/modal";
-import { ICustomer } from "../../services/customer.interface";
+import { InputField } from "@/components/shared/field/input-field";
+import { ICustomer } from "../../schemas/customer.schema";
+import { Modal } from "@/components/shared/modal/modal";
+import { ModalProps } from "@/interfaces/components/modal";
+import { TextareaField } from "@/components/shared/field/textarea-field";
+import { dateTime } from "@/utils/dateTime.utils";
 
-interface CustomerDetailModalProps extends ModalType {
+interface CustomerDetailModalProps extends ModalProps {
   customer: ICustomer | null;
 }
 
@@ -20,24 +14,52 @@ export function CustomerDetailModal({
   open,
   customer,
 }: CustomerDetailModalProps) {
+  if (!customer) {
+    return;
+  }
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you&apos;re
-            done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4"></div>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <Modal
+      open={open}
+      onOpenChange={onOpenChange}
+      title="รายละเอียดลูกค้า"
+      description=""
+    >
+      <div className="space-y-2">
+        <InputField
+          label="ชื่อ"
+          defaultValue={customer.name}
+          readOnly
+          hiddenIcon
+        />
+        <TextareaField
+          label="ติดต่อ"
+          defaultValue={customer.contactInfo}
+          readOnly
+          hiddenIcon
+        />
+        <div className="flex gap-2">
+          <span className="w-full">
+            <InputField
+              label="วันที่สร้าง"
+              defaultValue={dateTime.formatDate(
+                new Date(customer.createdAt)
+              )}
+              readOnly
+              hiddenIcon
+            />
+          </span>
+          <span className="w-full">
+            <InputField
+              label="วันที่แก้ไขล่าสุด"
+              defaultValue={dateTime.formatDate(
+                new Date(customer.updatedAt)
+              )}
+              readOnly
+              hiddenIcon
+            />
+          </span>
+        </div>
+      </div>
+    </Modal>
   );
 }

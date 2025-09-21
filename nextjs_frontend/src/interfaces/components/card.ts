@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export interface BaseCardProps {
   card: {
     container?: boolean;
@@ -5,6 +7,7 @@ export interface BaseCardProps {
     content?: boolean;
     footer?: boolean;
   };
+  headerTitleIcon?: LucideIcon;
   headerTitle?: React.ReactNode;
   headerDescription?: React.ReactNode;
   content?: React.ReactNode;
