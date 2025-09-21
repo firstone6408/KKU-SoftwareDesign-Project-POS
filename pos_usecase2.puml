@@ -24,6 +24,7 @@ rectangle "Point of Sale System" {
   usecase "Make Payment" as makePayment 
   usecase "Receive Receipt" as receiveReceipt 
 }
+
 cashier -- login
 cashier -- manageSales
 cashier -- processPayment
