@@ -23,7 +23,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional(readOnly = true)
     public List<SupplierResponseDTO> getAll() {
-        List<SupplierEntity> suppliers = supplierRepository.findAll();
+        List<SupplierEntity> suppliers = supplierRepository.findAllByOrderByNameAsc();
 
         return suppliers.stream().map(SupplierResponseDTO::fromEntity).toList();
     }

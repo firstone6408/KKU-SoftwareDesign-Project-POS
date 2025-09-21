@@ -1,5 +1,7 @@
 package com.sdp.pos.dto.order.item;
 
+import java.time.LocalDateTime;
+
 import com.sdp.pos.dto.product.ProductResponseDTO;
 import com.sdp.pos.entity.OrderItemEntity;
 
@@ -15,11 +17,16 @@ public class OrderItemResponseDTO {
 
     private final double unitPrice;
 
+    private final LocalDateTime createdAt;
+
+    private final LocalDateTime updatedAt;
+
     private final ProductResponseDTO product;
 
     public static OrderItemResponseDTO fromEntity(OrderItemEntity orderItem) {
 
         return new OrderItemResponseDTO(orderItem.getId(), orderItem.getQuantity(), orderItem.getUnitPrice(),
+                orderItem.getCreatedAt(), orderItem.getUpdatedAt(),
                 ProductResponseDTO.fromEntity(orderItem.getProduct()));
 
     }

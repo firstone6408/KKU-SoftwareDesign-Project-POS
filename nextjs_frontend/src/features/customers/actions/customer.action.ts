@@ -15,7 +15,10 @@ export async function createCustomerAction(
 ) {
   const rawData = {
     customerName: formData.get("customer-name") as string,
-    customerContactInfo: formData.get("customer-contact-info") as string,
+    customerContactInfo: (() => {
+      const value = formData.get("customer-contact-info") as string;
+      return value.trim() !== "" ? value : null;
+    })(),
   };
 
   const result = await createCustomer(rawData);

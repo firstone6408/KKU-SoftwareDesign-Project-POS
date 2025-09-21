@@ -29,6 +29,18 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(@NonNull InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**") // apply ทุก endpoint
-                .excludePathPatterns("/uploads/**"); // ยกเว้น path ที่ไม่อยากดัก
+                .excludePathPatterns(// ยกเว้น path ที่ไม่อยากดัก
+                        // sawgger
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**",
+                        "/v3/api-docs.yaml",
+                        "/swagger-resources/**",
+                        "/webjars/**",
+
+                        // endpoint api
+                        "/uploads/**",
+                        "/api/auth/register",
+                        "/api/auth/login");
     }
 }

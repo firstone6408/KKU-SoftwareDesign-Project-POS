@@ -11,7 +11,7 @@ public interface OrderService {
 
     OrderResponseDTO getById(String id);
 
-    void create(OrderCreateRequestDTO requestDTO);
+    void create(String userId, OrderCreateRequestDTO requestDTO);
 
     void delete(String id);
 

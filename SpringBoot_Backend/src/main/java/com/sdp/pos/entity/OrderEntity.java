@@ -23,6 +23,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -63,6 +64,7 @@ public class OrderEntity {
     private LocalDateTime deliveryDate;
 
     @OneToMany(mappedBy = "order")
+    @OrderBy("createdAt ASC")
     private List<OrderItemEntity> items = new ArrayList<>();
 
     @ManyToOne
@@ -71,6 +73,10 @@ public class OrderEntity {
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private SaleInoviceEntity saleInovice;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private UserEntity createdBy;
 
     public void recalculateTotalAmount() {
         this.totalAmount = items.stream()

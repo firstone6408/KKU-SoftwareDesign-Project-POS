@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 import SidebarLink from "./sidebar-link";
 import { usePathname } from "next/navigation";
+import { LogoutButton } from "@/features/auth/components/logout-button";
 
 interface SidebarLinkType {
   label: string;
@@ -151,14 +152,14 @@ export default function MainSidebar() {
         </div>
         {/* Sign Out Button */}
         <div className="border-t p-4 space-y-2">
-          <Button
+          <LogoutButton
             variant={"destructive"}
             size={"lg"}
             className="w-full justify-start gap-3 hover:cursor-pointer font-semibold"
+            icon={LogOut}
           >
-            <LogOut />
             <span>ออกจากระบบ</span>
-          </Button>
+          </LogoutButton>
         </div>
       </aside>
     </div>

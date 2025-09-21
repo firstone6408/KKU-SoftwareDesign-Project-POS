@@ -11,6 +11,7 @@ import com.sdp.pos.dto.order.OrderResponseDTO;
 import com.sdp.pos.dto.order.OrderSaveRequestDTO;
 import com.sdp.pos.entity.CustomerEntity;
 import com.sdp.pos.entity.OrderEntity;
+import com.sdp.pos.entity.UserEntity;
 import com.sdp.pos.repository.OrderRepository;
 import com.sdp.pos.service.order.contract.OrderService;
 import com.sdp.pos.service.order.exception.OrderHasItemsException;
@@ -32,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public List<OrderResponseDTO> getAll() {
-        List<OrderEntity> orders = orderRepository.findAll();
+        List<OrderEntity> orders = orderRepository.findByOrderByOrderDateDesc();
         return orders.stream().map(OrderResponseDTO::fromEntity).toList();
     }
 
@@ -59,8 +60,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void create(OrderCreateRequestDTO requestDTO) {
-        // validate customer and order
+    public void create(String userId, OrderCreateRequestDTO requestDTO) {
+        // validate user, customer and order
+        UserEntity user = orderValidator.validateUser(userId);
         CustomerEntity customer = orderValidator.validateCustomer(requestDTO.getCustomerId());
         orderValidator.validateOpenOrderExistsByCustomerId(requestDTO.getCustomerId());
 
@@ -70,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
         orderToCreate.setCustomer(customer);
         orderToCreate.setTotalAmount(0);
         orderToCreate.setDiscount(0);
+        orderToCreate.setCreatedBy(user);
 
         // save
         orderRepository.save(orderToCreate);
