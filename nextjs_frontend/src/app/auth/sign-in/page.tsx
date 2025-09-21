@@ -1,3 +1,10 @@
+import AuthContainer from "@/features/auth/components/auth-container";
+import { LoginForm } from "@/features/auth/components/login-form";
+
 export default function SignInPage() {
-  return <div>SignInPage</div>;
+  return (
+    <AuthContainer type={"signIn"}>
+      <LoginForm />
+    </AuthContainer>
+  );
 }

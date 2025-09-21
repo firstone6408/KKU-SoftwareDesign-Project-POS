@@ -3,25 +3,21 @@
 import { InitialFormState } from "@/interfaces/actions/action";
 import { actionResponse } from "@/utils/response-builder.utils";
 import {
-  createCustomer,
-  deleteCustomer,
-  updateCustomer,
-} from "../services/customer.service";
+  createProductCategory,
+  deleteProductCategory,
+  updateProductCategory,
+} from "../services/product-category.service";
 import { ACTION_CONFIG } from "@/configs/action.config";
 
-export async function createCustomerAction(
+export async function createProductCategoryAction(
   _prevState: InitialFormState,
   formData: FormData
 ) {
   const rawData = {
-    customerName: formData.get("customer-name") as string,
-    customerContactInfo: (() => {
-      const value = formData.get("customer-contact-info") as string;
-      return value.trim() !== "" ? value : null;
-    })(),
+    productCategoryName: formData.get("product-category-name") as string,
   };
 
-  const result = await createCustomer(rawData);
+  const result = await createProductCategory(rawData);
 
   if (result && result.message) {
     return actionResponse({
@@ -37,15 +33,15 @@ export async function createCustomerAction(
   }
 }
 
-export async function deleteCustomerAction(
+export async function deleteProductCategoryAction(
   _prevState: InitialFormState,
   formData: FormData
 ) {
   const rawData = {
-    customerId: formData.get("customer-id") as string,
+    productCategoryId: formData.get("product-category-id") as string,
   };
 
-  const result = await deleteCustomer(rawData);
+  const result = await deleteProductCategory(rawData);
 
   if (result && result.message) {
     return actionResponse({
@@ -60,21 +56,18 @@ export async function deleteCustomerAction(
   }
 }
 
-export async function updateCustomerAction(
+export async function updateProductCategoryAction(
   _prevState: InitialFormState,
   formData: FormData
 ) {
   const rawData = {
-    customerId: formData.get("customer-id") as string,
-    customerName: formData.get("customer-name") as string,
-    customerContactInfo: (() => {
-      const value = formData.get("customer-contact-info") as string;
-      return value && value.trim() !== "" ? value : null;
-    })(),
+    productCategoryId: formData.get("product-category-id") as string,
+    productCategoryName: formData.get("product-category-name") as string,
   };
 
-  const { customerId, ...data } = rawData;
-  const result = await updateCustomer(customerId, data);
+  const { productCategoryId, ...data } = rawData;
+
+  const result = await updateProductCategory(productCategoryId, data);
 
   if (result && result.message) {
     return actionResponse({

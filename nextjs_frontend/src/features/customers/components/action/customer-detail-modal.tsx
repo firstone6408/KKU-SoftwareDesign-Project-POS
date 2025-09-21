@@ -33,7 +33,7 @@ export function CustomerDetailModal({
         />
         <TextareaField
           label="ติดต่อ"
-          defaultValue={customer.contactInfo}
+          defaultValue={customer.contactInfo || ""}
           readOnly
           hiddenIcon
         />
