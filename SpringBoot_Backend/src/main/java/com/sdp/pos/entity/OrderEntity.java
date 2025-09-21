@@ -74,6 +74,10 @@ public class OrderEntity {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private SaleInoviceEntity saleInovice;
 
+    @ManyToOne
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private UserEntity createdBy;
+
     public void recalculateTotalAmount() {
         this.totalAmount = items.stream()
                 .mapToDouble(item -> item.getUnitPrice() * item.getQuantity())

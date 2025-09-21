@@ -1,6 +1,8 @@
 package com.sdp.pos.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sdp.pos.constant.UserRoleEnum;
 
@@ -11,6 +13,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,4 +41,8 @@ public class UserEntity {
 
     @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
+
+    @OneToMany(mappedBy = "createdBy")
+    @OrderBy("orderDate DESC")
+    private List<OrderEntity> createdOrders = new ArrayList<>();
 }

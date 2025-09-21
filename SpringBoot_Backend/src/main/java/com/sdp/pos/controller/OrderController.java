@@ -14,6 +14,7 @@ import com.sdp.pos.service.orderitem.contract.OrderItemService;
 import com.sdp.pos.service.saleinovice.contract.SaleInoviceService;
 import com.sdp.pos.util.ApiResponse;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -54,8 +55,10 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Object>> createOrder(@Valid @RequestBody OrderCreateRequestDTO requestDTO) {
-        orderService.create(requestDTO);
+    public ResponseEntity<ApiResponse<Object>> createOrder(@Valid @RequestBody OrderCreateRequestDTO requestDTO,
+            HttpServletRequest request) {
+        String userId = (String) request.getAttribute("user-id");
+        orderService.create(userId, requestDTO);
         return ApiResponse.success(HttpStatus.CREATED, "Order created success");
     }
 

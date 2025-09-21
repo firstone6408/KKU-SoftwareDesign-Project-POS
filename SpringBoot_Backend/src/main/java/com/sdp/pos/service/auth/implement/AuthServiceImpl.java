@@ -14,7 +14,7 @@ import com.sdp.pos.repository.UserRepository;
 import com.sdp.pos.service.auth.contract.AuthService;
 import com.sdp.pos.service.auth.exception.InvalidCredentialsException;
 import com.sdp.pos.service.auth.exception.UserAlreadyExistsException;
-import com.sdp.pos.service.auth.exception.UserNotFoundException;
+import com.sdp.pos.service.user.exception.UserNotFoundException;
 import com.sdp.pos.util.JwtUtil;
 
 @Service

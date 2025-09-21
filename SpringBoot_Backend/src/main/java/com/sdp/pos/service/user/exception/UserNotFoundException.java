@@ -1,4 +1,4 @@
-package com.sdp.pos.service.auth.exception;
+package com.sdp.pos.service.user.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
