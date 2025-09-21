@@ -1,0 +1,51 @@
+@startuml pos_usecase
+left to right direction
+actor "Employee/User" as cashier
+actor "System Administrator" as admin
+actor "Customer" as customer
+
+rectangle "Point of Sale System" {
+  usecase "Login/Logout" as login
+  usecase "Manage Sales" as manageSales
+  usecase "Process Payment" as processPayment
+  usecase "Return Item" as returnItem
+  usecase "Cancel Sale" as cancelSale
+  usecase "Search Product" as searchProduct
+  usecase "Scan Product" as scanProduct
+  usecase "Calculate Total" as calculateTotal
+  usecase "Generate Receipt" as generateReceipt
+  usecase "Manage Products" as manageProducts
+  usecase "Manage Product Categories" as manageCategories
+  usecase "Manage Users" as manageUsers
+  usecase "Manage Suppliers" as manageSuppliers
+  usecase "View Sales Reports" as viewReports
+  usecase "Manage Stock" as manageStock
+  usecase "Backup/Restore Data" as backupRestore
+  usecase "Make Payment" as makePayment 
+  usecase "Receive Receipt" as receiveReceipt 
+}
+cashier -- login
+cashier -- manageSales
+cashier -- processPayment
+cashier -- returnItem
+cashier -- cancelSale
+
+manageSales ..> searchProduct : <<include>>
+manageSales ..> scanProduct : <<include>>
+manageSales ..> calculateTotal : <<include>>
+processPayment ..> generateReceipt : <<include>>
+
+admin -- login
+admin -- manageProducts
+admin -- manageUsers
+admin -- manageSuppliers
+admin -- viewReports
+admin -- manageStock
+admin -- backupRestore
+
+manageProducts ..> manageCategories : <<include>>
+
+customer -- makePayment
+customer -- receiveReceipt
+
+@enduml
