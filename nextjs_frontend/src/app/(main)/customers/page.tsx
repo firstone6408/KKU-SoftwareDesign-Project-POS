@@ -4,7 +4,6 @@ import { getCustomerList } from "@/features/customers/services/customer.service"
 
 export default async function CustomerPage() {
   const customers = await getCustomerList();
-
   return (
     <div className="main-container">
       <CustomerForm />
