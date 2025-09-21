@@ -1,28 +1,28 @@
 @startuml pos_usecase
 left to right direction
-actor "Employee/User" as cashier
-actor "System Administrator" as admin
-actor "Customer" as customer
+actor "พนักงาน/ผู้ใช้งาน" as cashier
+actor "ผู้ดูแลระบบ" as admin
+actor "ลูกค้า" as customer
 
-rectangle "Point of Sale System" {
-  usecase "Login/Logout" as login
-  usecase "Manage Sales" as manageSales
-  usecase "Process Payment" as processPayment
-  usecase "Return Item" as returnItem
-  usecase "Cancel Sale" as cancelSale
-  usecase "Search Product" as searchProduct
-  usecase "Scan Product" as scanProduct
-  usecase "Calculate Total" as calculateTotal
-  usecase "Generate Receipt" as generateReceipt
-  usecase "Manage Products" as manageProducts
-  usecase "Manage Product Categories" as manageCategories
-  usecase "Manage Users" as manageUsers
-  usecase "Manage Suppliers" as manageSuppliers
-  usecase "View Sales Reports" as viewReports
-  usecase "Manage Stock" as manageStock
-  usecase "Backup/Restore Data" as backupRestore
-  usecase "Make Payment" as makePayment 
-  usecase "Receive Receipt" as receiveReceipt 
+rectangle "ระบบ Point of Sale" {
+  usecase "เข้าสู่ระบบ/ออกจากระบบ" as login
+  usecase "จัดการการขาย" as manageSales
+  usecase "รับชำระเงิน" as processPayment
+  usecase "คืนสินค้า" as returnItem
+  usecase "ยกเลิกการขาย" as cancelSale
+  usecase "ค้นหาสินค้า" as searchProduct
+  usecase "สแกนสินค้า" as scanProduct
+  usecase "คำนวณยอดรวม" as calculateTotal
+  usecase "ออกใบเสร็จ" as generateReceipt
+  usecase "จัดการสินค้า" as manageProducts
+  usecase "จัดการหมวดหมู่สินค้า" as manageCategories
+  usecase "จัดการผู้ใช้งาน" as manageUsers
+  usecase "จัดการซัพพลายเออร์" as manageSuppliers
+  usecase "ดูรายงานการขาย" as viewReports
+  usecase "จัดการสต็อกสินค้า" as manageStock
+  usecase "สำรองข้อมูล/กู้คืนข้อมูล" as backupRestore
+  usecase "ชำระเงิน" as makePayment
+  usecase "รับใบเสร็จ" as receiveReceipt
 }
 
 cashier -- login
