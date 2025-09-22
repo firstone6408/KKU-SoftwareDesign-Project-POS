@@ -8,6 +8,8 @@ import com.sdp.pos.dto.user.UserResponseDTO;
 import com.sdp.pos.service.user.contract.UserService;
 import com.sdp.pos.util.ApiResponse;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponseDTO>> updateUser(@PathVariable String id,
-            @RequestBody UserRequestDTO requestDTO) {
+            @Valid @RequestBody UserRequestDTO requestDTO) {
         return ApiResponse.success("Updated user success", userService.update(id, requestDTO));
     }
 

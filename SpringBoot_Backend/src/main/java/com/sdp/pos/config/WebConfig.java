@@ -38,9 +38,11 @@ public class WebConfig implements WebMvcConfigurer {
                         "/swagger-resources/**",
                         "/webjars/**",
 
-                        // endpoint api
-                        "/uploads/**",
+                        // Auth APIs
                         "/api/auth/register",
-                        "/api/auth/login");
+                        "/api/auth/login",
+
+                        // Static resources
+                        "/uploads/**");
     }
 }

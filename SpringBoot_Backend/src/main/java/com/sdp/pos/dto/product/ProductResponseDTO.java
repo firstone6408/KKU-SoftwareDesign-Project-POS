@@ -16,6 +16,8 @@ public class ProductResponseDTO {
 
     private final String description;
 
+    private final String imageUrl;
+
     private final Double unitPrice;
 
     private final Integer stockLevel;
@@ -27,6 +29,7 @@ public class ProductResponseDTO {
     public static ProductResponseDTO fromEntity(ProductEntity product) {
 
         return new ProductResponseDTO(product.getId(), product.getName(), product.getDescription(),
+                product.getImageUrl(),
                 product.getUnitPrice(), product.getStockLevel(),
                 ProductCategoryResponseDTO.fromEntity(product.getCategory()),
                 SupplierResponseDTO.fromEntity(product.getSupplier()));

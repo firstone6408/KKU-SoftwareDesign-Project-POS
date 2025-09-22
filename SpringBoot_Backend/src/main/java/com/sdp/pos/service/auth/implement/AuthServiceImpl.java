@@ -14,7 +14,6 @@ import com.sdp.pos.repository.UserRepository;
 import com.sdp.pos.service.auth.contract.AuthService;
 import com.sdp.pos.service.auth.exception.InvalidCredentialsException;
 import com.sdp.pos.service.auth.exception.UserAlreadyExistsException;
-import com.sdp.pos.service.user.exception.UserNotFoundException;
 import com.sdp.pos.util.JwtUtil;
 
 @Service
@@ -59,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
         // check user
         UserEntity userToLogin = userRepository.findByEmail(requestDTO.getEmail());
         if (userToLogin == null) {
-            throw new UserNotFoundException(requestDTO.getEmail());
+            throw new InvalidCredentialsException();
         }
 
         // check password
