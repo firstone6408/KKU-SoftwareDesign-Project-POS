@@ -20,11 +20,7 @@ import SidebarLink from "./sidebar-link";
 import { usePathname } from "next/navigation";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { IUser } from "@/features/users/schemas/user.schema";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface SidebarLinkType {
   label: string;
