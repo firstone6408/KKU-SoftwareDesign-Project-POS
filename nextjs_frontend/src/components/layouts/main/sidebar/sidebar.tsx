@@ -19,6 +19,12 @@ import Link from "next/link";
 import SidebarLink from "./sidebar-link";
 import { usePathname } from "next/navigation";
 import { LogoutButton } from "@/features/auth/components/logout-button";
+import { IUser } from "@/features/users/schemas/user.schema";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 
 interface SidebarLinkType {
   label: string;
@@ -59,7 +65,11 @@ const SIDE_BAR_LINKS: SidebarLinkType[] = [
   },
 ];
 
-export default function MainSidebar() {
+interface MainSidebarProps {
+  user: IUser;
+}
+
+export default function MainSidebar({ user }: MainSidebarProps) {
   const { isSidebarOpen, toggleSidebar } = useSidebar();
   // ใช้เพื่อทำ Link Active
   const pathname = usePathname();
@@ -112,12 +122,12 @@ export default function MainSidebar() {
           <ScrollArea className=" ">
             <div className="p-4">
               {/* Profile box */}
-              {/* <div className="flex items-center gap-3 bg-muted p-3 rounded-lg mb-6">
+              <div className="flex items-center gap-3 bg-muted p-3 rounded-lg mb-6">
                 <Avatar className="size-10 border-2 border-primary shadow">
-                  <AvatarImage
+                  {/* <AvatarImage
                     src={user.picture || undefined}
                     alt={`${user.email}-image-profile`}
-                  />
+                  /> */}
                   <AvatarFallback className="text-lg">
                     {user.name
                       ? user.name.slice(0, 2).toUpperCase()
@@ -132,7 +142,7 @@ export default function MainSidebar() {
                     {user.email}
                   </p>
                 </div>
-              </div> */}
+              </div>
 
               {/* Menu */}
               <nav className="space-y-1.5">
