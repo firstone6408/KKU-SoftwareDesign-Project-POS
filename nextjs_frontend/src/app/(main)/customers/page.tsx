@@ -3,10 +3,10 @@ import { Separator } from "@/components/ui/separator";
 import { CustomerForm } from "@/features/customers/components/customer-form";
 import { CustomerListTable } from "@/features/customers/components/customer-list-table";
 import { getCustomerList } from "@/features/customers/services/customer.service";
-import { getAuthenticatedUser } from "@/utils/auth.utils";
+import { AuthClient } from "@/utils/auth.utils";
 
 export default async function CustomerPage() {
-  const { token } = await getAuthenticatedUser();
+  const { token } = await AuthClient.getInstance().getAuthenticatedUser();
   const customers = await getCustomerList(token);
 
   return (

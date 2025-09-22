@@ -1,6 +1,6 @@
 import { unstable_cacheLife, unstable_cacheTag } from "next/cache";
 
-type CACHE_TAG = "customers" | "suppliers" | "product-categories";
+type CACHE_TAG = "customers" | "suppliers" | "product-categories" | "user";
 
 export function getGlobalTag(tag: CACHE_TAG) {
   return `global:${tag}` as const;

@@ -2,14 +2,16 @@ import { MainContent } from "@/components/layouts/main/content";
 import { MainHeader } from "@/components/layouts/main/header/header";
 import MainSidebar from "@/components/layouts/main/sidebar/sidebar";
 import { SidebarProvider } from "@/components/providers/sidebar-provider";
-import { getAuthenticatedUser } from "@/utils/auth.utils";
+import { AuthClient } from "@/utils/auth.utils";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 export default async function MainLayout({ children }: MainLayoutProps) {
-  const { user } = await getAuthenticatedUser();
+  const { user } = await AuthClient.getInstance().getAuthenticatedUser(
+    "layout"
+  );
   return (
     <SidebarProvider>
       <div className="min-h-svh flex">

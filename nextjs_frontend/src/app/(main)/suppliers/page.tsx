@@ -3,10 +3,10 @@ import { Separator } from "@/components/ui/separator";
 import { SupplierForm } from "@/features/suppliers/components/supplier-form";
 import { SupplierListTable } from "@/features/suppliers/components/supplier-list-table";
 import { getSupplierList } from "@/features/suppliers/services/supplier.service";
-import { getAuthenticatedUser } from "@/utils/auth.utils";
+import { AuthClient } from "@/utils/auth.utils";
 
 export default async function SupplierPage() {
-  const { token } = await getAuthenticatedUser();
+  const { token } = await AuthClient.getInstance().getAuthenticatedUser();
   const suppliers = await getSupplierList(token);
 
   return (
