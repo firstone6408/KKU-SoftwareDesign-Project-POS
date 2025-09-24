@@ -35,6 +35,11 @@ const SIDE_BAR_LINKS: SidebarLinkType[] = [
     icon: <LayoutDashboard size={20} />,
   },
   {
+    label: "รายการสั่งซื้อ",
+    href: "/orders",
+    icon: <Clipboard size={20} />,
+  },
+  {
     label: "ลูกค้า",
     href: "/customers",
     icon: <Users size={20} />,
@@ -48,11 +53,6 @@ const SIDE_BAR_LINKS: SidebarLinkType[] = [
     label: "สินค้า",
     href: "/products",
     icon: <ShoppingCart size={20} />,
-  },
-  {
-    label: "รายการสั่งซื้อ",
-    href: "/orders",
-    icon: <Clipboard size={20} />,
   },
   {
     label: "ผู้จัดจำหน่าย",
