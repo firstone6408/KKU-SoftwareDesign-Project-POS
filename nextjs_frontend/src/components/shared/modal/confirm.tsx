@@ -8,7 +8,7 @@ import { Check, LucideIcon, X } from "lucide-react";
 import { Modal } from "./modal";
 
 export interface ConfirmButtonModal {
-  title: string;
+  title?: string;
   description?: string;
   actionIcons?: {
     confirm: LucideIcon;

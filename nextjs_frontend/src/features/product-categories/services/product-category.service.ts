@@ -17,7 +17,7 @@ import {
 import { ACTION_CONFIG } from "@/configs/action.config";
 import { productCategorySchema } from "../schemas/product-category.schema";
 import z from "zod";
-import { serviceUtil } from "@/utils/service.utils";
+import { FeatureServiceUtil } from "@/utils/service.utils";
 import { buildHeadersUtil } from "@/utils/http-headers.utils";
 
 export async function createProductCategory(
@@ -25,7 +25,7 @@ export async function createProductCategory(
 ) {
   try {
     //get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     const { success, error, data } =
       upsertProductCategorySchema.safeParse(input);
@@ -77,7 +77,7 @@ export async function deleteProductCategory(
 ) {
   try {
     //get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     const { error } = await withApiHandling(
       axios.delete(
@@ -113,7 +113,7 @@ export async function updateProductCategory(
 ) {
   try {
     // get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     // validate
     const { success, error, data } =

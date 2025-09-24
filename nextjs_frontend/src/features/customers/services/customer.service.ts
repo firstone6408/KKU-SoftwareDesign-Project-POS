@@ -14,13 +14,13 @@ import {
 import z from "zod";
 import { customerSchema } from "../schemas/customer.schema";
 import { ACTION_CONFIG } from "@/configs/action.config";
-import { serviceUtil } from "@/utils/service.utils";
+import { FeatureServiceUtil } from "@/utils/service.utils";
 import { buildHeadersUtil } from "@/utils/http-headers.utils";
 
 export async function createCustomer(input: IUpsertCustomer) {
   try {
     // get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     const { success, error, data } = upsertCustomerSchema.safeParse(input);
     console.log(error);
@@ -68,7 +68,7 @@ export async function createCustomer(input: IUpsertCustomer) {
 export async function deleteCustomer(input: IDeleteCustomer) {
   try {
     // get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     const { error } = await withApiHandling(
       axios.delete(
@@ -98,7 +98,7 @@ export async function updateCustomer(
 ) {
   try {
     // get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     // validate
     const { success, error, data } = upsertCustomerSchema.safeParse(input);

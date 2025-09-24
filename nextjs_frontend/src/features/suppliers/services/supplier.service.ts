@@ -14,13 +14,13 @@ import {
 } from "./supplier.cache";
 import { supplierSchema } from "../schemas/supplier.schema";
 import z from "zod";
-import { serviceUtil } from "@/utils/service.utils";
+import { FeatureServiceUtil } from "@/utils/service.utils";
 import { buildHeadersUtil } from "@/utils/http-headers.utils";
 
 export async function createSupplier(input: IUpsertSupplier) {
   try {
     // get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     // validate
     const { success, error, data } = upsertSupplierSchema.safeParse(input);
@@ -67,7 +67,7 @@ export async function createSupplier(input: IUpsertSupplier) {
 export async function deleteSupplier(input: IDeleteSupplier) {
   try {
     // get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     const { error } = await withApiHandling(
       axios.delete(
@@ -99,7 +99,7 @@ export async function updateSupplier(
 ) {
   try {
     // get token
-    const token = await serviceUtil.getToken();
+    const token = await FeatureServiceUtil.getToken();
 
     // validate
     const { success, error, data } = upsertSupplierSchema.safeParse(input);

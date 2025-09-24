@@ -16,6 +16,7 @@ interface ConfirmConfig extends ConfirmButtonModal {
 }
 
 interface FormProps {
+  id?: string;
   children: React.ReactNode;
   action: (formData: FormData) => void;
   onChange?: React.FormEventHandler<HTMLFormElement> | undefined;
@@ -25,6 +26,7 @@ interface FormProps {
 }
 
 export function Form({
+  id,
   children,
   action,
   onChange,
@@ -70,6 +72,7 @@ export function Form({
     return (
       <>
         <form
+          id={id}
           className={className}
           onSubmit={handleFormSubmit}
           onChange={onChange}
@@ -90,7 +93,12 @@ export function Form({
     );
   } else {
     return (
-      <NextForm className={className} action={action} onChange={onChange}>
+      <NextForm
+        id={id}
+        className={className}
+        action={action}
+        onChange={onChange}
+      >
         {children}
       </NextForm>
     );
