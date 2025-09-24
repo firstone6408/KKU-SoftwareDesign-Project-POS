@@ -2,7 +2,6 @@ package com.sdp.pos.dto.product;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +20,6 @@ public class UpdateProductRequestDTO {
     @NotBlank(message = "supplierId is required")
     private final String supplierId;
 
-    @Min(value = 0, message = "unitPrice must be at least 0")
-    private final double unitPrice;
-
-    @NotBlank(message = "description is required")
     private final String description;
 
 }

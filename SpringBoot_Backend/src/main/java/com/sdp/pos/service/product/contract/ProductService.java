@@ -3,6 +3,7 @@ package com.sdp.pos.service.product.contract;
 import java.util.List;
 
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
+import com.sdp.pos.dto.product.AdjustUnitPriceProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
 import com.sdp.pos.dto.product.ProductResponseDTO;
 import com.sdp.pos.dto.product.UpdateProductRequestDTO;
@@ -19,5 +20,7 @@ public interface ProductService {
     void delete(String id);
 
     void adjustStock(String productId, AdjustStockProductRequestDTO requestDTO);
+
+    void adjustUnitPrice(String productId, AdjustUnitPriceProductRequestDTO requestDTO);
 
 }

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
+import com.sdp.pos.dto.product.AdjustUnitPriceProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
 import com.sdp.pos.dto.product.ProductResponseDTO;
 import com.sdp.pos.dto.product.UpdateProductRequestDTO;
@@ -62,6 +63,13 @@ public class ProductController {
 
         productService.adjustStock(id, requestDTO);
         return ApiResponse.success("Adjust stock product success");
+    }
+
+    @PutMapping("/{id}/adjust-unit-price")
+    public ResponseEntity<ApiResponse<Object>> adjustUnitPriceProduct(@PathVariable String id,
+            @RequestBody AdjustUnitPriceProductRequestDTO requestDTO) {
+        productService.adjustUnitPrice(id, requestDTO);
+        return ApiResponse.success("Adjust unit price product success");
     }
 
     @DeleteMapping("/{id}")

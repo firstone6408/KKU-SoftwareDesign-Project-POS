@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
+import com.sdp.pos.dto.product.AdjustUnitPriceProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
 import com.sdp.pos.dto.product.ProductResponseDTO;
 import com.sdp.pos.dto.product.UpdateProductRequestDTO;
@@ -87,7 +88,6 @@ public class ProductServiceImpl implements ProductService {
                 // update
                 productToUpdate.setName(requestDTO.getName());
                 productToUpdate.setDescription(requestDTO.getDescription());
-                productToUpdate.setUnitPrice(requestDTO.getUnitPrice());
                 productToUpdate.setCategory(category);
                 productToUpdate.setSupplier(supplier);
 
@@ -126,6 +126,20 @@ public class ProductServiceImpl implements ProductService {
 
                 // adjust
                 requestDTO.getAdjustStockType().apply(productToAdjust, requestDTO.getQuantity());
+
+                // save
+                productRepository.save(productToAdjust);
+        }
+
+        @Override
+        @Transactional
+        public void adjustUnitPrice(String productId, AdjustUnitPriceProductRequestDTO requestDTO) {
+                // check product
+                ProductEntity productToAdjust = productRepository.findById(productId)
+                                .orElseThrow(() -> new ProductNotFoundException(productId));
+
+                // adjust
+                productToAdjust.setUnitPrice(requestDTO.getUnitPrice());
 
                 // save
                 productRepository.save(productToAdjust);
