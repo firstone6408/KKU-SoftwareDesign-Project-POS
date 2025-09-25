@@ -8,19 +8,27 @@ import { Save } from "lucide-react";
 import { useForm } from "@/hooks/use-form";
 import { updateCustomerAction } from "../../actions/customer.action";
 import { Form } from "@/utils/form.utils";
+import { useEffect } from "react";
 
 interface UpdateCustomerModalProps extends ModalProps {
   customer: ICustomer | null;
 }
 
 export function UpdateCustomerModal({
+  onClose,
   onOpenChange,
   open,
   customer,
 }: UpdateCustomerModalProps) {
-  const { formAction, isPending, error, clearError } = useForm({
+  const { formAction, isPending, error, clearError, state } = useForm({
     action: updateCustomerAction,
   });
+
+  useEffect(() => {
+    if (state && state.status === "success") {
+      if (onClose) onClose();
+    }
+  }, [state, onClose]);
 
   if (!customer) {
     return;
