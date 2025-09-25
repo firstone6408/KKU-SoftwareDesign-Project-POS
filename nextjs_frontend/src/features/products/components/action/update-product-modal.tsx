@@ -78,6 +78,7 @@ export function UpdateProductModal({
       onOpenChange={onOpenChange}
       title="รายละเอียดสินค้า"
       description="สามารถแก้ไข / ลบ สินค้าได้"
+      className="h-full overflow-auto"
     >
       <div className="space-y-3">
         <Form
@@ -142,6 +143,18 @@ export function UpdateProductModal({
 
             <div className="col-span-full">
               <InputField
+                label="Barcode"
+                name="product-barcode"
+                placeholder="กรอกชื่อบาร์โค้ดสินค้า"
+                className="w-full"
+                defaultValue={product.barcode}
+                errorMessage={error.productBarcode}
+                required
+                {...fieldChangeIfUpdate()}
+              />
+            </div>
+            <div className="col-span-full">
+              <InputField
                 label="ชื่อ"
                 name="product-name"
                 placeholder="กรอกชื่อสินค้า"
@@ -152,7 +165,8 @@ export function UpdateProductModal({
                 {...fieldChangeIfUpdate()}
               />
             </div>
-            <div className="col-span-full grid grid-cols-2 gap-2">
+
+            <div className="col-span-full">
               <TextareaField
                 label="รายละเอียดสินค้า"
                 name="product-description"
@@ -161,6 +175,8 @@ export function UpdateProductModal({
                 errorMessage={error.productDescription}
                 {...fieldChangeIfUpdate()}
               />
+            </div>
+            <div className="col-span-full">
               <ImageUploadField
                 label="รูปภาพสินค้า"
                 name="product-images"

@@ -29,16 +29,16 @@ export function CustomerListTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-end">ลำดับ</TableHead>
+              <TableHead>รหัสลูกค้า</TableHead>
               <TableHead>ชื่อ</TableHead>
               <TableHead>ติดต่อ</TableHead>
               <TableHead className="text-center w-[20%]">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {customers.map((customer, index) => (
+            {customers.map((customer) => (
               <TableRow key={customer.id}>
-                <TableCell className="text-end">{index + 1}</TableCell>
+                <TableCell>{customer.customerCode}</TableCell>
                 <TableCell>{customer.name}</TableCell>
                 <TableCell>{customer.contactInfo}</TableCell>
                 <TableCell>

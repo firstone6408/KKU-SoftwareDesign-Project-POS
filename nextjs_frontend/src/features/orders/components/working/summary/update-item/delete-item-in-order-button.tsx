@@ -47,6 +47,11 @@ export function DeleteItemInOrderButton({
         name="order-item-id"
         defaultValue={orderItem.id}
       />
+      <input
+        type="hidden"
+        name="product-id"
+        defaultValue={orderItem.product.id}
+      />
       <input type="hidden" name="quantity" defaultValue={quantity} />
       <SubmitButton
         {...props}

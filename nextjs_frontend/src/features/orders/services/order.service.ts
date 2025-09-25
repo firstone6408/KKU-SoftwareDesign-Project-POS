@@ -13,13 +13,18 @@ import {
 import axios from "axios";
 import { API_CONFIG } from "@/configs/api.config";
 import { buildHeadersUtil } from "@/utils/http-headers.utils";
-import { getOrderIdTag, revalidateOrderCache } from "./order.cache";
+import {
+  getOrderGlobalTag,
+  getOrderIdTag,
+  revalidateOrderCache,
+} from "./order.cache";
 import z from "zod";
 import { configureCache } from "@/utils/cache.utils";
 import { IOrder, orderSchema } from "../schemas/order.schema";
 import { addItemInOrderSchema } from "../schemas/add-item-in-order.schema";
 import { deleteItemInOrderSchema } from "../schemas/delete-item-in-order.schema";
 import { saveSummaryOrderSchema } from "../schemas/save-summary-order.schema";
+import { revalidateProductCache } from "@/features/products/services/product.cache";
 
 export async function createOrder(input: ICreateOrder) {
   try {
@@ -108,6 +113,7 @@ export async function addItemInOrder(
 
     // clear cache
     revalidateOrderCache(orderId);
+    revalidateProductCache(data.productId);
   } catch (error) {
     console.error(error);
     return {
@@ -162,6 +168,7 @@ export async function deleteItemInOrder(
 
     // clear cache
     revalidateOrderCache(orderId);
+    revalidateProductCache(input.productId);
   } catch (error) {
     console.error(error);
     return {
@@ -219,6 +226,37 @@ export async function saveSummaryOrder(
     return {
       message: ACTION_CONFIG.RESPONSE.ERROR.UNKNOWN,
     };
+  }
+}
+
+export async function getOrderList(token: string): Promise<IOrder[]> {
+  "use cache";
+  configureCache({
+    life: "hours",
+    tag: getOrderGlobalTag(),
+  });
+
+  try {
+    const { result, error } = await withApiHandling(
+      axios.get(API_CONFIG.BASE_URL + "/api/orders", {
+        headers: buildHeadersUtil({ token: token }),
+      }),
+      {
+        option: {
+          validateResponse: templateValidateResponse(z.array(orderSchema)),
+        },
+      }
+    );
+
+    if (error.status === "error") {
+      console.error(error.errorMessage);
+      return [];
+    }
+
+    return result.data;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 }
 

@@ -18,6 +18,7 @@ export async function createProductAction(
 ) {
   const rawData = {
     productName: formData.get("product-name") as string,
+    productBarcode: formData.get("product-barcode") as string,
     productDescription: (() => {
       const value = formData.get("product-description") as string;
       return value.trim() !== "" ? value : null;
@@ -57,6 +58,7 @@ export async function updateProductAction(
 ) {
   const rawData = {
     productId: formData.get("product-id") as string,
+    productBarcode: formData.get("product-barcode") as string,
     productName: formData.get("product-name") as string,
     productDescription: (() => {
       const value = formData.get("product-description") as string;

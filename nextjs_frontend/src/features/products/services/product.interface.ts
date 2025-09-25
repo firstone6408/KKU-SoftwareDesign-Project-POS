@@ -1,6 +1,7 @@
 import { AdjustStockProductEnum } from "./product.enum";
 
 export interface ICreateProduct {
+  productBarcode: string;
   productName: string;
   productDescription: string | null;
   productStockLevel: number;
@@ -11,6 +12,7 @@ export interface ICreateProduct {
 }
 
 export interface IUpdateProduct {
+  productBarcode: string;
   productName: string;
   productDescription: string | null;
   categoryId: string;

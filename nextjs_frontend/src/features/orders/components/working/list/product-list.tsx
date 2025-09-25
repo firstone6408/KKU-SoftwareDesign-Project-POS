@@ -25,7 +25,7 @@ export function ProductList({ order, products }: ProductListProps) {
           setFilteredProducts={setFilteredProducts}
         />
       </div>
-      <ScrollArea className="h-[calc(100vh)] overflow-auto">
+      <ScrollArea className="h-[calc(112vh)] overflow-auto">
         <ProductListCard order={order} products={filteredProducts} />
       </ScrollArea>
     </div>

@@ -1,8 +1,6 @@
 "use client";
 
-import { BaseCard } from "@/components/shared/card/base-card";
 import { useForm } from "@/hooks/use-form";
-import { BaseCardProps } from "@/interfaces/components/card";
 import { Form } from "@/utils/form.utils";
 import { Plus } from "lucide-react";
 import { createProductAction } from "../actions/product.action";
@@ -14,18 +12,25 @@ import { SupplierSelect } from "@/features/suppliers/components/supplier-select"
 import { InputField } from "@/components/shared/field/input-field";
 import { TextareaField } from "@/components/shared/field/textarea-field";
 import { useImageUploadField } from "@/hooks/use-image-field";
+import { Modal } from "@/components/shared/modal/modal";
+import { ButtonProps } from "@/interfaces/components/button";
+import { Button } from "@/components/ui/button";
+import { useModal } from "@/hooks/use-modal";
+import { useEffect } from "react";
 
-interface ProductForm extends BaseCardProps {
+interface CreateProductButtonProps extends ButtonProps {
   categories: IProductCategory[];
   suppliers: ISupplier[];
 }
 
-export function ProductForm({
+export function CreateProductButton({
   categories,
   suppliers,
   ...props
-}: ProductForm) {
-  const { formAction, isPending, error, clearError } = useForm({
+}: CreateProductButtonProps) {
+  const modal = useModal();
+
+  const { formAction, isPending, error, clearError, state } = useForm({
     action: createProductAction,
     mode: "controlled",
   });
@@ -33,12 +38,28 @@ export function ProductForm({
   const { handleImageChange, ImageUploadField, ...upload } =
     useImageUploadField();
 
+  useEffect(() => {
+    if (state && state.status === "success") {
+      modal.setIsOpen(false);
+      state.status = "expected-error";
+    }
+  }, [modal, state]);
+
   return (
-    <BaseCard
-      headerTitleIcon={Plus}
-      headerTitle="แบบฟอร์มเพิ่มสินค้า"
-      {...props}
-      content={
+    <>
+      {/* Button */}
+      <Button {...props} onClick={() => modal.setIsOpen(true)}>
+        <Plus />
+        <span>เพิ่มสินค้า</span>
+      </Button>
+
+      {/* Modal */}
+      <Modal
+        open={modal.isOpen}
+        onOpenChange={modal.setIsOpen}
+        title="แบบฟอร์มเพิ่มสินค้า"
+        description=""
+      >
         <Form
           action={formAction}
           onChange={clearError}
@@ -78,6 +99,16 @@ export function ProductForm({
                 placeholder="กรอกชื่อสินค้า"
                 className="w-full"
                 errorMessage={error.productName}
+                required
+              />
+            </div>
+            <div className="col-span-full">
+              <InputField
+                label="Barcode"
+                name="product-barcode"
+                placeholder="กรอกรหัสบาร์โค้ด เช่น 0123456789012"
+                className="w-full"
+                errorMessage={error.productBarcode}
                 required
               />
             </div>
@@ -124,7 +155,7 @@ export function ProductForm({
             บันทึก
           </SubmitButton>
         </Form>
-      }
-    />
+      </Modal>
+    </>
   );
 }

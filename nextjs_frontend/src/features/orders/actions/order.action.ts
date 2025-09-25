@@ -68,6 +68,7 @@ export async function deleteItemInOrderAction(
 ) {
   const rawData = {
     orderId: formData.get("order-id") as string,
+    productId: formData.get("product-id") as string,
     orderItemId: formData.get("order-item-id") as string,
     quantity: Number(formData.get("quantity")),
   };

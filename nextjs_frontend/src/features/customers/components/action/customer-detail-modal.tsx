@@ -26,6 +26,12 @@ export function CustomerDetailModal({
     >
       <div className="space-y-2">
         <InputField
+          label="รหัสลูกค้า"
+          defaultValue={customer.customerCode}
+          readOnly
+          hiddenIcon
+        />
+        <InputField
           label="ชื่อ"
           defaultValue={customer.name}
           readOnly

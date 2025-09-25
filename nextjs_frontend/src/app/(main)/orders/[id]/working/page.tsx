@@ -1,5 +1,3 @@
-import { Header } from "@/components/shared/header/header";
-import { Separator } from "@/components/ui/separator";
 import { OrderSummary } from "@/features/orders/components/working/summary/order-summary";
 import { getOrderById } from "@/features/orders/services/order.service";
 import { getProductList } from "@/features/products/services/product.service";
@@ -26,13 +24,7 @@ export default async function OrderWorkingPage({
 
   return (
     <div className="main-container h-[calc(100vh-100px)]">
-      {/* Header */}
-      <Header
-        title="กำลังดำเนินการสั่งซื้อ"
-        description={`รายละเอียดคำสั่งซื้อที่กำลังดำเนินการของ "${order.customer.name}"`}
-      />
-      <Separator />
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         {/* Product List */}
         <ProductList order={order} products={products} />
 

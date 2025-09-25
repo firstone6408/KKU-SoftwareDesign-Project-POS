@@ -40,7 +40,7 @@ export function ProductListTable({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-end">ลำดับ</TableHead>
+                <TableHead>รหัสสินค้า</TableHead>
                 <TableHead className="text-center">รูป</TableHead>
                 <TableHead>ผู้จัดจำหน่าย</TableHead>
                 <TableHead>ประเภท</TableHead>
@@ -51,9 +51,9 @@ export function ProductListTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {products.map((product, index) => (
+              {products.map((product) => (
                 <TableRow key={product.id}>
-                  <TableCell className="text-end">{index + 1}</TableCell>
+                  <TableCell>{product.productCode}</TableCell>
                   <TableCell className="flex justify-center">
                     <Image
                       src={
@@ -67,8 +67,12 @@ export function ProductListTable({
                       alt={`product-image-${product.id}`}
                     />
                   </TableCell>
-                  <TableCell>{product.supplier.name}</TableCell>
-                  <TableCell>{product.category.name}</TableCell>
+                  <TableCell className="max-w-[150px] truncate">
+                    {product.supplier.name}
+                  </TableCell>
+                  <TableCell className="max-w-[150px] truncate">
+                    {product.category.name}
+                  </TableCell>
                   <TableCell>{product.name}</TableCell>
                   <TableCell className="text-end">
                     {FormatNumber.number(product.unitPrice)}

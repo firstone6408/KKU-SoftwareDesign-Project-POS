@@ -41,6 +41,7 @@ export async function createProduct(input: ICreateProduct) {
 
     // pre request body(form-data)
     const requestBody = new FormData();
+    requestBody.append("barcode", data.productBarcode);
     requestBody.append("name", data.productName);
     requestBody.append("description", data.productDescription ?? "");
     requestBody.append("unitPrice", String(data.productUnitPrice));
@@ -101,6 +102,7 @@ export async function updateProduct(
     // pre request body
     const requestBody = new FormData();
     requestBody.append("name", data.productName);
+    requestBody.append("barcode", data.productBarcode);
     requestBody.append("description", data.productDescription ?? "");
     requestBody.append("categoryId", data.categoryId);
     requestBody.append("supplierId", data.supplierId);
@@ -109,7 +111,7 @@ export async function updateProduct(
       requestBody.append("imageFile", data.productImage);
     }
 
-    console.log("requestBody", requestBody);
+    // console.log("requestBody", requestBody);
 
     // api
     const { error: responseError } = await withApiHandling(

@@ -25,7 +25,10 @@ export function OrderItemListCard({ order }: OrderItemListCardProps) {
             <CardTitle>
               {index + 1}. {item.product.name}
             </CardTitle>
-            <CardDescription>{item.product.description}</CardDescription>
+            <CardDescription>
+              <div>Barcode: {item.product.barcode}</div>
+              <div>รหัสสินค้า: {item.product.productCode}</div>
+            </CardDescription>
 
             <CardAction>
               {/* Delete All */}

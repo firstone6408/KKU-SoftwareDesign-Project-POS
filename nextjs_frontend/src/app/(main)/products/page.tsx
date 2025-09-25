@@ -1,7 +1,7 @@
 import { Header } from "@/components/shared/header/header";
 import { Separator } from "@/components/ui/separator";
 import { getProductCategoryList } from "@/features/product-categories/services/product-category.service";
-import { ProductForm } from "@/features/products/components/product-form";
+import { CreateProductButton } from "@/features/products/components/create-product-button";
 import { ProductListTable } from "@/features/products/components/product-list-table";
 import { getProductList } from "@/features/products/services/product.service";
 import { getSupplierList } from "@/features/suppliers/services/supplier.service";
@@ -24,15 +24,12 @@ export default async function ProductPage() {
       <Separator />
 
       {/* Form */}
-      <ProductForm
-        card={{
-          container: true,
-          header: true,
-          content: true,
-        }}
-        categories={categories}
-        suppliers={suppliers}
-      />
+      <div className="text-end">
+        <CreateProductButton
+          categories={categories}
+          suppliers={suppliers}
+        />
+      </div>
 
       {/* Table */}
       <ProductListTable

@@ -5,6 +5,9 @@ export const createProductSchema = z.object({
   productName: z
     .string()
     .min(2, { message: "ชื่อต้องมีอย่างน้อย 2 ตัวอักษร" }),
+  productBarcode: z
+    .string()
+    .length(13, { message: "Barcode ต้องมี 13 ตัวอักษร" }),
   productDescription: z.string().nullable(),
   productStockLevel: z
     .number()

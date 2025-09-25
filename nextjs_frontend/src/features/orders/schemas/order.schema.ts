@@ -2,6 +2,7 @@ import z from "zod";
 import { OrderStatus } from "../services/order.enum";
 import { customerSchema } from "@/features/customers/schemas/customer.schema";
 import { productSchema } from "@/features/products/schemas/product.schema";
+import { userSchema } from "@/features/users/schemas/user.schema";
 
 const saleInoviceSchema = z.object({
   id: z.string(),
@@ -25,6 +26,7 @@ const orderItemSchema = z.object({
 
 export const orderSchema = z.object({
   id: z.string(),
+  orderCode: z.string(),
   status: z.nativeEnum(OrderStatus),
   totalAmount: z.number(),
   discount: z.number(),
@@ -34,6 +36,7 @@ export const orderSchema = z.object({
   updatedAt: z.string(),
   customer: customerSchema,
   saleInovice: saleInoviceSchema.nullable(),
+  createdBy: userSchema,
   items: z.array(orderItemSchema),
 });
 

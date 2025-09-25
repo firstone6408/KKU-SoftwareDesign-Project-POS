@@ -9,6 +9,7 @@ export interface IAddItemInOrder {
 }
 
 export interface IDeleteItemInOrder {
+  productId: string;
   quantity: number;
 }
 

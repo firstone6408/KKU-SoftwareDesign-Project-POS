@@ -23,12 +23,19 @@ interface OrderSummaryProps {
 
 export function OrderSummary({ order }: OrderSummaryProps) {
   return (
-    <Card className="space-y-2 h-[calc(105vh)]">
+    <Card className="space-y-2 h-[calc(120vh)]">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-xl">
-          <ShoppingCart />
-          <span>สรุปคำสั่งซื้อ</span>
-          <Badge className="text-sm">{order.items.length}</Badge>
+        <CardTitle className="flex items-center justify-between gap-2">
+          <div>
+            <div className="flex items-center gap-2 text-xl">
+              <ShoppingCart />
+              <span>สรุปคำสั่งซื้อ</span>
+            </div>
+            <p className="text-current/50">
+              รหัสรายการ: {order.orderCode}
+            </p>
+          </div>
+          <Badge className="text-sm">จำนวน: {order.items.length}</Badge>
         </CardTitle>
       </CardHeader>
 
@@ -46,13 +53,13 @@ export function OrderSummary({ order }: OrderSummaryProps) {
         <div className="flex-none space-y-2">
           <InputField
             label="ยอดรวมทั้งหมด"
-            defaultValue={FormatNumber.number(order.totalAmount)}
+            value={FormatNumber.number(order.totalAmount)}
             readOnly
             hiddenIcon
           />
           <InputField
             label="ยอดรวมคงเหลือ"
-            defaultValue={FormatNumber.number(
+            value={FormatNumber.number(
               OrderUtil.calculate.actualRemainingAmount(order)
             )}
             readOnly
