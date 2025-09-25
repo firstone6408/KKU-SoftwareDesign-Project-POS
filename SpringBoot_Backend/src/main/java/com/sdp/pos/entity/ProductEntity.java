@@ -46,8 +46,7 @@ public class ProductEntity {
 
     @Column(name = "stock_level", nullable = false)
     private int stockLevel;
-
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "image_url")

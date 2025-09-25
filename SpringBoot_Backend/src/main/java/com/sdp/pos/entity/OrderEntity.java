@@ -52,7 +52,7 @@ public class OrderEntity {
     @Column(name = "discount", nullable = false)
     private double discount;
 
-    @Column(name = "note")
+    @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
     @CreatedDate

@@ -26,7 +26,7 @@ public class SupplierEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "contact_info")
+    @Column(name = "contact_info", columnDefinition = "TEXT")
     private String contactInfo;
 
     @OneToMany(mappedBy = "supplier")
