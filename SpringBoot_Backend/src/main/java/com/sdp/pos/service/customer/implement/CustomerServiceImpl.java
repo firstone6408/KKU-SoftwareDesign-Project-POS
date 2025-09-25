@@ -9,15 +9,18 @@ import com.sdp.pos.dto.customer.CustomerRequestDTO;
 import com.sdp.pos.dto.customer.CustomerResponseDTO;
 import com.sdp.pos.entity.CustomerEntity;
 import com.sdp.pos.repository.CustomerRepository;
+import com.sdp.pos.service.customer.contract.CustomerCodeGenerator;
 import com.sdp.pos.service.customer.contract.CustomerService;
 import com.sdp.pos.service.customer.exception.CustomerNotFoundException;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private final CustomerCodeGenerator customerCodeGenerator;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerCodeGenerator customerCodeGenerator) {
         this.customerRepository = customerRepository;
+        this.customerCodeGenerator = customerCodeGenerator;
     }
 
     @Override
@@ -49,7 +52,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public CustomerResponseDTO create(CustomerRequestDTO requestDTO) {
         // create
-        CustomerEntity customerToCreate = new CustomerEntity(requestDTO.getName(), requestDTO.getContactInfo());
+        CustomerEntity customerToCreate = new CustomerEntity(requestDTO.getName(), customerCodeGenerator.generate(),
+                requestDTO.getContactInfo());
 
         // save
         CustomerEntity created = customerRepository.save(customerToCreate);

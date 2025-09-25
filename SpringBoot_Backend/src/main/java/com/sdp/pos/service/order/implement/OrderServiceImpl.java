@@ -14,6 +14,7 @@ import com.sdp.pos.entity.CustomerEntity;
 import com.sdp.pos.entity.OrderEntity;
 import com.sdp.pos.entity.UserEntity;
 import com.sdp.pos.repository.OrderRepository;
+import com.sdp.pos.service.order.contract.OrderCodeGenerator;
 import com.sdp.pos.service.order.contract.OrderService;
 import com.sdp.pos.service.order.exception.OrderHasItemsException;
 import com.sdp.pos.service.order.exception.OrderNotFoundException;
@@ -24,17 +25,19 @@ import com.sdp.pos.service.order.validator.OrderValidator;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderValidator orderValidator;
+    private final OrderCodeGenerator orderCodeGenerator;
 
-    public OrderServiceImpl(OrderRepository orderRepository,
-            OrderValidator orderValidator) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderValidator orderValidator,
+            OrderCodeGenerator orderCodeGenerator) {
         this.orderRepository = orderRepository;
         this.orderValidator = orderValidator;
+        this.orderCodeGenerator = orderCodeGenerator;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OrderResponseDTO> getAll() {
-        List<OrderEntity> orders = orderRepository.findByOrderByOrderDateDesc();
+        List<OrderEntity> orders = orderRepository.findAllByOrderByOrderDateDesc();
         return orders.stream().map(OrderResponseDTO::fromEntity).toList();
     }
 
@@ -69,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
 
         // create order
         OrderEntity orderToCreate = new OrderEntity();
+        orderToCreate.setOrderCode(orderCodeGenerator.generate());
         orderToCreate.setStatus(OrderStatusEnum.PENDING);
         orderToCreate.setCustomer(customer);
         orderToCreate.setTotalAmount(0);

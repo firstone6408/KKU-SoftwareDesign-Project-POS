@@ -39,6 +39,9 @@ public class OrderEntity {
     @Column(name = "id")
     private String id;
 
+    @Column(name = "order_code", nullable = false, unique = true)
+    private String orderCode;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private OrderStatusEnum status;

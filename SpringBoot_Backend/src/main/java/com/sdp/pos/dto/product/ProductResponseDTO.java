@@ -12,6 +12,10 @@ import lombok.Getter;
 public class ProductResponseDTO {
     private final String id;
 
+    private final String productCode;
+
+    private final String barcode;
+
     private final String name;
 
     private final String description;
@@ -28,7 +32,8 @@ public class ProductResponseDTO {
 
     public static ProductResponseDTO fromEntity(ProductEntity product) {
 
-        return new ProductResponseDTO(product.getId(), product.getName(), product.getDescription(),
+        return new ProductResponseDTO(product.getId(), product.getProductCode(), product.getBarcode(),
+                product.getName(), product.getDescription(),
                 product.getImageUrl(),
                 product.getUnitPrice(), product.getStockLevel(),
                 ProductCategoryResponseDTO.fromEntity(product.getCategory()),

@@ -15,6 +15,10 @@ public class ProductRequestDTO {
     @Size(min = 2)
     private final String name;
 
+    @NotBlank(message = "barcode is required")
+    @Size(min = 13, max = 13)
+    private final String barcode;
+
     private final String description;
 
     private final MultipartFile imageFile;

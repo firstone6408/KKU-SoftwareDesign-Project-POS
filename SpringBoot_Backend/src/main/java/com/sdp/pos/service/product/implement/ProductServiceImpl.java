@@ -14,6 +14,7 @@ import com.sdp.pos.entity.ProductCategoryEntity;
 import com.sdp.pos.entity.ProductEntity;
 import com.sdp.pos.entity.SupplierEntity;
 import com.sdp.pos.repository.ProductRepository;
+import com.sdp.pos.service.product.contract.ProductCodeGenerator;
 import com.sdp.pos.service.product.contract.ProductService;
 import com.sdp.pos.service.product.exception.ProductNotFoundException;
 import com.sdp.pos.service.product.validator.ProductValidator;
@@ -23,12 +24,16 @@ import com.sdp.pos.util.ImageFileHandler;
 public class ProductServiceImpl implements ProductService {
         private final ProductRepository productRepository;
         private final ProductValidator productValidator;
-        private final ImageFileHandler imageFileHandler = new ImageFileHandler("products");
+        private final ProductCodeGenerator productCodeGenerator;
 
-        public ProductServiceImpl(ProductRepository productRepository, ProductValidator productValidator) {
+        public ProductServiceImpl(ProductRepository productRepository, ProductValidator productValidator,
+                        ProductCodeGenerator productCodeGenerator) {
                 this.productRepository = productRepository;
                 this.productValidator = productValidator;
+                this.productCodeGenerator = productCodeGenerator;
         }
+
+        private final ImageFileHandler imageFileHandler = new ImageFileHandler("products");
 
         @Override
         @Transactional(readOnly = true)
@@ -57,6 +62,8 @@ public class ProductServiceImpl implements ProductService {
                 // create
                 ProductEntity productToCreate = new ProductEntity();
                 productToCreate.setName(requestDTO.getName());
+                productToCreate.setProductCode(productCodeGenerator.generate());
+                productToCreate.setBarcode(requestDTO.getBarcode());
                 productToCreate.setDescription(requestDTO.getDescription());
                 productToCreate.setUnitPrice(requestDTO.getUnitPrice());
                 productToCreate.setStockLevel(requestDTO.getStockLevel());
@@ -87,6 +94,7 @@ public class ProductServiceImpl implements ProductService {
 
                 // update
                 productToUpdate.setName(requestDTO.getName());
+                productToUpdate.setBarcode(requestDTO.getBarcode());
                 productToUpdate.setDescription(requestDTO.getDescription());
                 productToUpdate.setCategory(category);
                 productToUpdate.setSupplier(supplier);

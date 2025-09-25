@@ -14,5 +14,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, String> {
     @Query("SELECT o FROM OrderEntity o WHERE o.customer.id = :customerId ORDER BY o.orderDate DESC LIMIT 1")
     OrderEntity findLastOrderByCustomerId(@Param("customerId") String customerId);
 
-    List<OrderEntity> findByOrderByOrderDateDesc();
+    List<OrderEntity> findAllByOrderByOrderDateDesc();
+
+    OrderEntity findFirstByOrderByOrderDateDesc();
 }

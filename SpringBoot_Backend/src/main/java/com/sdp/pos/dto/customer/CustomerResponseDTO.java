@@ -12,6 +12,8 @@ import lombok.Getter;
 public class CustomerResponseDTO {
     private final String id;
 
+    private final String customerCode;
+
     private final String name;
 
     private final String contactInfo;
@@ -21,7 +23,8 @@ public class CustomerResponseDTO {
     private final LocalDateTime updatedAt;
 
     public static CustomerResponseDTO fromEntitty(CustomerEntity customer) {
-        return new CustomerResponseDTO(customer.getId(), customer.getName(), customer.getContactInfo(),
+        return new CustomerResponseDTO(customer.getId(), customer.getCustomerCode(), customer.getName(),
+                customer.getContactInfo(),
                 customer.getCreatedAt(), customer.getUpdatedAt());
     }
 }

@@ -32,6 +32,12 @@ public class ProductEntity {
     @Column(name = "id")
     private String id;
 
+    @Column(name = "product_code", nullable = false, unique = true)
+    private String productCode;
+
+    @Column(name = "barcode", nullable = false, unique = true)
+    private String barcode;
+
     @Column(name = "name", nullable = false)
     private String name;
 

@@ -15,4 +15,6 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, String
     List<CustomerEntity> searchByNameOrContact(@Param("keyword") String keyword);
 
     List<CustomerEntity> findAllByOrderByCreatedAtDesc();
+
+    CustomerEntity findFirstByOrderByCreatedAtDesc();
 }

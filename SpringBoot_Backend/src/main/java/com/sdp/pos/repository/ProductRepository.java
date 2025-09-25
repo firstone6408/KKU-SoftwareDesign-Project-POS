@@ -10,4 +10,6 @@ import com.sdp.pos.entity.ProductEntity;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, String> {
     List<ProductEntity> findAllByOrderByCreatedAtDesc();
+
+    ProductEntity findFirstByOrderByCreatedAtDesc();
 }

@@ -31,6 +31,9 @@ public class CustomerEntity {
     @Column(name = "id")
     private String id;
 
+    @Column(name = "customer_code", nullable = false, unique = true)
+    private String customerCode;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -51,8 +54,9 @@ public class CustomerEntity {
     public CustomerEntity() {
     }
 
-    public CustomerEntity(String name, String contactInfo) {
+    public CustomerEntity(String name, String customerCode, String contactInfo) {
         this.name = name;
+        this.customerCode = customerCode;
         this.contactInfo = contactInfo;
     }
 }
