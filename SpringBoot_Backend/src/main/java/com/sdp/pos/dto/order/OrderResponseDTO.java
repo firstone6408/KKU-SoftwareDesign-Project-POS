@@ -24,6 +24,8 @@ public class OrderResponseDTO {
 
     private final double discount;
 
+    private final String note;
+
     private final LocalDateTime orderDate;
 
     private final LocalDateTime deliveryDate;
@@ -42,6 +44,7 @@ public class OrderResponseDTO {
                 .orElse(null);
 
         return new OrderResponseDTO(order.getId(), order.getStatus(), order.getTotalAmount(), order.getDiscount(),
+                order.getNote(),
                 order.getOrderDate(), order.getDeliveryDate(), order.getUpdateAt(),
                 CustomerResponseDTO.fromEntitty(order.getCustomer()),
                 saleInvoice,

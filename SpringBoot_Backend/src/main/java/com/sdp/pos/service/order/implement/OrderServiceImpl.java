@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sdp.pos.constant.OrderStatusEnum;
 import com.sdp.pos.dto.order.OrderCreateRequestDTO;
+import com.sdp.pos.dto.order.OrderCreateResponseDTO;
 import com.sdp.pos.dto.order.OrderResponseDTO;
 import com.sdp.pos.dto.order.OrderSaveRequestDTO;
 import com.sdp.pos.entity.CustomerEntity;
@@ -60,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void create(String userId, OrderCreateRequestDTO requestDTO) {
+    public OrderCreateResponseDTO create(String userId, OrderCreateRequestDTO requestDTO) {
         // validate user, customer and order
         UserEntity user = orderValidator.validateUser(userId);
         CustomerEntity customer = orderValidator.validateCustomer(requestDTO.getCustomerId());
@@ -68,14 +69,16 @@ public class OrderServiceImpl implements OrderService {
 
         // create order
         OrderEntity orderToCreate = new OrderEntity();
-        orderToCreate.setStatus(requestDTO.getStatus());
+        orderToCreate.setStatus(OrderStatusEnum.PENDING);
         orderToCreate.setCustomer(customer);
         orderToCreate.setTotalAmount(0);
         orderToCreate.setDiscount(0);
         orderToCreate.setCreatedBy(user);
 
         // save
-        orderRepository.save(orderToCreate);
+        OrderEntity created = orderRepository.save(orderToCreate);
+
+        return OrderCreateResponseDTO.from(created);
     }
 
     @Override

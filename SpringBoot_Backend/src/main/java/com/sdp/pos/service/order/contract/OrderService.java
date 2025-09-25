@@ -3,6 +3,7 @@ package com.sdp.pos.service.order.contract;
 import java.util.List;
 
 import com.sdp.pos.dto.order.OrderCreateRequestDTO;
+import com.sdp.pos.dto.order.OrderCreateResponseDTO;
 import com.sdp.pos.dto.order.OrderResponseDTO;
 import com.sdp.pos.dto.order.OrderSaveRequestDTO;
 
@@ -11,7 +12,7 @@ public interface OrderService {
 
     OrderResponseDTO getById(String id);
 
-    void create(String userId, OrderCreateRequestDTO requestDTO);
+    OrderCreateResponseDTO create(String userId, OrderCreateRequestDTO requestDTO);
 
     void delete(String id);
 

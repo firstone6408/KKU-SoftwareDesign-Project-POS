@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sdp.pos.dto.order.OrderCreateRequestDTO;
+import com.sdp.pos.dto.order.OrderCreateResponseDTO;
 import com.sdp.pos.dto.order.OrderResponseDTO;
 import com.sdp.pos.dto.order.OrderSaveRequestDTO;
 import com.sdp.pos.dto.order.item.OrderItemCreateRequestDTO;
@@ -55,11 +56,13 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Object>> createOrder(@Valid @RequestBody OrderCreateRequestDTO requestDTO,
+    public ResponseEntity<ApiResponse<OrderCreateResponseDTO>> createOrder(
+            @Valid @RequestBody OrderCreateRequestDTO requestDTO,
             HttpServletRequest request) {
         String userId = (String) request.getAttribute("user-id");
-        orderService.create(userId, requestDTO);
-        return ApiResponse.success(HttpStatus.CREATED, "Order created success");
+
+        return ApiResponse.success(HttpStatus.CREATED, "Order created success",
+                orderService.create(userId, requestDTO));
     }
 
     @PostMapping(value = "/{orderId}/payment", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })

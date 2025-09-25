@@ -42,7 +42,7 @@ public class OrderValidator {
 
     public OrderEntity validateOpenOrderExistsByCustomerId(String customerId) {
         OrderEntity lastOrderOpen = orderRepository.findLastOrderByCustomerId(customerId);
-        if (lastOrderOpen.getStatus().equals(OrderStatusEnum.PENDING)) {
+        if (lastOrderOpen != null && lastOrderOpen.getStatus().equals(OrderStatusEnum.PENDING)) {
             throw new OpenOrderExistsException(lastOrderOpen.getId());
         }
 
