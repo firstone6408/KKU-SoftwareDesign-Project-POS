@@ -19,4 +19,6 @@ public interface OrderService {
     void save(String orderId, OrderSaveRequestDTO requestDTO);
 
     void close(String orderId);
+
+    void cancel(String orderId);
 }

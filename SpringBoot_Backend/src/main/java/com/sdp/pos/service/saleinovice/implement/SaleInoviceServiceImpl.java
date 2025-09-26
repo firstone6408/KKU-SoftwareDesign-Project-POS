@@ -3,6 +3,7 @@ package com.sdp.pos.service.saleinovice.implement;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sdp.pos.constant.OrderStatusEnum;
 import com.sdp.pos.dto.saleinovice.PaymentRequestDTO;
 import com.sdp.pos.entity.OrderEntity;
 import com.sdp.pos.entity.SaleInoviceEntity;
@@ -31,7 +32,9 @@ public class SaleInoviceServiceImpl implements SaleInoviceService {
     @Transactional
     public void payment(String orderId, PaymentRequestDTO requestDTO) {
         // validate
+        orderValidator.validateOrderIsNotCanceled(orderId); // ยกเลิกยัง
         OrderEntity order = orderValidator.validateOrderAlreadyClosed(orderId);
+        orderValidator.validateOrderHasItems(orderId);
         orderValidator.validateDiscount(order, requestDTO.getDiscount());
 
         SaleInoviceEntity saleInovice = order.getSaleInovice() != null
@@ -39,11 +42,12 @@ public class SaleInoviceServiceImpl implements SaleInoviceService {
                 : new SaleInoviceEntity();
 
         // set
+        order.setStatus(OrderStatusEnum.PAID);
         saleInovice.setOrder(order);
         saleInovice.setPaymentMethod(requestDTO.getPaymentMethod());
         saleInovice.setPaidAmount(requestDTO.getPaidAmount());
         saleInovice.setChangeAmount(
-                Math.max(requestDTO.getPaidAmount() - order.getTotalAmount() - requestDTO.getDiscount(), 0));
+                Math.max(requestDTO.getPaidAmount() - (order.getTotalAmount() - requestDTO.getDiscount()), 0));
         saleInovice.setTotalAmount(order.getTotalAmount());
         saleInovice.setDiscount(requestDTO.getDiscount());
         saleInovice.setInoviceDate(requestDTO.getInoviceDate());
@@ -60,11 +64,32 @@ public class SaleInoviceServiceImpl implements SaleInoviceService {
         // update order if discount is not equal
         if (order.getDiscount() != requestDTO.getDiscount()) {
             order.setDiscount(requestDTO.getDiscount());
-            orderRepository.save(order);
         }
 
         // save
         saleInoviceRepository.save(saleInovice);
+        orderRepository.save(order);
+    }
+
+    @Override
+    @Transactional
+    public void deletePayment(String orderId) {
+        orderValidator.validateOrderIsNotCanceled(orderId); // ยกเลิกยัง
+        orderValidator.validateOrderAlreadyClosed(orderId);
+        OrderEntity order = orderValidator.validateOrderHasInvoice(orderId);
+        SaleInoviceEntity inoviceToDelete = order.getSaleInovice();
+
+        // delete image
+        if (inoviceToDelete.getSlipImageUrl() != null) {
+            imageFileHandler.deleteFile(inoviceToDelete.getSlipImageUrl());
+        }
+
+        // delete
+        order.setStatus(OrderStatusEnum.PENDING);
+        order.setSaleInovice(null); // ตัดความสัมพันธ์ก่อน
+        orderRepository.save(order); // save order เพื่อ update FK
+        saleInoviceRepository.delete(inoviceToDelete);
+
     }
 
 }

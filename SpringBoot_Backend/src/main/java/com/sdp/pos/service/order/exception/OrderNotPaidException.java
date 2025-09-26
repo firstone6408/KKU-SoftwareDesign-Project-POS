@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class OrderNotPaidException extends ResponseStatusException {
     public OrderNotPaidException(String orderId) {
-        super(HttpStatus.BAD_REQUEST, "Order " + orderId + " cannot be closed because payment has not been made.");
+        super(HttpStatus.BAD_REQUEST, "Order is not paid: " + orderId);
     }
 }

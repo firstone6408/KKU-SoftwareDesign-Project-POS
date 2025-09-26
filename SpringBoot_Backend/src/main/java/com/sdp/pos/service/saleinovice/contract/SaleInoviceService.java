@@ -4,4 +4,6 @@ import com.sdp.pos.dto.saleinovice.PaymentRequestDTO;
 
 public interface SaleInoviceService {
     void payment(String orderId, PaymentRequestDTO requestDTO);
+
+    void deletePayment(String orderId);
 }

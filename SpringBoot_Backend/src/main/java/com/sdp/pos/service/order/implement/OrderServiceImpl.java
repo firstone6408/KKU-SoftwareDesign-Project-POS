@@ -12,26 +12,29 @@ import com.sdp.pos.dto.order.OrderResponseDTO;
 import com.sdp.pos.dto.order.OrderSaveRequestDTO;
 import com.sdp.pos.entity.CustomerEntity;
 import com.sdp.pos.entity.OrderEntity;
+import com.sdp.pos.entity.OrderItemEntity;
+import com.sdp.pos.entity.ProductEntity;
 import com.sdp.pos.entity.UserEntity;
 import com.sdp.pos.repository.OrderRepository;
+import com.sdp.pos.repository.ProductRepository;
 import com.sdp.pos.service.order.contract.OrderCodeGenerator;
 import com.sdp.pos.service.order.contract.OrderService;
-import com.sdp.pos.service.order.exception.OrderHasItemsException;
-import com.sdp.pos.service.order.exception.OrderNotFoundException;
-import com.sdp.pos.service.order.exception.OrderNotPaidException;
 import com.sdp.pos.service.order.validator.OrderValidator;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderValidator orderValidator;
     private final OrderCodeGenerator orderCodeGenerator;
 
     public OrderServiceImpl(OrderRepository orderRepository, OrderValidator orderValidator,
-            OrderCodeGenerator orderCodeGenerator) {
+            OrderCodeGenerator orderCodeGenerator, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.orderValidator = orderValidator;
         this.orderCodeGenerator = orderCodeGenerator;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -44,8 +47,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public OrderResponseDTO getById(String id) {
-        OrderEntity order = orderRepository.findById(id)
-                .orElseThrow(() -> new OrderNotFoundException(id));
+        OrderEntity order = orderValidator.validateOrderExists(id);
 
         return OrderResponseDTO.fromEntity(order);
     }
@@ -53,12 +55,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void delete(String id) {
-        OrderEntity orderToDelete = orderRepository.findById(id)
-                .orElseThrow(() -> new OrderNotFoundException(id));
+        OrderEntity orderToDelete = orderValidator.validateOrderExists(id);
 
-        if (!orderToDelete.getItems().isEmpty()) {
-            throw new OrderHasItemsException(orderToDelete.getId());
-        }
+        orderValidator.validateOrderAlreadyClosed(id); // ปิดยัง
+        orderValidator.validateOrderIsNotPaid(id);
+        orderValidator.validateOrderDoesNotHaveInvoice(id); // มีการจ่ายไหม
+        orderValidator.validateOrderHasNoItems(id); // มีของไหม
+        orderValidator.validateOrderIsNotCanceled(id); // ยกเลิกยัง
+
         orderRepository.delete(orderToDelete);
     }
 
@@ -89,7 +93,10 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void save(String orderId, OrderSaveRequestDTO requestDTO) {
         // validate
-        OrderEntity orderToUpdate = orderValidator.validateOrderAlreadyClosed(orderId);
+        orderValidator.validateOrderAlreadyClosed(orderId); // ปิดยัง
+        orderValidator.validateOrderIsNotPaid(orderId);
+        orderValidator.validateOrderIsNotCanceled(orderId); // ยกเลิกยัง
+        OrderEntity orderToUpdate = orderValidator.validateOrderDoesNotHaveInvoice(orderId);
 
         // validate discount
         orderValidator.validateDiscount(orderToUpdate, requestDTO.getDiscount());
@@ -110,17 +117,37 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void close(String orderId) {
         // validate
-        OrderEntity orderToUpdate = orderValidator.validateOrderAlreadyClosed(orderId);
-
-        if (orderToUpdate.getSaleInovice() == null) {
-            throw new OrderNotPaidException(orderId);
-        }
+        orderValidator.validateOrderAlreadyClosed(orderId); // ปิดยัง
+        orderValidator.validateOrderIsPaid(orderId); // จ่ายยัง
+        orderValidator.validateOrderIsNotCanceled(orderId); // ยกเลิกยัง
+        OrderEntity orderToUpdate = orderValidator.validateOrderHasInvoice(orderId);
 
         // update
-        orderToUpdate.setStatus(OrderStatusEnum.PAID);
+        orderToUpdate.setStatus(OrderStatusEnum.COMPLETED);
 
         // save
         orderRepository.save(orderToUpdate);
+    }
+
+    @Override
+    @Transactional
+    public void cancel(String orderId) {
+        // validate
+        OrderEntity orderToCancel = orderValidator.validateOrderExists(orderId);
+        orderValidator.validateOrderIsNotCanceled(orderId);
+
+        // คืน stock ของแต่ละ item และ save product
+        for (OrderItemEntity item : orderToCancel.getItems()) {
+            ProductEntity productToUpdate = item.getProduct();
+            productToUpdate.increaseStock(item.getQuantity());
+            productRepository.save(productToUpdate);
+        }
+        // update status
+        orderToCancel.setStatus(OrderStatusEnum.CANCELLED);
+
+        // save
+        orderRepository.save(orderToCancel);
+
     }
 
 }

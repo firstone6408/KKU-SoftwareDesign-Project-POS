@@ -102,10 +102,23 @@ public class OrderController {
         return ApiResponse.success("Closed order success");
     }
 
+    @PutMapping("/{orderId}/cancel")
+    public ResponseEntity<ApiResponse<Object>> cancelOrder(@PathVariable String orderId) {
+        orderService.cancel(orderId);
+
+        return ApiResponse.success("Canceled order success");
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Object>> deleteOrder(@PathVariable String id) {
         orderService.delete(id);
         return ApiResponse.success("Deleted order success");
+    }
+
+    @DeleteMapping(value = "/{orderId}/payment")
+    public ResponseEntity<ApiResponse<Object>> deletePayment(@PathVariable String orderId) {
+        saleInoviceService.deletePayment(orderId);
+        return ApiResponse.success("Deleted payment success");
     }
 
 }

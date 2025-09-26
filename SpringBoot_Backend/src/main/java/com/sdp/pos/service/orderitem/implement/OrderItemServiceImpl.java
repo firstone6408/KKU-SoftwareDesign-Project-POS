@@ -39,7 +39,10 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Transactional
     public void addItem(String orderId, OrderItemCreateRequestDTO requestDTO) {
         // validate order, product
-        OrderEntity order = orderValidator.validateOrderAlreadyClosed(orderId);
+        orderValidator.validateOrderIsNotPaid(orderId);
+        orderValidator.validateOrderAlreadyClosed(orderId);
+        orderValidator.validateOrderIsNotCanceled(orderId); // ยกเลิกยัง
+        OrderEntity order = orderValidator.validateOrderDoesNotHaveInvoice(orderId);
         ProductEntity product = orderItemValidator.validateProduct(requestDTO.getProductId(), requestDTO.getQuantity());
 
         // check product in order item
@@ -81,7 +84,11 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Transactional
     public void removeItem(String orderId, String orderItemId, OrderItemRemoveRequestDTO requestDTO) {
         // validate order
-        OrderEntity order = orderValidator.validateOrderAlreadyClosed(orderId);
+        orderValidator.validateOrderIsNotPaid(orderId);
+        orderValidator.validateOrderAlreadyClosed(orderId);
+        orderValidator.validateOrderIsNotCanceled(orderId); // ยกเลิกยัง
+        OrderEntity order = orderValidator.validateOrderDoesNotHaveInvoice(orderId);
+
         if (order.getItems().size() == 0) {
             throw new EmptyOrderException(order.getId());
         }
