@@ -10,7 +10,7 @@ const kanit = Kanit({
 });
 
 export const metadata: Metadata = {
-  title: "POS",
+  title: "Point of Sale",
   description: "Software Design Project",
 };
 

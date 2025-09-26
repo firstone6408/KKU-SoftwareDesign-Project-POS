@@ -54,7 +54,7 @@ export function ProductListTable({
               {products.map((product) => (
                 <TableRow key={product.id}>
                   <TableCell>{product.productCode}</TableCell>
-                  <TableCell className="flex justify-center">
+                  <TableCell className="flex justify-center w-32">
                     <Image
                       src={
                         product.imageUrl
