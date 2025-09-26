@@ -45,14 +45,17 @@ export function OrderDetailForm({ order }: OrderDetailFormProps) {
         defaultValue={order.note || ""}
         errorMessage={error.orderNote}
       />
-      <SubmitButton
-        variant={"secondary"}
-        className="w-full"
-        icon={Save}
-        isPending={isPending}
-      >
-        บันทึก
-      </SubmitButton>
+
+      {order.items.length !== 0 && (
+        <SubmitButton
+          variant={"secondary"}
+          className="w-full"
+          icon={Save}
+          isPending={isPending}
+        >
+          บันทึก
+        </SubmitButton>
+      )}
     </Form>
   );
 }

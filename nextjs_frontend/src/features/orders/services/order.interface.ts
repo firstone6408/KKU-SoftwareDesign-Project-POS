@@ -1,3 +1,5 @@
+import { OrderPaymentMethodEnum } from "./order.enum";
+
 export interface ICreateOrder {
   customerId: string;
 }
@@ -17,4 +19,12 @@ export interface ISaveSummaryOrder {
   orderDiscount: number;
   orderDeliveryDate: string;
   orderNote: string | null;
+}
+
+export interface IPaymentOrder {
+  orderPaidAmount: number;
+  orderDiscount: number;
+  orderPaymentMethod: OrderPaymentMethodEnum;
+  orderSlipImage: File;
+  orderInoviceDate: string;
 }

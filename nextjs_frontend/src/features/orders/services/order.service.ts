@@ -4,6 +4,7 @@ import {
   IDeleteItemInOrder,
   IAddItemInOrder,
   ISaveSummaryOrder,
+  IPaymentOrder,
 } from "./order.interface";
 import { FeatureServiceUtil } from "@/utils/service.utils";
 import {
@@ -25,6 +26,8 @@ import { addItemInOrderSchema } from "../schemas/add-item-in-order.schema";
 import { deleteItemInOrderSchema } from "../schemas/delete-item-in-order.schema";
 import { saveSummaryOrderSchema } from "../schemas/save-summary-order.schema";
 import { revalidateProductCache } from "@/features/products/services/product.cache";
+import { paymentOrderSchema } from "../schemas/payment-order.schema";
+import { getProductList } from "@/features/products/services/product.service";
 
 export async function createOrder(input: ICreateOrder) {
   try {
@@ -216,6 +219,182 @@ export async function saveSummaryOrder(
       console.error(responseError.errorMessage);
       return {
         message: responseError.errorMessage,
+      };
+    }
+
+    // clear cache
+    revalidateOrderCache(orderId);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: ACTION_CONFIG.RESPONSE.ERROR.UNKNOWN,
+    };
+  }
+}
+
+export async function paymentOrder(orderId: string, input: IPaymentOrder) {
+  try {
+    // get token
+    const token = await FeatureServiceUtil.getToken();
+
+    // validate
+    const { success, error, data } = paymentOrderSchema.safeParse(input);
+
+    if (!success) {
+      return {
+        message: ACTION_CONFIG.RESPONSE.ERROR.VALIDATION,
+        error: error.flatten().fieldErrors,
+      };
+    }
+
+    // pre request body
+    const requestBody = new FormData();
+    requestBody.append("discount", data.orderDiscount.toString());
+    requestBody.append("slipImage", data.orderSlipImage);
+    requestBody.append("paidAmount", data.orderPaidAmount.toString());
+    requestBody.append("paymentMethod", data.orderPaymentMethod);
+    requestBody.append("inoviceDate", data.orderInoviceDate);
+
+    // api
+    const { error: responseError } = await withApiHandling(
+      axios.post(
+        API_CONFIG.BASE_URL + "/api/orders/" + orderId + "/payment",
+        requestBody,
+        { headers: buildHeadersUtil({ token: token }) }
+      )
+    );
+
+    if (responseError.status === "error") {
+      console.error(responseError.errorMessage);
+      return {
+        message: responseError.errorMessage,
+      };
+    }
+
+    // clear cache
+    revalidateOrderCache(orderId);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: ACTION_CONFIG.RESPONSE.ERROR.UNKNOWN,
+    };
+  }
+}
+
+export async function deletePaymentOrder(orderId: string) {
+  try {
+    // get token
+    const token = await FeatureServiceUtil.getToken();
+
+    // api
+    const { error } = await withApiHandling(
+      axios.delete(
+        API_CONFIG.BASE_URL + "/api/orders/" + orderId + "/payment",
+        {
+          headers: buildHeadersUtil({ token: token }),
+        }
+      )
+    );
+
+    if (error.status === "error") {
+      return {
+        message: error.errorMessage,
+      };
+    }
+
+    // clear cache
+    revalidateOrderCache(orderId);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: ACTION_CONFIG.RESPONSE.ERROR.UNKNOWN,
+    };
+  }
+}
+
+export async function closeOrder(orderId: string) {
+  try {
+    // get token
+    const token = await FeatureServiceUtil.getToken();
+
+    // api
+    const { error } = await withApiHandling(
+      axios.put(
+        API_CONFIG.BASE_URL + "/api/orders/" + orderId + "/close",
+        undefined,
+        {
+          headers: buildHeadersUtil({ token: token }),
+        }
+      )
+    );
+
+    if (error.status === "error") {
+      return {
+        message: error.errorMessage,
+      };
+    }
+
+    // clear cache
+    revalidateOrderCache(orderId);
+  } catch (error) {
+    console.error(error);
+    return {
+      message: ACTION_CONFIG.RESPONSE.ERROR.UNKNOWN,
+    };
+  }
+}
+
+export async function cancelOrder(orderId: string) {
+  try {
+    // get token
+    const token = await FeatureServiceUtil.getToken();
+
+    // api
+    const { error } = await withApiHandling(
+      axios.put(
+        API_CONFIG.BASE_URL + "/api/orders/" + orderId + "/cancel",
+        undefined,
+        {
+          headers: buildHeadersUtil({ token: token }),
+        }
+      )
+    );
+
+    if (error.status === "error") {
+      return {
+        message: error.errorMessage,
+      };
+    }
+
+    // clear cache
+    revalidateOrderCache(orderId);
+    const products = await getProductList(token);
+    for (const p of products) {
+      revalidateProductCache(p.id);
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      message: ACTION_CONFIG.RESPONSE.ERROR.UNKNOWN,
+    };
+  }
+}
+
+export async function deleteOrder(orderId: string) {
+  try {
+    // get token
+    const token = await FeatureServiceUtil.getToken();
+
+    // api
+    const { error } = await withApiHandling(
+      axios.delete(API_CONFIG.BASE_URL + "/api/orders/" + orderId, {
+        headers: buildHeadersUtil({ token: token }),
+      })
+    );
+
+    if (error.status === "error") {
+      return {
+        message: error.errorMessage,
       };
     }
 

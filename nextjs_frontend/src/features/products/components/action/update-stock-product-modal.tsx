@@ -61,7 +61,7 @@ export function UpdateStockProductModal({
               value: s.toString(),
             }))}
             defaultValue={AdjustStockProductEnum.INCREASE}
-            translateFn={TransaleEnumUtil.translateAdjustStockProductEnum}
+            translateFn={TransaleEnumUtil.adjustStockProduct}
             required
           />
         </LabeledControl>

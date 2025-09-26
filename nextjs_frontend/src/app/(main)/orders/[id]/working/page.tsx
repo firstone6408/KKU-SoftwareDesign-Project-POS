@@ -4,6 +4,7 @@ import { getProductList } from "@/features/products/services/product.service";
 import { AuthClient } from "@/utils/auth.utils";
 import { redirect } from "next/navigation";
 import { ProductList } from "@/features/orders/components/working/list/product-list";
+import { OrderUtil } from "@/utils/order.utils";
 
 interface OrderWorkingPageProps {
   params: Promise<{ id: string }>;
@@ -16,7 +17,7 @@ export default async function OrderWorkingPage({
   const { id } = await params;
 
   const order = await getOrderById(token, id);
-  if (!order) {
+  if (!order || OrderUtil.check.canDoWorking(order)) {
     redirect("/orders");
   }
 

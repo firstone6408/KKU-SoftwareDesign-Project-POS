@@ -14,8 +14,7 @@ import { OrderDetailForm } from "./order-detail-form";
 import { InputField } from "@/components/shared/field/input-field";
 import { FormatNumber } from "@/utils/format-number.utils";
 import { OrderUtil } from "@/utils/order.utils";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { LinkToPaymentButton } from "../../payment/link-to-payment-button";
 
 interface OrderSummaryProps {
   order: IOrder;
@@ -69,12 +68,10 @@ export function OrderSummary({ order }: OrderSummaryProps) {
         </div>
 
         {/* Payment */}
-        <Button asChild>
-          <Link href={`/orders/${order.id}/payment`}>
-            <Banknote />
-            <span>ชำระเงิน</span>
-          </Link>
-        </Button>
+        <LinkToPaymentButton order={order} asChild>
+          <Banknote />
+          <span>ชำระเงิน</span>
+        </LinkToPaymentButton>
       </CardContent>
     </Card>
   );

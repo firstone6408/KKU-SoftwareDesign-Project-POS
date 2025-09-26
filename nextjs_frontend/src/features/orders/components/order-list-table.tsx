@@ -14,6 +14,7 @@ import { dateTime } from "@/utils/dateTime.utils";
 import { OrderAction } from "./order-action";
 import { FormatNumber } from "@/utils/format-number.utils";
 import { OrderUtil } from "@/utils/order.utils";
+import { TransaleEnumUtil } from "@/utils/translate-enum.utils";
 
 interface OrderListTableProps extends BaseCardProps {
   orders: IOrder[];
@@ -50,12 +51,14 @@ export function OrderListTable({ orders, ...props }: OrderListTableProps) {
                     OrderUtil.calculate.actualRemainingAmount(order)
                   )}
                 </TableCell>
-                <TableCell>{order.status}</TableCell>
+                <TableCell>
+                  {TransaleEnumUtil.orderStatus(order.status)}
+                </TableCell>
                 <TableCell>
                   {dateTime.formatDate(new Date(order.orderDate))}
                 </TableCell>
                 <TableCell>{order.createdBy.name}</TableCell>
-                <TableCell className="text-center">
+                <TableCell className="flex justify-center">
                   <OrderAction order={order} />
                 </TableCell>
               </TableRow>
