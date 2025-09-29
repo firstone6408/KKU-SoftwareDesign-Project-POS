@@ -5,7 +5,8 @@ type CACHE_TAG =
   | "suppliers"
   | "product-categories"
   | "products"
-  | "orders";
+  | "orders"
+  | "users";
 
 export function getGlobalTag(tag: CACHE_TAG) {
   return `global:${tag}` as const;

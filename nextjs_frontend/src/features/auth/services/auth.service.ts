@@ -11,6 +11,7 @@ import z from "zod";
 import { CookieUtil } from "@/utils/cookie.utils";
 import { buildHeadersUtil } from "@/utils/http-headers.utils";
 import { IUser, userSchema } from "@/features/users/schemas/user.schema";
+import { revalidateUserCache } from "@/features/users/services/user.cache";
 
 export async function login(input: ILogin) {
   try {
@@ -51,7 +52,12 @@ export async function login(input: ILogin) {
     }
 
     // save token
-    await CookieUtil.setToken(result.data.token);
+    const token = result.data.token;
+    await CookieUtil.setToken(token);
+
+    // clear cache
+    const user = await getCurrentUser(token);
+    if (user) revalidateUserCache(user.id);
   } catch (error) {
     console.error(error);
     return {

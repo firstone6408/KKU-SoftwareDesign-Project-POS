@@ -59,6 +59,11 @@ const SIDE_BAR_LINKS: SidebarLinkType[] = [
     href: "/suppliers",
     icon: <User size={20} />,
   },
+  {
+    label: "พนักงาน",
+    href: "/users",
+    icon: <Users size={20} />,
+  },
 ];
 
 interface MainSidebarProps {

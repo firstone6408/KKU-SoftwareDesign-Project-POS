@@ -3,6 +3,7 @@ import {
   OrderStatusEnum,
 } from "@/features/orders/services/order.enum";
 import { AdjustStockProductEnum } from "@/features/products/services/product.enum";
+import { UserRoleEnum } from "@/features/users/services/user.enum";
 
 export const TransaleEnumUtil = {
   adjustStockProduct: function (value: AdjustStockProductEnum) {
@@ -39,6 +40,17 @@ export const TransaleEnumUtil = {
         return "ยกเลิก";
       case OrderStatusEnum.COMPLETED:
         return "ปิดการขาย";
+      default:
+        break;
+    }
+  },
+
+  userRole: function (value: UserRoleEnum) {
+    switch (value) {
+      case UserRoleEnum.ADMIN:
+        return "แอดมิน";
+      case UserRoleEnum.SELLER:
+        return "พนักงาน";
       default:
         break;
     }
