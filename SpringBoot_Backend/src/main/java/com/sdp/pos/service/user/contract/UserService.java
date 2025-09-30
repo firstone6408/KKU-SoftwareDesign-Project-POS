@@ -10,6 +10,8 @@ public interface UserService {
 
     UserResponseDTO getById(String userId);
 
+    UserResponseDTO getCurrentUser();
+
     UserResponseDTO update(String userId, UserRequestDTO requestDTO);
 
     void delete(String userId);

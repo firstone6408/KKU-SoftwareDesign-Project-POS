@@ -39,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/webjars/**",
 
                         // Auth APIs
-                        "/api/auth/register",
+                        "/api/auth/register/for-dev",
                         "/api/auth/login",
 
                         // Static resources

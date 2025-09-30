@@ -9,10 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sdp.pos.dto.auth.LoginRequestDTO;
 import com.sdp.pos.dto.auth.LoginResponseDTO;
 import com.sdp.pos.dto.user.UserRequestDTO;
+import com.sdp.pos.dto.user.UserResponseDTO;
 import com.sdp.pos.entity.UserEntity;
 import com.sdp.pos.repository.UserRepository;
 import com.sdp.pos.service.auth.contract.AuthService;
 import com.sdp.pos.service.auth.exception.InvalidCredentialsException;
+import com.sdp.pos.service.auth.exception.InvalidPasswordException;
 import com.sdp.pos.service.auth.exception.UserAlreadyExistsException;
 import com.sdp.pos.util.JwtUtil;
 
@@ -31,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public void register(UserRequestDTO requestDTO) {
+    public UserResponseDTO register(UserRequestDTO requestDTO) {
         // check user is exists
         UserEntity existinUser = userRepository.findByEmail(requestDTO.getEmail());
         if (existinUser != null) {
@@ -39,6 +41,9 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // hash password
+        if (requestDTO.getPassword() == null) {
+            throw new InvalidPasswordException(null);
+        }
         String hashedPassword = passwordEncoder.encode(requestDTO.getPassword());
 
         // create instance
@@ -49,7 +54,9 @@ public class AuthServiceImpl implements AuthService {
         userToCreate.setPassword(hashedPassword);
 
         // save
-        userRepository.save(userToCreate);
+        UserEntity created = userRepository.save(userToCreate);
+
+        return UserResponseDTO.fromEntity(created);
     }
 
     @Override
