@@ -10,6 +10,7 @@ import {
   FolderTree,
   LayoutDashboard,
   LogOut,
+  ShieldPlus,
   ShoppingCart,
   User,
   Users,
@@ -21,6 +22,7 @@ import { usePathname } from "next/navigation";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { IUser } from "@/features/users/schemas/user.schema";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { UserRoleEnum } from "@/features/users/services/user.enum";
 
 interface SidebarLinkType {
   label: string;
@@ -44,6 +46,9 @@ const SIDE_BAR_LINKS: SidebarLinkType[] = [
     href: "/customers",
     icon: <Users size={20} />,
   },
+];
+
+const ADMIN_SIDE_BAR_LINK: SidebarLinkType[] = [
   {
     label: "ประเภทสินค้า",
     href: "/categories",
@@ -157,6 +162,24 @@ export default function MainSidebar({ user }: MainSidebarProps) {
                     onClose={() => toggleSidebar()}
                   />
                 ))}
+                {user.role === UserRoleEnum.ADMIN && (
+                  <>
+                    <h4 className="text-sm text-muted-foreground flex items-center gap-1">
+                      <ShieldPlus size={14} />
+                      <span>ผู้ดูแลระบบ</span>
+                    </h4>
+                    {ADMIN_SIDE_BAR_LINK.map((sidebarLink, index) => (
+                      <SidebarLink
+                        key={index}
+                        label={sidebarLink.label}
+                        href={sidebarLink.href}
+                        icon={sidebarLink.icon}
+                        isActive={pathname === sidebarLink.href}
+                        onClose={() => toggleSidebar()}
+                      />
+                    ))}
+                  </>
+                )}
               </nav>
             </div>
           </ScrollArea>
