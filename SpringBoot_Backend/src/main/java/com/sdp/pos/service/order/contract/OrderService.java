@@ -12,7 +12,7 @@ public interface OrderService {
 
     OrderResponseDTO getById(String id);
 
-    OrderCreateResponseDTO create(String userId, OrderCreateRequestDTO requestDTO);
+    OrderCreateResponseDTO create(OrderCreateRequestDTO requestDTO);
 
     void delete(String id);
 

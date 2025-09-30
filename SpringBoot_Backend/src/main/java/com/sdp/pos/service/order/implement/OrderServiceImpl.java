@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sdp.pos.constant.OrderStatusEnum;
+import com.sdp.pos.context.user.UserContextProvider;
 import com.sdp.pos.dto.order.OrderCreateRequestDTO;
 import com.sdp.pos.dto.order.OrderCreateResponseDTO;
 import com.sdp.pos.dto.order.OrderResponseDTO;
@@ -28,13 +29,16 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderValidator orderValidator;
     private final OrderCodeGenerator orderCodeGenerator;
+    private final UserContextProvider userContextProvider;
 
     public OrderServiceImpl(OrderRepository orderRepository, OrderValidator orderValidator,
-            OrderCodeGenerator orderCodeGenerator, ProductRepository productRepository) {
+            OrderCodeGenerator orderCodeGenerator, ProductRepository productRepository,
+            UserContextProvider userContextProvider) {
         this.orderRepository = orderRepository;
         this.orderValidator = orderValidator;
         this.orderCodeGenerator = orderCodeGenerator;
         this.productRepository = productRepository;
+        this.userContextProvider = userContextProvider;
     }
 
     @Override
@@ -68,7 +72,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderCreateResponseDTO create(String userId, OrderCreateRequestDTO requestDTO) {
+    public OrderCreateResponseDTO create(OrderCreateRequestDTO requestDTO) {
+        String userId = userContextProvider.getCurrentUser().getId();
+
         // validate user, customer and order
         UserEntity user = orderValidator.validateUser(userId);
         CustomerEntity customer = orderValidator.validateCustomer(requestDTO.getCustomerId());
