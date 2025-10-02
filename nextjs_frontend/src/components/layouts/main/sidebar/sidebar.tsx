@@ -23,6 +23,7 @@ import { LogoutButton } from "@/features/auth/components/logout-button";
 import { IUser } from "@/features/users/schemas/user.schema";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { UserRoleEnum } from "@/features/users/services/user.enum";
+import { AppLogo } from "../app-logo";
 
 interface SidebarLinkType {
   label: string;
@@ -104,11 +105,8 @@ export default function MainSidebar({ user }: MainSidebarProps) {
         {/* Header */}
         <div className="flex items-center justify-between h-16 px-4 border-b bg-log">
           {/* Logo */}
-          <Link href={"/"} className="flex items-center gap-2">
-            <div className="bg-primary p-1 rounded-md">
-              <span className="text-secondary font-bold">KKU</span>
-            </div>
-            <span className="text-xl font-bold">Point of sale</span>
+          <Link href={"/"}>
+            <AppLogo />
           </Link>
 
           {/* Toggle Sidebar Button */}

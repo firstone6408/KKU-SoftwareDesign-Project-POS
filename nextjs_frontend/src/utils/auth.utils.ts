@@ -25,13 +25,19 @@ export class AuthClient {
   public async getAuthenticatedUser(
     from: "layout" | "page" = "page"
   ): Promise<IAuthenticatedUser> {
+    const token = await CookieUtil.getToken();
+    if (!token) redirect("/auth/sign-in");
+
+    // ถ้า token เปลี่ยน ก็ล้าง cache
+    if (token !== this.cachedToken) {
+      this.cachedUser = null;
+      this.cachedToken = null;
+    }
+
     // ใช้ cache ถ้ามี
     if (this.cachedUser && this.cachedToken && from === "page") {
       return { user: this.cachedUser, token: this.cachedToken };
     }
-
-    const token = await CookieUtil.getToken();
-    if (!token) redirect("/auth/sign-in");
 
     const user = await getCurrentUser(token);
     if (!user) {

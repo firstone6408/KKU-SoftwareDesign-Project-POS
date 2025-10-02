@@ -14,7 +14,7 @@ import { dateTime } from "@/utils/dateTime.utils";
 import { OrderAction } from "./order-action";
 import { FormatNumber } from "@/utils/format-number.utils";
 import { OrderUtil } from "@/utils/order.utils";
-import { TransaleEnumUtil } from "@/utils/translate-enum.utils";
+import { OrderStatusBadge } from "./order-status-bagde";
 
 interface OrderListTableProps extends BaseCardProps {
   orders: IOrder[];
@@ -52,7 +52,7 @@ export function OrderListTable({ orders, ...props }: OrderListTableProps) {
                   )}
                 </TableCell>
                 <TableCell>
-                  {TransaleEnumUtil.orderStatus(order.status)}
+                  <OrderStatusBadge order={order} />
                 </TableCell>
                 <TableCell>
                   {dateTime.formatDate(new Date(order.orderDate))}

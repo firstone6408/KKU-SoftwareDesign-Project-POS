@@ -6,6 +6,7 @@ import { OrderUtil } from "@/utils/order.utils";
 
 interface LinkToPaymentButtonProps extends ButtonProps {
   order: IOrder;
+  children: React.ReactNode;
 }
 
 export function LinkToPaymentButton({

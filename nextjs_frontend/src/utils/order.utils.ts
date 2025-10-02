@@ -17,6 +17,12 @@ export const OrderUtil = {
       const remaining = order.totalAmount - (order.discount || 0);
       return remaining > 0 ? remaining : 0;
     },
+
+    totalQuantity: function (order: IOrder) {
+      return order.items.reduce((total, item) => {
+        return total + item.quantity;
+      }, 0);
+    },
   },
   check: {
     isClosed: function (order: IOrder) {

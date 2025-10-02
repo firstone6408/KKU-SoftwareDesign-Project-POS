@@ -4,21 +4,27 @@ import { getCustomerList } from "@/features/customers/services/customer.service"
 import { CreateOrderButton } from "@/features/orders/components/create/create-order-button";
 import { OrderListTable } from "@/features/orders/components/order-list-table";
 import { getOrderList } from "@/features/orders/services/order.service";
+import { UserRoleEnum } from "@/features/users/services/user.enum";
 import { AuthClient } from "@/utils/auth.utils";
 import { Plus } from "lucide-react";
 
 export default async function OrderPage() {
-  const { token } = await AuthClient.getInstance().getAuthenticatedUser();
+  const { token, user } =
+    await AuthClient.getInstance().getAuthenticatedUser();
 
   const customers = await getCustomerList(token);
-  const orders = await getOrderList(token);
+  let orders = await getOrderList(token);
+
+  if (user.role !== UserRoleEnum.ADMIN) {
+    orders = orders.filter((order) => order.createdBy.id === user.id);
+  }
 
   return (
     <div className="main-container">
       {/* Header */}
       <Header
-        title="รายการคำสั่งซื้อ"
-        description="รายการคำสั่งซื้อทั้งหมดของระบบ"
+        title="รายการสั่งซื้อ"
+        description="สำหรับการเพิ่ม ลบ แก้ไข เกี่ยวกับคำสั่งซื้อ"
       />
       <Separator />
 

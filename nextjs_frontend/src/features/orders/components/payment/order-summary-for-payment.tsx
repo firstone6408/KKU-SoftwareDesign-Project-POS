@@ -7,16 +7,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { IOrder } from "../../schemas/order.schema";
-import { PanelRightClose, Printer, Trash, User } from "lucide-react";
+import { PanelRightClose, Trash, User } from "lucide-react";
 import { FormatNumber } from "@/utils/format-number.utils";
 import { OrderUtil } from "@/utils/order.utils";
 import { Separator } from "@/components/ui/separator";
 import React from "react";
 import { dateTime } from "@/utils/dateTime.utils";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { DeletePaymentButton } from "./delete-payment-button";
 import { CloseOrderButton } from "../close-order-button";
+import { LinktoReceiptButton } from "../receipt/link-to-receipt-button";
 
 interface OrderSummaryForPaymentProps {
   order: IOrder;
@@ -144,12 +143,13 @@ export function OrderSummaryForPayment({
                 <span>บาท</span>
               </div>
             </div>
-            <Button asChild className="w-full" variant={"outline"}>
-              <Link href={"#"}>
-                <Printer />
-                <span>Print Receipt</span>
-              </Link>
-            </Button>
+            <LinktoReceiptButton
+              order={order}
+              className="w-full"
+              variant={"outline"}
+            >
+              พิมพ์ใบเสร็จ
+            </LinktoReceiptButton>
 
             {!orderIsClosed && (
               <div className="grid grid-cols-2 gap-2">
