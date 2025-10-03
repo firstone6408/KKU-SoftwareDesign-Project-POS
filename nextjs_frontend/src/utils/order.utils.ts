@@ -42,4 +42,112 @@ export const OrderUtil = {
       return this.isClosed(order) || this.isCanceled(order);
     },
   },
+  aggregate: {
+    // filter เฉพาะ order ที่ completed
+    completedOrders: function (orders: IOrder[]) {
+      return orders.filter((o) => o.status === OrderStatusEnum.COMPLETED);
+    },
+    // ยอดขายรายวัน
+    salesByDay: function (orders: IOrder[], targetDate?: string) {
+      const completed = this.completedOrders(orders);
+      const target = targetDate ? new Date(targetDate) : new Date();
+
+      return completed
+        .filter((o) => {
+          const d = new Date(o.orderDate);
+          return (
+            d.getFullYear() === target.getFullYear() &&
+            d.getMonth() === target.getMonth() &&
+            d.getDate() === target.getDate()
+          );
+        })
+        .reduce((sum, o) => sum + (o.totalAmount - o.discount), 0);
+    },
+
+    // ยอดขายรายเดือน
+    salesByMonth: function (orders: IOrder[], targetDate?: string) {
+      const completed = this.completedOrders(orders);
+      const target = targetDate ? new Date(targetDate) : new Date();
+
+      return completed
+        .filter((o) => {
+          const d = new Date(o.orderDate);
+          return (
+            d.getFullYear() === target.getFullYear() &&
+            d.getMonth() === target.getMonth()
+          );
+        })
+        .reduce((sum, o) => sum + (o.totalAmount - o.discount), 0);
+    },
+
+    // ยอดขายรายปี
+    salesByYear: function (orders: IOrder[], targetDate?: string) {
+      const completed = this.completedOrders(orders);
+      const target = targetDate ? new Date(targetDate) : new Date();
+
+      return completed
+        .filter((o) => {
+          const d = new Date(o.orderDate);
+          return d.getFullYear() === target.getFullYear();
+        })
+        .reduce((sum, o) => sum + (o.totalAmount - o.discount), 0);
+    },
+
+    // ยอดขายรายบุคคล (ตาม customer)
+    salesByCustomer: function (orders: IOrder[]) {
+      const completed = this.completedOrders(orders);
+      const result: Record<string, number> = {};
+      completed.forEach((o) => {
+        const key = o.customer.name;
+        result[key] = (result[key] || 0) + (o.totalAmount - o.discount);
+      });
+      return result;
+    },
+
+    // ลูกค้าที่มาบ่อยสุด (นับจำนวน order)
+    frequentCustomers: function (orders: IOrder[]) {
+      const completed = this.completedOrders(orders);
+      const result: Record<string, number> = {};
+      completed.forEach((o) => {
+        const key = o.customer.name;
+        result[key] = (result[key] || 0) + 1;
+      });
+      return result;
+    },
+
+    // สินค้าขายดี (นับจาก quantity)
+    bestSellingProducts: function (orders: IOrder[]) {
+      const completed = this.completedOrders(orders);
+      const result: Record<string, number> = {};
+      completed.forEach((o) => {
+        o.items.forEach((item) => {
+          const key = `${item.product.supplier.name} ${item.product.name}`;
+          result[key] = (result[key] || 0) + item.quantity;
+        });
+      });
+      return result;
+    },
+
+    // ยอดขายรายพนักงาน
+    salesByEmployee: function (orders: IOrder[]) {
+      const completed = this.completedOrders(orders);
+      const result: Record<string, number> = {};
+      completed.forEach((o) => {
+        const key = o.createdBy.name; // ใช้ชื่อพนักงาน
+        result[key] = (result[key] || 0) + (o.totalAmount - o.discount);
+      });
+      return result;
+    },
+
+    // ลูกพนักงานทำยอดเยอะสุด (นับจำนวน order)
+    frequentEmployees: function (orders: IOrder[]) {
+      const completed = this.completedOrders(orders);
+      const result: Record<string, number> = {};
+      completed.forEach((o) => {
+        const key = o.createdBy.name;
+        result[key] = (result[key] || 0) + 1;
+      });
+      return result;
+    },
+  },
 };
