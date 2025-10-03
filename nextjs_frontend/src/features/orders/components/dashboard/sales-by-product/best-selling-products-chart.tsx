@@ -1,7 +1,7 @@
 "use client";
 
+import { IOrder } from "@/features/orders/schemas/order.schema";
 import { OrderUtil } from "@/utils/order.utils";
-import { IOrder } from "../../schemas/order.schema";
 import {
   Bar,
   BarChart,
