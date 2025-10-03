@@ -1,7 +1,6 @@
 import { Header } from "@/components/shared/header/header";
 import { Separator } from "@/components/ui/separator";
-import { ProductCategoryForm } from "@/features/product-categories/components/product-category-form";
-import { ProductCategoryListTable } from "@/features/product-categories/components/product-category-list-table";
+import { ProductCategoryContainer } from "@/features/product-categories/components/product-category-container";
 import { getProductCategoryList } from "@/features/product-categories/services/product-category.service";
 import { AuthClient } from "@/utils/auth.utils";
 
@@ -16,21 +15,7 @@ export default async function ProductCategoryPage() {
         description="สำหรับการเพิ่ม ลบ แก้ไข เกี่ยวกับประเภทสินค้า"
       />
       <Separator />
-      <ProductCategoryForm
-        card={{
-          container: true,
-          header: true,
-          content: true,
-        }}
-      />
-      <ProductCategoryListTable
-        card={{
-          container: true,
-          header: true,
-          content: true,
-        }}
-        productCategories={categories}
-      />
+      <ProductCategoryContainer categories={categories} />
     </div>
   );
 }

@@ -34,7 +34,7 @@ export function OrderListTable({ orders, ...props }: OrderListTableProps) {
               <TableHead>รหัส</TableHead>
               <TableHead>ชื่อลูกค้า</TableHead>
               <TableHead className="text-end">ยอดคงเหลือ</TableHead>
-              <TableHead>สถาณะ</TableHead>
+              <TableHead>สถานะ</TableHead>
               <TableHead>วันที่สร้าง</TableHead>
               <TableHead>สร้างโดย</TableHead>
               <TableHead className="text-center">Action</TableHead>

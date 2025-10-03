@@ -27,7 +27,7 @@ export const TransaleEnumUtil = {
       case OrderPaymentMethodEnum.E_WALLET:
         return "E-Wallet";
       default:
-        break;
+        return value;
     }
   },
   orderStatus: function (value: OrderStatusEnum) {
@@ -41,7 +41,7 @@ export const TransaleEnumUtil = {
       case OrderStatusEnum.COMPLETED:
         return "ปิดการขาย";
       default:
-        break;
+        return value;
     }
   },
 
@@ -52,7 +52,7 @@ export const TransaleEnumUtil = {
       case UserRoleEnum.SELLER:
         return "พนักงาน";
       default:
-        break;
+        return value;
     }
   },
 };

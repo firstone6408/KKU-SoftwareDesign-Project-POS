@@ -1,26 +1,45 @@
 "use client";
 
 import { useForm } from "@/hooks/use-form";
-import { createCustomerAction } from "../actions/customer.action";
+import { createCustomerAction } from "../../actions/customer.action";
 import { SubmitButton } from "@/components/shared/button/submit-button";
 import { Plus } from "lucide-react";
 import { InputField } from "@/components/shared/field/input-field";
 import { Form } from "@/utils/form.utils";
-import { BaseCardProps } from "@/interfaces/components/card";
-import { BaseCard } from "@/components/shared/card/base-card";
 import { TextareaField } from "@/components/shared/field/textarea-field";
+import { ButtonProps } from "@/interfaces/components/button";
+import { Modal } from "@/components/shared/modal/modal";
+import { useModal } from "@/hooks/use-modal";
+import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
-export function CustomerForm({ ...props }: BaseCardProps) {
-  const { formAction, isPending, error, clearError } = useForm({
+export function CreateCustomerButton({ ...props }: ButtonProps) {
+  const modal = useModal();
+  const { formAction, isPending, error, clearError, state } = useForm({
     action: createCustomerAction,
   });
 
+  useEffect(() => {
+    if (state && state.status === "success") {
+      if (modal.isOpen) {
+        modal.setIsOpen(false);
+        state.status = "expected-error";
+      }
+    }
+  }, [modal, state]);
+
   return (
-    <BaseCard
-      headerTitleIcon={Plus}
-      headerTitle="แบบฟอร์มเพิ่มลูกค้า"
-      {...props}
-      content={
+    <>
+      {/* Button */}
+      <Button {...props} onClick={() => modal.openModal(undefined)} />
+
+      {/* Modal */}
+      <Modal
+        open={modal.isOpen}
+        onOpenChange={modal.setIsOpen}
+        title="เพิ่มลูกค้า"
+        description="กรุณากรอกข้อมูลเพื่อเพิ่มลูกค้า"
+      >
         <Form
           action={formAction}
           className="space-y-3"
@@ -49,7 +68,7 @@ export function CustomerForm({ ...props }: BaseCardProps) {
             บันทึก
           </SubmitButton>
         </Form>
-      }
-    />
+      </Modal>
+    </>
   );
 }

@@ -1,7 +1,6 @@
 import { Header } from "@/components/shared/header/header";
 import { Separator } from "@/components/ui/separator";
-import { SupplierForm } from "@/features/suppliers/components/supplier-form";
-import { SupplierListTable } from "@/features/suppliers/components/supplier-list-table";
+import { SupplierContainer } from "@/features/suppliers/components/supplier-container";
 import { getSupplierList } from "@/features/suppliers/services/supplier.service";
 import { AuthClient } from "@/utils/auth.utils";
 
@@ -17,27 +16,7 @@ export default async function SupplierPage() {
         description="สำหรับการเพิ่ม ลบ แก้ไข เกี่ยวกับผู้จัดจำหน่าย"
       />
       <Separator />
-
-      {/* Form */}
-      <SupplierForm
-        card={{
-          container: true,
-          header: true,
-          content: true,
-          footer: false,
-        }}
-      />
-
-      {/* Table */}
-      <SupplierListTable
-        card={{
-          container: true,
-          header: true,
-          content: true,
-          footer: false,
-        }}
-        suppliers={suppliers}
-      />
+      <SupplierContainer suppliers={suppliers} />
     </div>
   );
 }

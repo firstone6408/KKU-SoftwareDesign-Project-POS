@@ -3,7 +3,7 @@
 import { useForm } from "@/hooks/use-form";
 import { Form } from "@/utils/form.utils";
 import { Plus } from "lucide-react";
-import { createProductAction } from "../actions/product.action";
+import { createProductAction } from "../../actions/product.action";
 import { SubmitButton } from "@/components/shared/button/submit-button";
 import { IProductCategory } from "@/features/product-categories/schemas/product-category.schema";
 import { ISupplier } from "@/features/suppliers/schemas/supplier.schema";

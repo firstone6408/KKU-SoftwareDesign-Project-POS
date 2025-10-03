@@ -13,6 +13,7 @@ import {
 import { UserAction } from "./action/user-action";
 import { TransaleEnumUtil } from "@/utils/translate-enum.utils";
 import { dateTime } from "@/utils/dateTime.utils";
+import { EmptyTableRow } from "@/components/shared/table/empty-table-row";
 
 interface UserListTableProps extends BaseCardProps {
   users: IUser[];
@@ -39,24 +40,28 @@ export function UserListTable({ users, ...props }: UserListTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.map((user, index) => (
-              <TableRow key={user.id}>
-                <TableCell className="text-end">{index + 1}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell className="text-center">
-                  {TransaleEnumUtil.userRole(user.role)}
-                </TableCell>
-                <TableCell className="text-center">
-                  {user.lastLoginAt
-                    ? dateTime.formatDate(new Date(user.lastLoginAt))
-                    : "ยังไม่ได้เข้าสู่ระบบ"}
-                </TableCell>
-                <TableCell>
-                  <UserAction user={user} />
-                </TableCell>
-              </TableRow>
-            ))}
+            {users.length > 0 ? (
+              users.map((user, index) => (
+                <TableRow key={user.id}>
+                  <TableCell className="text-end">{index + 1}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell className="text-center">
+                    {TransaleEnumUtil.userRole(user.role)}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {user.lastLoginAt
+                      ? dateTime.formatDate(new Date(user.lastLoginAt))
+                      : "ยังไม่ได้เข้าสู่ระบบ"}
+                  </TableCell>
+                  <TableCell>
+                    <UserAction user={user} />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <EmptyTableRow />
+            )}
           </TableBody>
         </Table>
       }
