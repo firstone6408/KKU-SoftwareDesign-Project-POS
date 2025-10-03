@@ -36,7 +36,7 @@ export function AddItemInOrderButton({
       <input
         type="hidden"
         name="product-unit-price"
-        defaultValue={orderItem.product.unitPrice}
+        defaultValue={orderItem.unitPrice}
       />
       <input type="hidden" name="quantity" defaultValue={1} />
       <SubmitButton {...props} isPending={isPending} />
