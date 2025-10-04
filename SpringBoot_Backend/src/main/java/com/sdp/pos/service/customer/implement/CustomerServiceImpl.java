@@ -11,16 +11,19 @@ import com.sdp.pos.entity.CustomerEntity;
 import com.sdp.pos.repository.CustomerRepository;
 import com.sdp.pos.service.customer.contract.CustomerCodeGenerator;
 import com.sdp.pos.service.customer.contract.CustomerService;
-import com.sdp.pos.service.customer.exception.CustomerNotFoundException;
+import com.sdp.pos.service.customer.validator.CustomerValidator;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerCodeGenerator customerCodeGenerator;
+    private final CustomerValidator customerValidator;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerCodeGenerator customerCodeGenerator) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerCodeGenerator customerCodeGenerator,
+            CustomerValidator customerValidator) {
         this.customerRepository = customerRepository;
         this.customerCodeGenerator = customerCodeGenerator;
+        this.customerValidator = customerValidator;
     }
 
     @Override
@@ -34,8 +37,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional(readOnly = true)
     public CustomerResponseDTO getById(String id) {
-        CustomerEntity customer = customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException(id));
+        // validate
+        CustomerEntity customer = customerValidator.validateCustomerExists(id);
 
         return CustomerResponseDTO.fromEntitty(customer);
     }
@@ -65,8 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public CustomerResponseDTO update(String id, CustomerRequestDTO requestDTO) {
         // check customer
-        CustomerEntity customerToUpdate = customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException(id));
+        CustomerEntity customerToUpdate = customerValidator.validateCustomerExists(id);
 
         // update
         customerToUpdate.setName(requestDTO.getName());
@@ -82,8 +84,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public void delete(String id) {
         // check customer
-        CustomerEntity customerToDelete = customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException(id));
+        CustomerEntity customerToDelete = customerValidator.validateCustomerExists(id);
 
         // delete
         customerRepository.delete(customerToDelete);

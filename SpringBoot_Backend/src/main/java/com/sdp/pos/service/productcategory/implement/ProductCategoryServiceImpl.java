@@ -12,17 +12,19 @@ import com.sdp.pos.entity.ProductCategoryEntity;
 import com.sdp.pos.repository.ProductCategoryRepository;
 import com.sdp.pos.service.auth.contract.AuthorizationService;
 import com.sdp.pos.service.productcategory.contract.ProductCategoryService;
-import com.sdp.pos.service.productcategory.exception.CategoryNotFoundException;
+import com.sdp.pos.service.productcategory.validator.ProductCategoryValidator;
 
 @Service
 public class ProductCategoryServiceImpl implements ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
     private final AuthorizationService authorizationService;
+    private final ProductCategoryValidator productCategoryValidator;
 
     public ProductCategoryServiceImpl(ProductCategoryRepository productCategoryRepository,
-            AuthorizationService authorizationService) {
+            AuthorizationService authorizationService, ProductCategoryValidator productCategoryValidator) {
         this.productCategoryRepository = productCategoryRepository;
         this.authorizationService = authorizationService;
+        this.productCategoryValidator = productCategoryValidator;
     }
 
     @Override
@@ -41,8 +43,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         // check permission
         authorizationService.checkPermission(PermissionEnum.PRODUCT_CATEGORY_VIEW);
 
-        ProductCategoryEntity category = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
+        ProductCategoryEntity category = productCategoryValidator.validateCategoryExists(id);
         return ProductCategoryResponseDTO.fromEntity(category);
     }
 
@@ -64,8 +65,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         authorizationService.checkPermission(PermissionEnum.PRODUCT_CATEGORY_UPDATE);
 
         // check category
-        ProductCategoryEntity categoryToUpdate = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
+        ProductCategoryEntity categoryToUpdate = productCategoryValidator.validateCategoryExists(id);
 
         // update
         categoryToUpdate.setName(requestDTO.getName());
@@ -83,8 +83,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         authorizationService.checkPermission(PermissionEnum.PRODUCT_CATEGORY_DELETE);
 
         // check category
-        ProductCategoryEntity categoryToDelete = productCategoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
+        ProductCategoryEntity categoryToDelete = productCategoryValidator.validateCategoryExists(id);
 
         // delete
         productCategoryRepository.delete(categoryToDelete);

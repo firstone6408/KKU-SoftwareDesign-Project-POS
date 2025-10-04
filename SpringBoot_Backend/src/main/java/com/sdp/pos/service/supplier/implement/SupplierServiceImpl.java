@@ -12,15 +12,18 @@ import com.sdp.pos.entity.SupplierEntity;
 import com.sdp.pos.repository.SupplierRepository;
 import com.sdp.pos.service.auth.contract.AuthorizationService;
 import com.sdp.pos.service.supplier.contract.SupplierService;
-import com.sdp.pos.service.supplier.exception.SupplierNotFoundException;
+import com.sdp.pos.service.supplier.validator.SupplierValidator;
 
 @Service
 public class SupplierServiceImpl implements SupplierService {
     public final SupplierRepository supplierRepository;
+    private final SupplierValidator supplierValidator;
     private final AuthorizationService authorizationService;
 
-    public SupplierServiceImpl(SupplierRepository supplierRepository, AuthorizationService authorizationService) {
+    public SupplierServiceImpl(SupplierRepository supplierRepository, AuthorizationService authorizationService,
+            SupplierValidator supplierValidator) {
         this.supplierRepository = supplierRepository;
+        this.supplierValidator = supplierValidator;
         this.authorizationService = authorizationService;
     }
 
@@ -41,8 +44,7 @@ public class SupplierServiceImpl implements SupplierService {
         // check permission
         authorizationService.checkPermission(PermissionEnum.SUPPLIER_VIEW);
 
-        SupplierEntity supplier = supplierRepository.findById(id)
-                .orElseThrow(() -> new SupplierNotFoundException(id));
+        SupplierEntity supplier = supplierValidator.validateSupplierExists(id);
 
         return SupplierResponseDTO.fromEntity(supplier);
     }
@@ -66,8 +68,7 @@ public class SupplierServiceImpl implements SupplierService {
         authorizationService.checkPermission(PermissionEnum.SUPPLIER_UPDATE);
 
         // check supplier
-        SupplierEntity supplierToUpdate = supplierRepository.findById(id)
-                .orElseThrow(() -> new SupplierNotFoundException(id));
+        SupplierEntity supplierToUpdate = supplierValidator.validateSupplierExists(id);
 
         // update
         supplierToUpdate.setName(requestDTO.getName());
@@ -87,8 +88,7 @@ public class SupplierServiceImpl implements SupplierService {
         authorizationService.checkPermission(PermissionEnum.SUPPLIER_DELETE);
 
         // check supplier
-        SupplierEntity supplierToDelete = supplierRepository.findById(id)
-                .orElseThrow(() -> new SupplierNotFoundException(id));
+        SupplierEntity supplierToDelete = supplierValidator.validateSupplierExists(id);
 
         // delete
         supplierRepository.delete(supplierToDelete);

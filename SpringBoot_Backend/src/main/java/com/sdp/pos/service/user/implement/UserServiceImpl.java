@@ -14,19 +14,22 @@ import com.sdp.pos.entity.UserEntity;
 import com.sdp.pos.repository.UserRepository;
 import com.sdp.pos.service.auth.contract.AuthorizationService;
 import com.sdp.pos.service.user.contract.UserService;
-import com.sdp.pos.service.user.exception.UserNotFoundException;
+import com.sdp.pos.service.user.validator.UserValidator;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserValidator userValidator;
     private final PasswordEncoder passwordEncoder;
     private final UserContextProvider userContextProvider;
     private final AuthorizationService authorizationService;
 
     UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            UserContextProvider userContextProvider, AuthorizationService authorizationService) {
+            UserContextProvider userContextProvider, AuthorizationService authorizationService,
+            UserValidator userValidator) {
         this.userRepository = userRepository;
+        this.userValidator = userValidator;
         this.passwordEncoder = passwordEncoder;
         this.userContextProvider = userContextProvider;
         this.authorizationService = authorizationService;
@@ -48,7 +51,7 @@ public class UserServiceImpl implements UserService {
         // check permission
         authorizationService.checkPermission(PermissionEnum.USER_VIEW);
 
-        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        UserEntity user = userValidator.validateUserExists(userId);
 
         return UserResponseDTO.fromEntity(user);
     }
@@ -66,7 +69,7 @@ public class UserServiceImpl implements UserService {
         authorizationService.checkPermission(PermissionEnum.USER_UPDATE);
 
         // check
-        UserEntity userToUpdate = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        UserEntity userToUpdate = userValidator.validateUserExists(userId);
 
         if (requestDTO.getPassword() != null) {
             // hashed new password
@@ -92,7 +95,7 @@ public class UserServiceImpl implements UserService {
         authorizationService.checkPermission(PermissionEnum.USER_DELETE);
 
         // check
-        UserEntity userToDelete = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        UserEntity userToDelete = userValidator.validateUserExists(userId);
 
         // delete
         userRepository.delete(userToDelete);

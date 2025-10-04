@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity orderToDelete = orderValidator.validateOrderExists(id);
 
         orderValidator.validateOrderAlreadyClosed(id); // ปิดยัง
-        orderValidator.validateOrderIsNotPaid(id);
+        orderValidator.validateOrderIsNotPaid(id); // เช็ค status
         orderValidator.validateOrderDoesNotHaveInvoice(id); // มีการจ่ายไหม
         orderValidator.validateOrderHasNoItems(id); // มีของไหม
         orderValidator.validateOrderIsNotCanceled(id); // ยกเลิกยัง

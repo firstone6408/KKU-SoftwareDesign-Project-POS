@@ -18,7 +18,6 @@ import com.sdp.pos.repository.ProductRepository;
 import com.sdp.pos.service.auth.contract.AuthorizationService;
 import com.sdp.pos.service.product.contract.ProductCodeGenerator;
 import com.sdp.pos.service.product.contract.ProductService;
-import com.sdp.pos.service.product.exception.ProductNotFoundException;
 import com.sdp.pos.service.product.validator.ProductValidator;
 import com.sdp.pos.util.ImageFileHandler;
 
@@ -28,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
         private final ProductValidator productValidator;
         private final ProductCodeGenerator productCodeGenerator;
         private final AuthorizationService authorizationService;
+        private final ImageFileHandler imageFileHandler = new ImageFileHandler("products");
 
         public ProductServiceImpl(ProductRepository productRepository, ProductValidator productValidator,
                         ProductCodeGenerator productCodeGenerator, AuthorizationService authorizationService) {
@@ -36,8 +36,6 @@ public class ProductServiceImpl implements ProductService {
                 this.productCodeGenerator = productCodeGenerator;
                 this.authorizationService = authorizationService;
         }
-
-        private final ImageFileHandler imageFileHandler = new ImageFileHandler("products");
 
         @Override
         @Transactional(readOnly = true)
@@ -52,8 +50,7 @@ public class ProductServiceImpl implements ProductService {
         @Transactional(readOnly = true)
         public ProductResponseDTO getById(String id) {
                 authorizationService.checkPermission(PermissionEnum.PRODUCT_VIEW);
-                ProductEntity product = productRepository.findById(id)
-                                .orElseThrow(() -> new ProductNotFoundException(id));
+                ProductEntity product = productValidator.validateProductExists(id);
 
                 return ProductResponseDTO.fromEntity(product);
         }
@@ -97,8 +94,7 @@ public class ProductServiceImpl implements ProductService {
                 // check permission
                 authorizationService.checkPermission(PermissionEnum.PRODUCT_UPDATE);
 
-                ProductEntity productToUpdate = productRepository.findById(id)
-                                .orElseThrow(() -> new ProductNotFoundException(id));
+                ProductEntity productToUpdate = productValidator.validateProductExists(id);
 
                 // validate category and supplier
                 ProductCategoryEntity category = productValidator.validateCategory(requestDTO.getCategoryId());
@@ -130,8 +126,7 @@ public class ProductServiceImpl implements ProductService {
                 // check permission
                 authorizationService.checkPermission(PermissionEnum.PRODUCT_DELETE);
 
-                ProductEntity productToDelete = productRepository.findById(id)
-                                .orElseThrow(() -> new ProductNotFoundException(id));
+                ProductEntity productToDelete = productValidator.validateProductExists(id);
 
                 // delete image
                 imageFileHandler.deleteFile(productToDelete.getImageUrl());
@@ -147,8 +142,7 @@ public class ProductServiceImpl implements ProductService {
                 authorizationService.checkPermission(PermissionEnum.PRODUCT_ADJUST_STOCK);
 
                 // check product
-                ProductEntity productToAdjust = productRepository.findById(productId)
-                                .orElseThrow(() -> new ProductNotFoundException(productId));
+                ProductEntity productToAdjust = productValidator.validateProductExists(productId);
 
                 // adjust
                 requestDTO.getAdjustStockType().apply(productToAdjust, requestDTO.getQuantity());
@@ -164,8 +158,7 @@ public class ProductServiceImpl implements ProductService {
                 authorizationService.checkPermission(PermissionEnum.PRODUCT_ADJUST_PRICE);
 
                 // check product
-                ProductEntity productToAdjust = productRepository.findById(productId)
-                                .orElseThrow(() -> new ProductNotFoundException(productId));
+                ProductEntity productToAdjust = productValidator.validateProductExists(productId);
 
                 // adjust
                 productToAdjust.setUnitPrice(requestDTO.getUnitPrice());

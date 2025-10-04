@@ -14,7 +14,6 @@ import com.sdp.pos.repository.ProductRepository;
 import com.sdp.pos.service.order.exception.EmptyOrderException;
 import com.sdp.pos.service.order.validator.OrderValidator;
 import com.sdp.pos.service.orderitem.contract.OrderItemService;
-import com.sdp.pos.service.orderitem.exception.OrderItemNotFoundException;
 import com.sdp.pos.service.orderitem.exception.OrderItemQuantityExceededException;
 import com.sdp.pos.service.orderitem.validator.OrderItemValidator;
 
@@ -94,8 +93,7 @@ public class OrderItemServiceImpl implements OrderItemService {
         }
 
         // check item
-        OrderItemEntity existingItem = orderItemRepository.findById(orderItemId)
-                .orElseThrow(() -> new OrderItemNotFoundException(orderItemId));
+        OrderItemEntity existingItem = orderItemValidator.validateOrderItem(orderItemId);
 
         ProductEntity product = existingItem.getProduct();
 
