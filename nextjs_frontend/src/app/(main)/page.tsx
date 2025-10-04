@@ -1,44 +1,43 @@
 import { Header } from "@/components/shared/header/header";
-import { Separator } from "@/components/ui/separator";
-import { getOrderList } from "@/features/orders/services/order.service";
 import { AuthClient } from "@/utils/auth.utils";
-import { SalesByDate } from "@/features/orders/components/dashboard/sales-by-date/sales-by-date";
-import { SalesByCustomer } from "@/features/orders/components/dashboard/sales-by-customer/sales-by-customer";
-import { SalesByEmployee } from "@/features/orders/components/dashboard/sales-by-employee/sales-by-employee";
-import { SalesByProduct } from "@/features/orders/components/dashboard/sales-by-product/sales-by-product";
 
-export default async function DashboardPage() {
-  const { token } = await AuthClient.getInstance().getAuthenticatedUser();
+const members = [
+  {
+    name: "นายเอกวิชญ์ พิลาวรรณ",
+    studentId: "663380619-8",
+  },
+  {
+    name: "นายนพชาติ น้อยนารถ",
+    studentId: "663380601-7",
+  },
+  {
+    name: "นางสาวพัชริดา เฟื่องอารมย์",
+    studentId: "663380608-3",
+  },
+];
 
-  const orders = await getOrderList(token);
+export default async function HomePage() {
+  const {} = await AuthClient.getInstance().getAuthenticatedUser();
 
   return (
     <div className="main-container">
-      <Header title="Dashboard" description="แสดงการรายงานผลทั้งหมด" />
-      <Separator />
-
-      {/* Date */}
-      <SalesByDate
-        card={{ container: true, header: true, content: true }}
-        orders={orders}
+      <Header
+        title="Sofeware Design Project"
+        description="โปรเจครายวิชา CP353002 Software Design and Development"
       />
 
-      {/* Customer */}
-      <SalesByCustomer
-        card={{ container: true, header: true, content: true }}
-        orders={orders}
-      />
-      {/* Employee */}
-      <SalesByEmployee
-        card={{ container: true, header: true, content: true }}
-        orders={orders}
-      />
-
-      {/* Product */}
-      <SalesByProduct
-        card={{ container: true, header: true, content: true }}
-        orders={orders}
-      />
+      <h2 className="text-2xl font-bold">สมาชิก</h2>
+      <ul>
+        {members.map((member, index) => (
+          <li key={index}>
+            <p className="space-x-2 text-xl">
+              <span>{index + 1}.</span>
+              <span>{member.name}</span>
+              <span>{member.studentId}</span>
+            </p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -33,7 +33,7 @@ interface SidebarLinkType {
 
 const SIDE_BAR_LINKS: SidebarLinkType[] = [
   {
-    label: "Dashboard",
+    label: "หน้าหลัก",
     href: "/",
     icon: <LayoutDashboard size={20} />,
   },
@@ -50,6 +50,11 @@ const SIDE_BAR_LINKS: SidebarLinkType[] = [
 ];
 
 const ADMIN_SIDE_BAR_LINK: SidebarLinkType[] = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: <LayoutDashboard size={20} />,
+  },
   {
     label: "ประเภทสินค้า",
     href: "/categories",
