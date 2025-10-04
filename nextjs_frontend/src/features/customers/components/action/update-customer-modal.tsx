@@ -38,7 +38,7 @@ export function UpdateCustomerModal({
     <Modal
       open={open}
       onOpenChange={onOpenChange}
-      title="รายละเอียดลูกค้า"
+      title="แก้ไขข้อมูลลูกค้า"
       description=""
     >
       <Form
