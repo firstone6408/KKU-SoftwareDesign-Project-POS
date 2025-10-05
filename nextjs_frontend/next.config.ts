@@ -15,8 +15,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        // protocol: process.env.NODE_ENV === "production" ? "https" : "http",
-        protocol: "http",
+        protocol: process.env.NODE_ENV === "production" ? "https" : "http",
+        //protocol: "https",
         hostname: hostname,
       },
     ],
