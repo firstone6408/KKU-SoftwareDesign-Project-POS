@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class OrderItemEmptyException extends ResponseStatusException {
     public OrderItemEmptyException(String orderId) {
-        super(HttpStatus.BAD_REQUEST, "Order with id " + orderId + " has no items.");
+        super(HttpStatus.BAD_REQUEST, "Order has no items");
     }
 }

@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class CategoryNotFoundException extends ResponseStatusException {
     public CategoryNotFoundException(String id) {
-        super(HttpStatus.NOT_FOUND, "Category not found: " + id);
+        super(HttpStatus.NOT_FOUND, "Category not found");
     }
 }

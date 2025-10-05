@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class OrderAlreadyCanceledException extends ResponseStatusException {
     public OrderAlreadyCanceledException(String message) {
-        super(HttpStatus.BAD_REQUEST, "Order is canceled: " + message);
+        super(HttpStatus.BAD_REQUEST, "Order is canceled");
     }
 }

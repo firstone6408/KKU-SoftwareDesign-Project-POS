@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class OrderAlreadyPaidException extends ResponseStatusException {
     public OrderAlreadyPaidException(String orderId) {
-        super(HttpStatus.BAD_REQUEST, "Order has already been paid: " + orderId);
+        super(HttpStatus.BAD_REQUEST, "Order has already been paid");
     }
 }

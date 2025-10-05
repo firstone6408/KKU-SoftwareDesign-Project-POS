@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class OrderNotCompletedException extends ResponseStatusException {
     public OrderNotCompletedException(String message) {
-        super(HttpStatus.BAD_REQUEST, "Order not completed: " + message);
+        super(HttpStatus.BAD_REQUEST, "Order not completed");
     }
 }

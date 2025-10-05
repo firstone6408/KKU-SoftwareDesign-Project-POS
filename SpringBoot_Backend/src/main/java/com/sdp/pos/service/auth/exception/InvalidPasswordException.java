@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class InvalidPasswordException extends ResponseStatusException {
     public InvalidPasswordException(String message) {
-        super(HttpStatus.BAD_REQUEST, "Invalid password " + message);
+        super(HttpStatus.BAD_REQUEST, "Invalid password ");
     }
 }

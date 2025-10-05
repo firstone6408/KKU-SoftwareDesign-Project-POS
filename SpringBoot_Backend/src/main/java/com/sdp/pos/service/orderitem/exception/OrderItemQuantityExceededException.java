@@ -5,6 +5,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class OrderItemQuantityExceededException extends ResponseStatusException {
     public OrderItemQuantityExceededException(int reqQty, int avaliQty) {
-        super(HttpStatus.BAD_REQUEST, "Cannot remove more than existing quantity");
+        super(HttpStatus.BAD_REQUEST,
+                "Order item quantity exceed. Requested quantity: " + reqQty + ", Available quantity: " + avaliQty);
     }
 }

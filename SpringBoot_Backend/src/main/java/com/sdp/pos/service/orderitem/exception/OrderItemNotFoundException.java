@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class OrderItemNotFoundException extends ResponseStatusException {
     public OrderItemNotFoundException(String id) {
-        super(HttpStatus.NOT_FOUND, "Order item not found: " + id);
+        super(HttpStatus.NOT_FOUND, "Order item not found");
     }
 }
