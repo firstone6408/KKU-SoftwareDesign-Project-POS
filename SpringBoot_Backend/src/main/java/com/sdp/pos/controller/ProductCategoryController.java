@@ -3,6 +3,8 @@ package com.sdp.pos.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdp.pos.annotation.RequireRole;
+import com.sdp.pos.constant.UserRoleEnum;
 import com.sdp.pos.dto.product.category.ProductCategoryRequestDTO;
 import com.sdp.pos.dto.product.category.ProductCategoryResponseDTO;
 import com.sdp.pos.service.productcategory.contract.ProductCategoryService;
@@ -41,6 +43,7 @@ public class ProductCategoryController {
     }
 
     @PostMapping
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<ProductCategoryResponseDTO>> createCategory(
             @Valid @RequestBody ProductCategoryRequestDTO requestDTO) {
         return ApiResponse.success(HttpStatus.CREATED, "Category created success",
@@ -48,12 +51,14 @@ public class ProductCategoryController {
     }
 
     @PutMapping("/{id}")
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<ProductCategoryResponseDTO>> updateCategory(@PathVariable String id,
             @Valid @RequestBody ProductCategoryRequestDTO requestDTO) {
         return ApiResponse.success("Category updated success", productCategoryService.update(id, requestDTO));
     }
 
     @DeleteMapping("/{id}")
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<Object>> deleteCategory(@PathVariable String id) {
         productCategoryService.delete(id);
         return ApiResponse.success("Category deleted success");

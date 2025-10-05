@@ -6,14 +6,17 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.sdp.pos.interceptor.RoleInterceptor;
 import com.sdp.pos.interceptor.AuthInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     private final AuthInterceptor authInterceptor;
+    private final RoleInterceptor adminInterceptor;
 
-    public WebConfig(AuthInterceptor authInterceptor) {
+    public WebConfig(AuthInterceptor authInterceptor, RoleInterceptor adminInterceptor) {
         this.authInterceptor = authInterceptor;
+        this.adminInterceptor = adminInterceptor;
     }
 
     @Override
@@ -44,5 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
 
                         // Static resources
                         "/uploads/**");
+
+        registry.addInterceptor(adminInterceptor);
     }
 }

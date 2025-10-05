@@ -3,6 +3,8 @@ package com.sdp.pos.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdp.pos.annotation.RequireRole;
+import com.sdp.pos.constant.UserRoleEnum;
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
 import com.sdp.pos.dto.product.AdjustUnitPriceProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
@@ -46,18 +48,21 @@ public class ProductController {
     }
 
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<ProductResponseDTO>> createProduct(
             @Valid @RequestBody @ModelAttribute ProductRequestDTO requestDTO) {
         return ApiResponse.success(HttpStatus.CREATED, "Product created success", productService.create(requestDTO));
     }
 
     @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<ProductResponseDTO>> updateProduct(@PathVariable String id,
             @Valid @RequestBody @ModelAttribute UpdateProductRequestDTO requestDTO) {
         return ApiResponse.success("Product updated success", productService.update(id, requestDTO));
     }
 
     @PutMapping("/{id}/adjust-stock")
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<Object>> adjustStockProduct(@PathVariable String id,
             @Valid @RequestBody AdjustStockProductRequestDTO requestDTO) {
 
@@ -66,6 +71,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}/adjust-unit-price")
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<Object>> adjustUnitPriceProduct(@PathVariable String id,
             @RequestBody AdjustUnitPriceProductRequestDTO requestDTO) {
         productService.adjustUnitPrice(id, requestDTO);
@@ -73,6 +79,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<Object>> deleteProduct(@PathVariable String id) {
         productService.delete(id);
         return ApiResponse.success("Product deleted success");

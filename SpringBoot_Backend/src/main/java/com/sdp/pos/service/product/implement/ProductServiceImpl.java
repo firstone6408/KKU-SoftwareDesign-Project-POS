@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sdp.pos.constant.PermissionEnum;
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
 import com.sdp.pos.dto.product.AdjustUnitPriceProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
@@ -15,7 +14,6 @@ import com.sdp.pos.entity.ProductCategoryEntity;
 import com.sdp.pos.entity.ProductEntity;
 import com.sdp.pos.entity.SupplierEntity;
 import com.sdp.pos.repository.ProductRepository;
-import com.sdp.pos.service.auth.contract.AuthorizationService;
 import com.sdp.pos.service.product.contract.ProductCodeGenerator;
 import com.sdp.pos.service.product.contract.ProductService;
 import com.sdp.pos.service.product.validator.ProductValidator;
@@ -26,21 +24,18 @@ public class ProductServiceImpl implements ProductService {
         private final ProductRepository productRepository;
         private final ProductValidator productValidator;
         private final ProductCodeGenerator productCodeGenerator;
-        private final AuthorizationService authorizationService;
         private final ImageFileHandler imageFileHandler = new ImageFileHandler("products");
 
         public ProductServiceImpl(ProductRepository productRepository, ProductValidator productValidator,
-                        ProductCodeGenerator productCodeGenerator, AuthorizationService authorizationService) {
+                        ProductCodeGenerator productCodeGenerator) {
                 this.productRepository = productRepository;
                 this.productValidator = productValidator;
                 this.productCodeGenerator = productCodeGenerator;
-                this.authorizationService = authorizationService;
         }
 
         @Override
         @Transactional(readOnly = true)
         public List<ProductResponseDTO> getAll() {
-                authorizationService.checkPermission(PermissionEnum.PRODUCT_VIEW);
                 List<ProductEntity> products = productRepository.findAllByOrderByCreatedAtDesc();
 
                 return products.stream().map(ProductResponseDTO::fromEntity).toList();
@@ -49,7 +44,6 @@ public class ProductServiceImpl implements ProductService {
         @Override
         @Transactional(readOnly = true)
         public ProductResponseDTO getById(String id) {
-                authorizationService.checkPermission(PermissionEnum.PRODUCT_VIEW);
                 ProductEntity product = productValidator.validateProductExists(id);
 
                 return ProductResponseDTO.fromEntity(product);
@@ -58,9 +52,6 @@ public class ProductServiceImpl implements ProductService {
         @Override
         @Transactional
         public ProductResponseDTO create(ProductRequestDTO requestDTO) {
-                // check permission
-                authorizationService.checkPermission(PermissionEnum.PRODUCT_CREATE);
-
                 // validate category and supplier
                 ProductCategoryEntity category = productValidator.validateCategory(requestDTO.getCategoryId());
                 SupplierEntity supplier = productValidator.validateSupplier(requestDTO.getSupplierId());
@@ -91,9 +82,6 @@ public class ProductServiceImpl implements ProductService {
         @Override
         @Transactional
         public ProductResponseDTO update(String id, UpdateProductRequestDTO requestDTO) {
-                // check permission
-                authorizationService.checkPermission(PermissionEnum.PRODUCT_UPDATE);
-
                 ProductEntity productToUpdate = productValidator.validateProductExists(id);
 
                 // validate category and supplier
@@ -123,9 +111,6 @@ public class ProductServiceImpl implements ProductService {
         @Override
         @Transactional
         public void delete(String id) {
-                // check permission
-                authorizationService.checkPermission(PermissionEnum.PRODUCT_DELETE);
-
                 ProductEntity productToDelete = productValidator.validateProductExists(id);
 
                 // delete image
@@ -138,9 +123,6 @@ public class ProductServiceImpl implements ProductService {
         @Override
         @Transactional
         public void adjustStock(String productId, AdjustStockProductRequestDTO requestDTO) {
-                // check permission
-                authorizationService.checkPermission(PermissionEnum.PRODUCT_ADJUST_STOCK);
-
                 // check product
                 ProductEntity productToAdjust = productValidator.validateProductExists(productId);
 
@@ -154,9 +136,6 @@ public class ProductServiceImpl implements ProductService {
         @Override
         @Transactional
         public void adjustUnitPrice(String productId, AdjustUnitPriceProductRequestDTO requestDTO) {
-                // check permission
-                authorizationService.checkPermission(PermissionEnum.PRODUCT_ADJUST_PRICE);
-
                 // check product
                 ProductEntity productToAdjust = productValidator.validateProductExists(productId);
 

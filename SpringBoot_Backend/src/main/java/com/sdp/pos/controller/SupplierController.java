@@ -3,6 +3,8 @@ package com.sdp.pos.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdp.pos.annotation.RequireRole;
+import com.sdp.pos.constant.UserRoleEnum;
 import com.sdp.pos.dto.supplier.SupplierRequestDTO;
 import com.sdp.pos.dto.supplier.SupplierResponseDTO;
 import com.sdp.pos.service.supplier.contract.SupplierService;
@@ -41,18 +43,21 @@ public class SupplierController {
     }
 
     @PostMapping
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<SupplierResponseDTO>> createSupplier(
             @Valid @RequestBody SupplierRequestDTO requestDTO) {
         return ApiResponse.success(HttpStatus.CREATED, "Supplier created success", supplierService.create(requestDTO));
     }
 
     @PutMapping("/{id}")
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<SupplierResponseDTO>> updateSupplier(@PathVariable String id,
             @Valid @RequestBody SupplierRequestDTO requestDTO) {
         return ApiResponse.success("Supplier updated success", supplierService.update(id, requestDTO));
     }
 
     @DeleteMapping("/{id}")
+    @RequireRole({ UserRoleEnum.ADMIN })
     public ResponseEntity<ApiResponse<Object>> deleteSupplier(@PathVariable String id) {
         supplierService.delete(id);
         return ApiResponse.success("Supplier deleted success");
