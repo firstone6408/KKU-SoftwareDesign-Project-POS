@@ -209,7 +209,7 @@ export async function updateUnitPriceProduct(
     if (responseError.status === "error") {
       console.error(responseError.errorMessage);
       return {
-        message: ACTION_CONFIG.RESPONSE.ERROR.SERVER,
+        message: responseError.errorMessage,
       };
     }
 
@@ -264,7 +264,7 @@ export async function updateStockProduct(
     if (responseError.status === "error") {
       console.error(responseError.errorMessage);
       return {
-        message: ACTION_CONFIG.RESPONSE.ERROR.SERVER,
+        message: responseError.errorMessage,
       };
     }
 

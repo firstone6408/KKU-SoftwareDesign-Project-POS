@@ -58,7 +58,7 @@ export async function createProductCategory(
     if (resErr.status === "error") {
       console.log("Response Error: " + resErr.errorMessage);
       return {
-        message: ACTION_CONFIG.RESPONSE.ERROR.SERVER,
+        message: resErr.errorMessage,
       };
     }
 
@@ -144,7 +144,7 @@ export async function updateProductCategory(
     if (responseError.status === "error") {
       console.error(responseError.errorMessage);
       return {
-        message: ACTION_CONFIG.RESPONSE.ERROR.SERVER,
+        message: responseError.errorMessage,
       };
     }
 

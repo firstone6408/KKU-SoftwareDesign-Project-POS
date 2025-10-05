@@ -18,7 +18,7 @@ export default async function ProductPage() {
       {/* Header */}
       <Header
         title="สินค้า"
-        description="สำหรับการเพิ่ม ลบ แก้ไข เกี่ยวกับผู้จัดจำหน่าย"
+        description="สำหรับการเพิ่ม ลบ แก้ไข เกี่ยวกับสินค้า"
       />
       <Separator />
       <ProductContainer

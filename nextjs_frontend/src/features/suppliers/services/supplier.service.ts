@@ -127,7 +127,7 @@ export async function updateSupplier(
     if (responseError.status === "error") {
       console.error(responseError.errorMessage);
       return {
-        message: ACTION_CONFIG.RESPONSE.ERROR.SERVER,
+        message: responseError.errorMessage,
       };
     }
 

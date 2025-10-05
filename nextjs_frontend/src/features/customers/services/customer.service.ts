@@ -79,7 +79,7 @@ export async function deleteCustomer(input: IDeleteCustomer) {
 
     if (error.status === "error") {
       return {
-        message: error.errorMessage,
+        message: ACTION_CONFIG.RESPONSE.ERROR.SERVER,
       };
     }
 
