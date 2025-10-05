@@ -205,8 +205,6 @@ export async function saveSummaryOrder(
       note: data.orderNote,
     };
 
-    console.log(requestBody);
-
     // api
     const { error: responseError } = await withApiHandling(
       axios.put(
