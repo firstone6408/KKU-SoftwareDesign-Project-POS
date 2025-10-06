@@ -2,9 +2,9 @@ import { FormatNumber } from "@/utils/format-number.utils";
 import { IOrder } from "../../schemas/order.schema";
 import { OrderUtil } from "@/utils/order.utils";
 import { dateTime } from "@/utils/dateTime.utils";
-import { SlipImageButton } from "./slip-image-button";
 import { Banknote, ImageIcon } from "lucide-react";
 import { TransaleEnumUtil } from "@/utils/translate-enum.utils";
+import { PaymentSlipDetailButton } from "../payment/action/payment-slip-detail-button";
 
 interface OrderPaymentProps {
   order: IOrder;
@@ -91,13 +91,13 @@ export function OrderPayment({ order }: OrderPaymentProps) {
           </p>
           <div className="flex justify-between items-center gap-2">
             <span>หลักฐานการชำระ</span>
-            <SlipImageButton
+            <PaymentSlipDetailButton
               variant={"secondary"}
               size={"icon"}
               order={order}
             >
               <ImageIcon />
-            </SlipImageButton>
+            </PaymentSlipDetailButton>
           </div>
         </section>
       </div>

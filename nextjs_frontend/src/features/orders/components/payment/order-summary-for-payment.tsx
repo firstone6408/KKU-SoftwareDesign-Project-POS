@@ -62,7 +62,9 @@ export function OrderSummaryForPayment({
           <div className="grid grid-cols-4 gap-x-2 gap-y-4 text-current/75">
             {order.items.map((item) => (
               <React.Fragment key={item.id}>
-                <span className="w-56">{item.product.name}</span>
+                <span className="break-words whitespace-pre-line w-44">
+                  {item.product.name}
+                </span>
                 <span className="text-end">
                   {FormatNumber.number(item.unitPrice)}
                 </span>

@@ -5,6 +5,22 @@ import {
 import { OrderStatusEnum } from "@/features/orders/services/order.enum";
 
 export const OrderUtil = {
+  file: {
+    slipImage: {
+      filename: function (order: IOrder) {
+        const url = order.saleInovice?.slipImageUrl;
+        const orderCode = order.orderCode;
+        if (!url) return `slip_${order.orderCode}.png`;
+
+        try {
+          const ext = url.split(".").pop()?.split("?")[0] || "png";
+          return `slip_${orderCode}.${ext}`;
+        } catch {
+          return `slip_${orderCode}.png`;
+        }
+      },
+    },
+  },
   calculate: {
     totalPrice: function (orderItem: IOrderItem) {
       const totalPrice = orderItem.quantity * orderItem.unitPrice;

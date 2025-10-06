@@ -65,6 +65,7 @@ export function UpdateSupplierModal({
           defaultValue={supplier.contactInfo || ""}
           name="supplier-contact-info"
           errorMessage={error.supplierContactInfo}
+          required
         />
         <SubmitButton className="w-full" icon={Save} isPending={isPending}>
           บันทึก

@@ -57,6 +57,7 @@ export function CreateSupplierButton({ ...props }: ButtonProps) {
             name="supplier-contact-info"
             placeholder="กรอกการติดต่อกับผู้จัดจำหน่าย"
             errorMessage={error.supplierContactInfo}
+            required
           />
 
           <SubmitButton

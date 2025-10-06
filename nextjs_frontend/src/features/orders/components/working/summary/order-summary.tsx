@@ -31,7 +31,8 @@ export function OrderSummary({ order }: OrderSummaryProps) {
               <span>สรุปคำสั่งซื้อ</span>
             </div>
             <p className="text-current/50">
-              รหัสรายการ: {order.orderCode}
+              <span>#</span>
+              <span>{order.orderCode}</span>
             </p>
           </div>
           <Badge className="text-sm">
