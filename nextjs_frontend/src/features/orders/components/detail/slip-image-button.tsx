@@ -29,16 +29,18 @@ export function SlipImageButton({
       <Modal
         open={modal.isOpen}
         onOpenChange={modal.setIsOpen}
-        title="สลิปการชําระเงิน"
+        title="หลักฐานการชําระเงิน"
         description=""
       >
-        <div className="relative size-60 rounded border-2 border-primary">
-          <Image
-            src={UrlUtil.getImageUrl(order.saleInovice.slipImageUrl!)}
-            fill
-            className="object-contain"
-            alt="order-slip-image"
-          />
+        <div className="flex justify-center">
+          <div className="relative size-[25rem]">
+            <Image
+              src={UrlUtil.getImageUrl(order.saleInovice.slipImageUrl!)}
+              fill
+              className="object-contain"
+              alt="order-slip-image"
+            />
+          </div>
         </div>
       </Modal>
     </>

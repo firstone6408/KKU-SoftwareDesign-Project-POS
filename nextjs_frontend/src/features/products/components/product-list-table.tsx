@@ -56,18 +56,19 @@ export function ProductListTable({
                 products.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell>{product.productCode}</TableCell>
-                    <TableCell className="flex justify-center w-32">
-                      <Image
-                        src={
-                          product.imageUrl
-                            ? UrlUtil.getImageUrl(product.imageUrl)
-                            : FILE_CONFIG.IMAGES.NO_PRODUCT_IMAGE
-                        }
-                        className="rounded-md border-2 border-primary"
-                        width={40}
-                        height={40}
-                        alt={`product-image-${product.id}`}
-                      />
+                    <TableCell className="w-32 flex justify-center">
+                      <div className="relative size-10">
+                        <Image
+                          src={
+                            product.imageUrl
+                              ? UrlUtil.getImageUrl(product.imageUrl)
+                              : FILE_CONFIG.IMAGES.NO_PRODUCT_IMAGE
+                          }
+                          className="rounded-md border-2 border-primary"
+                          fill
+                          alt={`product-image-${product.id}`}
+                        />
+                      </div>
                     </TableCell>
                     <TableCell className="max-w-[150px] truncate">
                       {product.supplier.name}

@@ -22,7 +22,12 @@ export function LoginForm() {
           type="email"
           required
         />
-        <InputField label="รหัสผ่าน" name="password" type="password" />
+        <InputField
+          label="รหัสผ่าน"
+          name="password"
+          type="password"
+          required
+        />
       </CardContent>
       <CardFooter className="flex flex-col gap-2">
         {/* <AuthFooter type={type} /> */}
