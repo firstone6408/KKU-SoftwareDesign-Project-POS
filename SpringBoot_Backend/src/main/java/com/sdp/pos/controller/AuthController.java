@@ -38,7 +38,7 @@ public class AuthController {
     @PostMapping("/register/for-dev")
     public ResponseEntity<ApiResponse<UserResponseDTO>> registerForDev(@Valid @RequestBody UserRequestDTO requestDTO) {
 
-        return ApiResponse.success("Registerd success", authService.register(requestDTO));
+        return ApiResponse.success("ฮั่นแน่! จะทำอะไรเหรอจ๊ะ ไม่ได้นะๆ");
     }
 
     @PostMapping("/login")

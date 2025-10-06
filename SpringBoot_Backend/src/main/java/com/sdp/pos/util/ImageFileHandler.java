@@ -27,7 +27,7 @@ public class ImageFileHandler {
      */
     public ImageFileHandler(String folderName) {
         this.folderName = folderName;
-        this.uploadDir = Paths.get("SpringBoot_Backend/src/main/resources/static", "uploads", folderName);
+        this.uploadDir = Paths.get("src/main/resources/static", "uploads", folderName);
 
         try {
             if (!Files.exists(this.uploadDir)) {

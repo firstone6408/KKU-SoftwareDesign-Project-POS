@@ -35,6 +35,8 @@ build/
 .env
 /src/main/resources/static/uploads/
 /src/main/resources/jwt.properties
+src/main/java/com/sdp/pos/init/seed/UserSeederImpl.java
+Dockerfile
 
 ### Database ###
 /src/main/resources/database.properties

@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
         registry.addMapping("/**") // อนุญาตทุก endpoint
-                .allowedOrigins("http://localhost:3000", "https://pos.example.com") // อนุญาตทุก origin
+                .allowedOrigins("http://localhost:3000", "https://pos-kku-sdp.vercel.app") // อนุญาตทุก origin
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // method ที่อนุญาต
                 .allowedHeaders("Authorization", "Content-Type")// header ที่อนุญาต
                 .allowCredentials(false); // ไม่รับ cookie / session
