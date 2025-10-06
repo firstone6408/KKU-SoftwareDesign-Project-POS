@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sdp.pos.constant.OrderStatusEnum;
+import com.sdp.pos.dto.imagekit.ImageKitResultDTO;
 import com.sdp.pos.dto.saleinovice.PaymentRequestDTO;
 import com.sdp.pos.entity.OrderEntity;
 import com.sdp.pos.entity.SaleInoviceEntity;
@@ -11,7 +12,7 @@ import com.sdp.pos.repository.OrderRepository;
 import com.sdp.pos.repository.SaleInoviceRepository;
 import com.sdp.pos.service.order.validator.OrderValidator;
 import com.sdp.pos.service.saleinovice.contract.SaleInoviceService;
-import com.sdp.pos.util.ImageFileHandler;
+import com.sdp.pos.util.ImageKitHandler;
 
 @Service
 public class SaleInoviceServiceImpl implements SaleInoviceService {
@@ -19,13 +20,14 @@ public class SaleInoviceServiceImpl implements SaleInoviceService {
     private final OrderRepository orderRepository;
     private final SaleInoviceRepository saleInoviceRepository;
     private final OrderValidator orderValidator;
-    private final ImageFileHandler imageFileHandler = new ImageFileHandler("saleinovice");
+    private final ImageKitHandler imageKitHandler;
 
     public SaleInoviceServiceImpl(SaleInoviceRepository saleInoviceRepository, OrderValidator orderValidator,
-            OrderRepository orderRepository) {
+            OrderRepository orderRepository, ImageKitHandler imageKitHandler) {
         this.saleInoviceRepository = saleInoviceRepository;
         this.orderValidator = orderValidator;
         this.orderRepository = orderRepository;
+        this.imageKitHandler = imageKitHandler;
     }
 
     @Override
@@ -53,13 +55,14 @@ public class SaleInoviceServiceImpl implements SaleInoviceService {
         saleInovice.setInoviceDate(requestDTO.getInoviceDate());
 
         // save slip
-        String slipPath;
+        ImageKitResultDTO slipPath;
         if (saleInovice.getSlipImageUrl() == null) {
-            slipPath = imageFileHandler.uploadFile(requestDTO.getSlipImage());
+            slipPath = imageKitHandler.uploadFile(requestDTO.getSlipImage());
         } else {
-            slipPath = imageFileHandler.replaceFile(saleInovice.getSlipImageUrl(), requestDTO.getSlipImage());
+            slipPath = imageKitHandler.replaceFile(saleInovice.getSlipImageId(), requestDTO.getSlipImage());
         }
-        saleInovice.setSlipImageUrl(slipPath);
+        saleInovice.setSlipImageId(slipPath.getFileId());
+        saleInovice.setSlipImageUrl(slipPath.getUrl());
 
         // update order if discount is not equal
         if (order.getDiscount() != requestDTO.getDiscount()) {
@@ -81,7 +84,7 @@ public class SaleInoviceServiceImpl implements SaleInoviceService {
 
         // delete image
         if (inoviceToDelete.getSlipImageUrl() != null) {
-            imageFileHandler.deleteFile(inoviceToDelete.getSlipImageUrl());
+            imageKitHandler.deleteFile(inoviceToDelete.getSlipImageId());
         }
 
         // delete

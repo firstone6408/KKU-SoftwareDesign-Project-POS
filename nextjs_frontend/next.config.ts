@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
-const { hostname } = new URL(
-  process.env.NEXT_PUBLIC_BASE_URL || "http://localhost"
-);
+const hostname = "ik.imagekit.io";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -15,8 +13,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: process.env.NODE_ENV === "production" ? "https" : "http",
-        //protocol: "https",
+        // protocol: process.env.NODE_ENV === "production" ? "https" : "http",
+        protocol: "https",
         hostname: hostname,
       },
     ],

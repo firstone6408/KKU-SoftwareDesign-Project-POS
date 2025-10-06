@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sdp.pos.dto.imagekit.ImageKitResultDTO;
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
 import com.sdp.pos.dto.product.AdjustUnitPriceProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
@@ -17,20 +18,21 @@ import com.sdp.pos.repository.ProductRepository;
 import com.sdp.pos.service.product.contract.ProductCodeGenerator;
 import com.sdp.pos.service.product.contract.ProductService;
 import com.sdp.pos.service.product.validator.ProductValidator;
-import com.sdp.pos.util.ImageFileHandler;
+import com.sdp.pos.util.ImageKitHandler;
 
 @Service
 public class ProductServiceImpl implements ProductService {
         private final ProductRepository productRepository;
         private final ProductValidator productValidator;
         private final ProductCodeGenerator productCodeGenerator;
-        private final ImageFileHandler imageFileHandler = new ImageFileHandler("products");
+        private final ImageKitHandler imageKitHandler;
 
         public ProductServiceImpl(ProductRepository productRepository, ProductValidator productValidator,
-                        ProductCodeGenerator productCodeGenerator) {
+                        ProductCodeGenerator productCodeGenerator, ImageKitHandler imageKitHandler) {
                 this.productRepository = productRepository;
                 this.productValidator = productValidator;
                 this.productCodeGenerator = productCodeGenerator;
+                this.imageKitHandler = imageKitHandler;
         }
 
         @Override
@@ -69,8 +71,10 @@ public class ProductServiceImpl implements ProductService {
 
                 // save image
                 if (requestDTO.getImageFile() != null) {
-                        String path = imageFileHandler.uploadFile(requestDTO.getImageFile());
-                        productToCreate.setImageUrl(path);
+                        // upload image to ImageKit
+                        ImageKitResultDTO result = imageKitHandler.uploadFile(requestDTO.getImageFile());
+                        productToCreate.setImageId(result.getFileId());
+                        productToCreate.setImageUrl(result.getUrl());
                 }
 
                 // save
@@ -97,9 +101,14 @@ public class ProductServiceImpl implements ProductService {
 
                 // update image
                 if (requestDTO.getImageFile() != null) {
-                        String path = imageFileHandler.replaceFile(productToUpdate.getImageUrl(),
+                        // delete old image
+                        imageKitHandler.deleteFile(productToUpdate.getImageId());
+
+                        // upload new image
+                        ImageKitResultDTO result = imageKitHandler.replaceFile(productToUpdate.getImageUrl(),
                                         requestDTO.getImageFile());
-                        productToUpdate.setImageUrl(path);
+                        productToUpdate.setImageId(result.getFileId());
+                        productToUpdate.setImageUrl(result.getUrl());
                 }
 
                 // save
@@ -114,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
                 ProductEntity productToDelete = productValidator.validateProductExists(id);
 
                 // delete image
-                imageFileHandler.deleteFile(productToDelete.getImageUrl());
+                imageKitHandler.deleteFile(productToDelete.getImageId());
 
                 // delete
                 productRepository.delete(productToDelete);

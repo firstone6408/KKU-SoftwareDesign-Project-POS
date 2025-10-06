@@ -30,6 +30,9 @@ public class SaleInoviceEntity {
     @Column(name = "payment_method")
     private PaymentMethodEnum paymentMethod;
 
+    @Column(name = "slip_image_id")
+    private String slipImageId;
+
     @Column(name = "slip_image_url")
     private String slipImageUrl;
 

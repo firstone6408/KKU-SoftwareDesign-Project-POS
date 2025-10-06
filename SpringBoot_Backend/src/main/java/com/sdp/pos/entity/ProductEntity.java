@@ -49,6 +49,9 @@ public class ProductEntity {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "image_id")
+    private String imageId;
+
     @Column(name = "image_url")
     private String imageUrl;
 
