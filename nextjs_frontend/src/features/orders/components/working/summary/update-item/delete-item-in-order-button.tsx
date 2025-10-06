@@ -6,16 +6,23 @@ import {
   IOrder,
   IOrderItem,
 } from "@/features/orders/schemas/order.schema";
-import { useForm } from "@/hooks/use-form";
+import { initialFormState } from "@/interfaces/actions/action";
 import { SubmitButtonProps } from "@/interfaces/components/button";
-import { Form } from "@/utils/form.utils";
 import { Trash } from "lucide-react";
+import {
+  Dispatch,
+  SetStateAction,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 
 interface DeleteItemInOrderButtonProps extends SubmitButtonProps {
   order: IOrder;
   orderItem: IOrderItem;
   quantity: number;
   isConfirm?: boolean;
+  setItemQuantity?: Dispatch<SetStateAction<number>>;
 }
 
 export function DeleteItemInOrderButton({
@@ -23,41 +30,54 @@ export function DeleteItemInOrderButton({
   orderItem,
   quantity,
   isConfirm = true,
+  setItemQuantity,
   ...props
 }: DeleteItemInOrderButtonProps) {
-  const { formAction, isPending } = useForm({
-    action: deleteItemInOrderAction,
-    mode: "controlled",
-  });
+  const [isPending, startTransition] = useTransition();
+  const [_quantity, setQuantity] = useState<number>(1);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleClick = () => {
+    setQuantity((prev) => prev + 1);
+    if (setItemQuantity) {
+      setItemQuantity((prev) => prev - 1);
+    }
+
+    let time;
+    let qty;
+
+    if (isConfirm) {
+      time = 0;
+      qty = quantity;
+    } else {
+      time = 1000;
+      qty = _quantity;
+    }
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(async () => {
+      startTransition(async () => {
+        const formData = new FormData();
+        formData.append("order-id", order.id);
+        formData.append("product-id", orderItem.product.id);
+        formData.append("order-item-id", orderItem.id);
+        formData.append("quantity", qty.toString());
+        await deleteItemInOrderAction(initialFormState, formData);
+      });
+      setQuantity(1);
+      timerRef.current = null;
+    }, time);
+  };
 
   return (
-    <Form
-      action={formAction}
-      {...(isConfirm
-        ? {
-            confirmConfig: {
-              title: `ลบ "${orderItem.product.name}" ออกจากรายการ`,
-            },
-          }
-        : {})}
-    >
-      <input type="hidden" name="order-id" defaultValue={order.id} />
-      <input
-        type="hidden"
-        name="order-item-id"
-        defaultValue={orderItem.id}
-      />
-      <input
-        type="hidden"
-        name="product-id"
-        defaultValue={orderItem.product.id}
-      />
-      <input type="hidden" name="quantity" defaultValue={quantity} />
-      <SubmitButton
-        {...props}
-        icon={props.icon ? props.icon : Trash}
-        isPending={isPending}
-      />
-    </Form>
+    <SubmitButton
+      {...props}
+      onClick={handleClick}
+      icon={props.icon ? props.icon : Trash}
+      isPending={isPending}
+    />
   );
 }

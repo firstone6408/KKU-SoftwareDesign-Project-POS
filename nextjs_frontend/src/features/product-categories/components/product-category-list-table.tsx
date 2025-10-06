@@ -11,6 +11,7 @@ import { IProductCategory } from "../schemas/product-category.schema";
 import { BaseCardProps } from "@/interfaces/components/card";
 import { BaseCard } from "@/components/shared/card/base-card";
 import { List } from "lucide-react";
+import { EmptyTableRow } from "@/components/shared/table/empty-table-row";
 
 interface ProductCategoryListTableProps extends BaseCardProps {
   productCategories: IProductCategory[];
@@ -35,17 +36,21 @@ export function ProductCategoryListTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {productCategories.map((productCategory, index) => (
-              <TableRow key={productCategory.id}>
-                <TableCell className="text-end">{index + 1}</TableCell>
-                <TableCell>{productCategory.name}</TableCell>
-                <TableCell>
-                  <ProductCategoryAction
-                    productCategory={productCategory}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+            {productCategories.length > 0 ? (
+              productCategories.map((productCategory, index) => (
+                <TableRow key={productCategory.id}>
+                  <TableCell className="text-end">{index + 1}</TableCell>
+                  <TableCell>{productCategory.name}</TableCell>
+                  <TableCell>
+                    <ProductCategoryAction
+                      productCategory={productCategory}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <EmptyTableRow />
+            )}
           </TableBody>
         </Table>
       }

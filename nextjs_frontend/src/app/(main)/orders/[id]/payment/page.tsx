@@ -20,7 +20,7 @@ export default async function OrderPaymentPage({
 
   const order = await getOrderById(token, id);
 
-  if (!order || OrderUtil.check.canDoPayment(order)) {
+  if (!order || !OrderUtil.check.canDoPayment(order)) {
     redirect("/orders");
   }
 

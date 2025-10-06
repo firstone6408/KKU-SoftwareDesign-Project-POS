@@ -14,7 +14,7 @@ export function LinkToPaymentButton({
   children,
   ...props
 }: LinkToPaymentButtonProps) {
-  if (OrderUtil.check.canDoPayment(order)) return null;
+  if (!OrderUtil.check.canDoPayment(order)) return null;
 
   return (
     <Button {...props} asChild>

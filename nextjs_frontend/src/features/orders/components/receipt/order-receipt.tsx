@@ -96,15 +96,26 @@ export function OrderReceipt({ order }: OrderReceiptProps) {
         <Separator />
 
         {/* Summary */}
-        <section className="flex justify-between items-center">
-          <div className="space-x-2">
-            <span>จำนวน</span>
-            <span>
-              {FormatNumber.number(
-                OrderUtil.calculate.totalQuantity(order)
-              )}
-            </span>
-            <span>ชิ้น</span>
+        <section className="flex justify-between items-end">
+          <div>
+            <div className="space-x-2">
+              <span>ทั้งหมด</span>
+              <span>
+                {FormatNumber.number(
+                  OrderUtil.calculate.totalItems(order)
+                )}
+              </span>
+              <span>รายการ</span>
+            </div>
+            <div className="space-x-2">
+              <span>จำนวน</span>
+              <span>
+                {FormatNumber.number(
+                  OrderUtil.calculate.totalQuantity(order)
+                )}
+              </span>
+              <span>ชิ้น</span>
+            </div>
           </div>
           <div className="space-x-2">
             <span>มูลค่า</span>

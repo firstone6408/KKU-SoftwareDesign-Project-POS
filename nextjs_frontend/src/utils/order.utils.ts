@@ -23,6 +23,10 @@ export const OrderUtil = {
         return total + item.quantity;
       }, 0);
     },
+
+    totalItems: function (order: IOrder) {
+      return order.items.length;
+    },
   },
   check: {
     isClosed: function (order: IOrder) {
@@ -33,9 +37,9 @@ export const OrderUtil = {
     },
     canDoPayment: function (order: IOrder) {
       return (
-        order.items.length === 0 ||
-        this.isCanceled(order) ||
-        order.deliveryDate === null
+        order.items.length !== 0 &&
+        !this.isCanceled(order) &&
+        order.deliveryDate !== null
       );
     },
     canDoWorking: function (order: IOrder) {

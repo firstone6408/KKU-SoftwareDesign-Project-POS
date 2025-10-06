@@ -36,9 +36,15 @@ export function ProductList({
           setFilteredProducts={setFilteredProducts}
         />
       </div>
-      <ScrollArea className="h-[calc(112vh)] overflow-auto">
-        <ProductListCard order={order} products={filteredProducts} />
-      </ScrollArea>
+      {filteredProducts.length > 0 ? (
+        <ScrollArea className="h-[calc(112vh)] overflow-auto">
+          <ProductListCard order={order} products={filteredProducts} />
+        </ScrollArea>
+      ) : (
+        <div className="flex justify-center items-center h-96 text-current/50">
+          ไม่พบรายการสินค้า
+        </div>
+      )}
     </div>
   );
 }

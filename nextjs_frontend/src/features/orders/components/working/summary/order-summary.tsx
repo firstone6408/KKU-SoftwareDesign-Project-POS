@@ -34,7 +34,11 @@ export function OrderSummary({ order }: OrderSummaryProps) {
               รหัสรายการ: {order.orderCode}
             </p>
           </div>
-          <Badge className="text-sm">จำนวน: {order.items.length}</Badge>
+          <Badge className="text-sm">
+            <span>รายการ: {OrderUtil.calculate.totalItems(order)}</span>
+            <span>/</span>
+            <span>จำนวน: {OrderUtil.calculate.totalQuantity(order)}</span>
+          </Badge>
         </CardTitle>
       </CardHeader>
 
@@ -66,6 +70,12 @@ export function OrderSummary({ order }: OrderSummaryProps) {
           />
           <OrderDetailForm order={order} />
         </div>
+
+        {!OrderUtil.check.canDoPayment(order) && (
+          <p className="text-destructive">
+            ** เลือกรายการสินค้า และ ใส่วันที่รันสินค้าเพื่อชำระเงิน
+          </p>
+        )}
 
         {/* Payment */}
         <LinkToPaymentButton order={order} asChild>

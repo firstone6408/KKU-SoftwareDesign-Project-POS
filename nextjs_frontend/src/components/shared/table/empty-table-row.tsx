@@ -9,7 +9,7 @@ export function EmptyTableRow({ colSpan, children }: EmptyTableRowProps) {
   return (
     <TableRow>
       <TableCell
-        colSpan={colSpan || 6}
+        colSpan={colSpan || 20}
         className="text-center text-current/50"
       >
         {children || "ไม่พบข้อมูล"}

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import { ICustomer } from "@/features/customers/schemas/customer.schema";
 import { CreateOrderForm } from "./create-order-form";
+import { EmptyTableRow } from "@/components/shared/table/empty-table-row";
 
 interface CustomerListTableForCreateOrderProps {
   customers: ICustomer[];
@@ -27,16 +28,20 @@ export function CustomerListTableForCreateOrder({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {customers.map((customer, index) => (
-          <TableRow key={customer.id}>
-            <TableCell className="text-end">{index + 1}</TableCell>
-            <TableCell>{customer.name}</TableCell>
-            <TableCell>{customer.contactInfo}</TableCell>
-            <TableCell>
-              <CreateOrderForm customer={customer} />
-            </TableCell>
-          </TableRow>
-        ))}
+        {customers.length > 0 ? (
+          customers.map((customer, index) => (
+            <TableRow key={customer.id}>
+              <TableCell className="text-end">{index + 1}</TableCell>
+              <TableCell>{customer.name}</TableCell>
+              <TableCell>{customer.contactInfo}</TableCell>
+              <TableCell>
+                <CreateOrderForm customer={customer} />
+              </TableCell>
+            </TableRow>
+          ))
+        ) : (
+          <EmptyTableRow />
+        )}
       </TableBody>
     </Table>
   );

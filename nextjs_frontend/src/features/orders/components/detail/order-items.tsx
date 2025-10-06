@@ -10,6 +10,7 @@ import { IOrder } from "../../schemas/order.schema";
 import { FormatNumber } from "@/utils/format-number.utils";
 import { OrderUtil } from "@/utils/order.utils";
 import { List } from "lucide-react";
+import { EmptyTableRow } from "@/components/shared/table/empty-table-row";
 
 interface OrderItemsProps {
   order: IOrder;
@@ -35,23 +36,29 @@ export function OrderItems({ order }: OrderItemsProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {order.items.map((item, index) => (
-            <TableRow key={item.id}>
-              <TableCell className="text-end">{index + 1}</TableCell>
-              <TableCell>{item.product.supplier.name}</TableCell>
-              <TableCell>{item.product.category.name}</TableCell>
-              <TableCell>{item.product.name}</TableCell>
-              <TableCell className="text-end">
-                {FormatNumber.number(item.quantity)}
-              </TableCell>
-              <TableCell className="text-end">
-                {FormatNumber.number(item.unitPrice)}
-              </TableCell>
-              <TableCell className="text-end">
-                {FormatNumber.number(OrderUtil.calculate.totalPrice(item))}
-              </TableCell>
-            </TableRow>
-          ))}
+          {order.items.length > 0 ? (
+            order.items.map((item, index) => (
+              <TableRow key={item.id}>
+                <TableCell className="text-end">{index + 1}</TableCell>
+                <TableCell>{item.product.supplier.name}</TableCell>
+                <TableCell>{item.product.category.name}</TableCell>
+                <TableCell>{item.product.name}</TableCell>
+                <TableCell className="text-end">
+                  {FormatNumber.number(item.quantity)}
+                </TableCell>
+                <TableCell className="text-end">
+                  {FormatNumber.number(item.unitPrice)}
+                </TableCell>
+                <TableCell className="text-end">
+                  {FormatNumber.number(
+                    OrderUtil.calculate.totalPrice(item)
+                  )}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <EmptyTableRow />
+          )}
         </TableBody>
       </Table>
     </div>

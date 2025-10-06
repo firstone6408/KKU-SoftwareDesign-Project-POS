@@ -19,42 +19,48 @@ interface OrderItemListCardProps {
 export function OrderItemListCard({ order }: OrderItemListCardProps) {
   return (
     <div className="space-y-2">
-      {order.items.map((item, index) => (
-        <Card key={item.id} className="border-none bg-secondary/50">
-          <CardHeader>
-            <CardTitle>
-              {index + 1}. {item.product.name}
-            </CardTitle>
-            <CardDescription>
-              <div>Barcode: {item.product.barcode}</div>
-              <div>รหัสสินค้า: {item.product.productCode}</div>
-            </CardDescription>
+      {order.items.length > 0 ? (
+        order.items.map((item, index) => (
+          <Card key={item.id} className="border-none bg-secondary/50">
+            <CardHeader>
+              <CardTitle>
+                {index + 1}. {item.product.name}
+              </CardTitle>
+              <CardDescription>
+                <div>Barcode: {item.product.barcode}</div>
+                <div>รหัสสินค้า: {item.product.productCode}</div>
+              </CardDescription>
 
-            <CardAction>
-              {/* Delete All */}
-              <DeleteItemInOrderButton
-                quantity={item.quantity}
-                order={order}
-                orderItem={item}
-                variant={"destructive"}
-                size={"sm"}
-              />
-            </CardAction>
-          </CardHeader>
+              <CardAction>
+                {/* Delete All */}
+                <DeleteItemInOrderButton
+                  quantity={item.quantity}
+                  order={order}
+                  orderItem={item}
+                  variant={"destructive"}
+                  size={"sm"}
+                />
+              </CardAction>
+            </CardHeader>
 
-          {/* Summary */}
-          <CardFooter className="flex justify-between items-center gap-2">
-            <UpdateItemAction order={order} orderItem={item} />
-            <p className="space-x-1">
-              <span>ทั้งหมด</span>
-              <span>
-                {FormatNumber.number(OrderUtil.calculate.totalPrice(item))}
-              </span>
-              <span>บาท</span>
-            </p>
-          </CardFooter>
-        </Card>
-      ))}
+            {/* Summary */}
+            <CardFooter className="flex justify-between items-center gap-2">
+              <UpdateItemAction order={order} orderItem={item} />
+              <p className="space-x-1">
+                <span>ทั้งหมด</span>
+                <span>
+                  {FormatNumber.number(
+                    OrderUtil.calculate.totalPrice(item)
+                  )}
+                </span>
+                <span>บาท</span>
+              </p>
+            </CardFooter>
+          </Card>
+        ))
+      ) : (
+        <p className="text-current/50 text-center">ไม่มีสินค้าในรายการ</p>
+      )}
     </div>
   );
 }

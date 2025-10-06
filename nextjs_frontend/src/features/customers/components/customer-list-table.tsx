@@ -11,6 +11,7 @@ import { ICustomer } from "../schemas/customer.schema";
 import { BaseCardProps } from "@/interfaces/components/card";
 import { BaseCard } from "@/components/shared/card/base-card";
 import { List } from "lucide-react";
+import { EmptyTableRow } from "@/components/shared/table/empty-table-row";
 
 interface CustomerListTableProps extends BaseCardProps {
   customers: ICustomer[];
@@ -36,16 +37,20 @@ export function CustomerListTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {customers.map((customer) => (
-              <TableRow key={customer.id}>
-                <TableCell>{customer.customerCode}</TableCell>
-                <TableCell>{customer.name}</TableCell>
-                <TableCell>{customer.contactInfo}</TableCell>
-                <TableCell>
-                  <CustomerAction customer={customer} />
-                </TableCell>
-              </TableRow>
-            ))}
+            {customers.length > 0 ? (
+              customers.map((customer) => (
+                <TableRow key={customer.id}>
+                  <TableCell>{customer.customerCode}</TableCell>
+                  <TableCell>{customer.name}</TableCell>
+                  <TableCell>{customer.contactInfo}</TableCell>
+                  <TableCell>
+                    <CustomerAction customer={customer} />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <EmptyTableRow />
+            )}
           </TableBody>
         </Table>
       }

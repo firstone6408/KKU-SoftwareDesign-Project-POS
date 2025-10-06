@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { SupplierAction } from "./action/supplier-action";
+import { EmptyTableRow } from "@/components/shared/table/empty-table-row";
 
 interface SupplierListTableProps extends BaseCardProps {
   suppliers: ISupplier[];
@@ -36,16 +37,20 @@ export function SupplierListTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {suppliers.map((supplier, index) => (
-              <TableRow key={supplier.id}>
-                <TableCell className="text-end">{index + 1}</TableCell>
-                <TableCell>{supplier.name}</TableCell>
-                <TableCell>{supplier.contactInfo}</TableCell>
-                <TableCell className="text-center">
-                  <SupplierAction supplier={supplier} />
-                </TableCell>
-              </TableRow>
-            ))}
+            {suppliers.length > 0 ? (
+              suppliers.map((supplier, index) => (
+                <TableRow key={supplier.id}>
+                  <TableCell className="text-end">{index + 1}</TableCell>
+                  <TableCell>{supplier.name}</TableCell>
+                  <TableCell>{supplier.contactInfo}</TableCell>
+                  <TableCell className="text-center">
+                    <SupplierAction supplier={supplier} />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <EmptyTableRow />
+            )}
           </TableBody>
         </Table>
       }

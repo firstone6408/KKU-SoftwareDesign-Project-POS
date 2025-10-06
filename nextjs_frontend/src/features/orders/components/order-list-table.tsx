@@ -15,6 +15,7 @@ import { OrderAction } from "./order-action";
 import { FormatNumber } from "@/utils/format-number.utils";
 import { OrderUtil } from "@/utils/order.utils";
 import { OrderStatusBadge } from "./order-status-bagde";
+import { EmptyTableRow } from "@/components/shared/table/empty-table-row";
 
 interface OrderListTableProps extends BaseCardProps {
   orders: IOrder[];
@@ -41,28 +42,32 @@ export function OrderListTable({ orders, ...props }: OrderListTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order, index) => (
-              <TableRow key={order.id}>
-                <TableCell className="text-end">{index + 1}</TableCell>
-                <TableCell>{order.orderCode}</TableCell>
-                <TableCell>{order.customer.name}</TableCell>
-                <TableCell className="text-end">
-                  {FormatNumber.number(
-                    OrderUtil.calculate.actualRemainingAmount(order)
-                  )}
-                </TableCell>
-                <TableCell>
-                  <OrderStatusBadge order={order} />
-                </TableCell>
-                <TableCell>
-                  {dateTime.formatDate(new Date(order.orderDate))}
-                </TableCell>
-                <TableCell>{order.createdBy.name}</TableCell>
-                <TableCell className="flex justify-center">
-                  <OrderAction order={order} />
-                </TableCell>
-              </TableRow>
-            ))}
+            {orders.length > 0 ? (
+              orders.map((order, index) => (
+                <TableRow key={order.id}>
+                  <TableCell className="text-end">{index + 1}</TableCell>
+                  <TableCell>{order.orderCode}</TableCell>
+                  <TableCell>{order.customer.name}</TableCell>
+                  <TableCell className="text-end">
+                    {FormatNumber.number(
+                      OrderUtil.calculate.actualRemainingAmount(order)
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <OrderStatusBadge order={order} />
+                  </TableCell>
+                  <TableCell>
+                    {dateTime.formatDate(new Date(order.orderDate))}
+                  </TableCell>
+                  <TableCell>{order.createdBy.name}</TableCell>
+                  <TableCell className="flex justify-center">
+                    <OrderAction order={order} />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <EmptyTableRow />
+            )}
           </TableBody>
         </Table>
       }

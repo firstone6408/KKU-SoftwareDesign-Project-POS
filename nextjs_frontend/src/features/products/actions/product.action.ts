@@ -66,7 +66,10 @@ export async function updateProductAction(
     })(),
     categoryId: formData.get("product-category-id") as string,
     supplierId: formData.get("supplier-id") as string,
-    productImage: formData.get("product-image") as File | null,
+    productImage: (() => {
+      const file = formData.get("product-image") as File | string;
+      return file instanceof File ? file : null;
+    })(),
   };
 
   const { productId, ...data } = rawData;

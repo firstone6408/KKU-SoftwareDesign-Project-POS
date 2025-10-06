@@ -17,6 +17,7 @@ import Image from "next/image";
 import { FILE_CONFIG } from "@/configs/file.config";
 import { UrlUtil } from "@/utils/url.utils";
 import { FormatNumber } from "@/utils/format-number.utils";
+import { EmptyTableRow } from "@/components/shared/table/empty-table-row";
 
 interface ProductListTableProps extends BaseCardProps {
   products: IProduct[];
@@ -51,44 +52,48 @@ export function ProductListTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {products.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>{product.productCode}</TableCell>
-                  <TableCell className="flex justify-center w-32">
-                    <Image
-                      src={
-                        product.imageUrl
-                          ? UrlUtil.getImageUrl(product.imageUrl)
-                          : FILE_CONFIG.IMAGES.NO_PRODUCT_IMAGE
-                      }
-                      className="rounded-md border-2 border-primary"
-                      width={40}
-                      height={40}
-                      alt={`product-image-${product.id}`}
-                    />
-                  </TableCell>
-                  <TableCell className="max-w-[150px] truncate">
-                    {product.supplier.name}
-                  </TableCell>
-                  <TableCell className="max-w-[150px] truncate">
-                    {product.category.name}
-                  </TableCell>
-                  <TableCell>{product.name}</TableCell>
-                  <TableCell className="text-end">
-                    {FormatNumber.number(product.unitPrice)}
-                  </TableCell>
-                  <TableCell className="text-end">
-                    {FormatNumber.number(product.stockLevel)}
-                  </TableCell>
-                  <TableCell>
-                    <ProductAction
-                      product={product}
-                      categories={categories}
-                      suppliers={suppliers}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
+              {products.length > 0 ? (
+                products.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell>{product.productCode}</TableCell>
+                    <TableCell className="flex justify-center w-32">
+                      <Image
+                        src={
+                          product.imageUrl
+                            ? UrlUtil.getImageUrl(product.imageUrl)
+                            : FILE_CONFIG.IMAGES.NO_PRODUCT_IMAGE
+                        }
+                        className="rounded-md border-2 border-primary"
+                        width={40}
+                        height={40}
+                        alt={`product-image-${product.id}`}
+                      />
+                    </TableCell>
+                    <TableCell className="max-w-[150px] truncate">
+                      {product.supplier.name}
+                    </TableCell>
+                    <TableCell className="max-w-[150px] truncate">
+                      {product.category.name}
+                    </TableCell>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell className="text-end">
+                      {FormatNumber.number(product.unitPrice)}
+                    </TableCell>
+                    <TableCell className="text-end">
+                      {FormatNumber.number(product.stockLevel)}
+                    </TableCell>
+                    <TableCell>
+                      <ProductAction
+                        product={product}
+                        categories={categories}
+                        suppliers={suppliers}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <EmptyTableRow />
+              )}
             </TableBody>
           </Table>
         </>

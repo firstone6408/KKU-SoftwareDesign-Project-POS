@@ -18,12 +18,20 @@ import { Button } from "@/components/ui/button";
 import { DeleteProductButton } from "./delete-product-button";
 import { useImageUploadField } from "@/hooks/use-image-field";
 import { Form } from "@/utils/form.utils";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 interface UpdateProductModalProps extends ModalProps {
   product: IProduct | null;
   categories: IProductCategory[];
   suppliers: ISupplier[];
 }
+
+type Tab = "detail" | "image";
 
 export function UpdateProductModal({
   product,
@@ -39,6 +47,7 @@ export function UpdateProductModal({
   });
 
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [tab, setTab] = useState<Tab>("detail");
 
   const { handleImageChange, ImageUploadField, ...upload } =
     useImageUploadField();
@@ -72,13 +81,16 @@ export function UpdateProductModal({
     };
   };
 
+  const handleSubmit = () => {
+    setTab("detail");
+  };
+
   return (
     <Modal
       open={open}
       onOpenChange={onOpenChange}
       title="รายละเอียดสินค้า"
       description="สามารถแก้ไข / ลบ สินค้าได้"
-      className="h-full overflow-auto"
     >
       <div className="space-y-3">
         <Form
@@ -88,9 +100,11 @@ export function UpdateProductModal({
           confirmConfig={{
             title: "แก้ไขสินค้า",
             onBeforeConfirm({ formData }) {
-              if (upload.images.length > 0) {
-                formData.append("product-image", upload.images[0]);
-              }
+              formData.append(
+                "product-image",
+                upload.images.length > 0 ? upload.images[0] : ""
+              );
+
               return formData;
             },
           }}
@@ -100,102 +114,124 @@ export function UpdateProductModal({
             name="product-id"
             defaultValue={product.id}
           />
-          <div className="grid grid-cols-2 gap-2">
-            {isUpdate ? (
-              <>
-                <SupplierSelect
-                  label="ผู้จัดจำหน่าย"
-                  name="supplier-id"
-                  className="w-full"
-                  suppliers={suppliers}
-                  defaultValue={product.supplier.id}
-                  errorMessage={error.supplierId}
-                  required
-                />
-                <ProductCategorySelect
-                  label="ประเภทสินค้า"
-                  name="product-category-id"
-                  className="w-full"
-                  categories={categories}
-                  defaultValue={product.category.id}
-                  errorMessage={error.categoryId}
-                  required
-                />
-              </>
-            ) : (
-              <>
+          <Tabs
+            value={tab}
+            onValueChange={(value) => setTab(value as Tab)}
+          >
+            <TabsList className="w-full">
+              <TabsTrigger value={"detail"}>รายละเอียดสินค้า</TabsTrigger>
+              <TabsTrigger value={"image"}>รูปภาพสินค้า</TabsTrigger>
+            </TabsList>
+
+            {/* Detail */}
+            <TabsContent value={"detail"}>
+              {isUpdate ? (
+                <>
+                  <SupplierSelect
+                    label="ผู้จัดจำหน่าย"
+                    name="supplier-id"
+                    className="w-full"
+                    suppliers={suppliers}
+                    defaultValue={product.supplier.id}
+                    errorMessage={error.supplierId}
+                    required
+                  />
+                  <ProductCategorySelect
+                    label="ประเภทสินค้า"
+                    name="product-category-id"
+                    className="w-full"
+                    categories={categories}
+                    defaultValue={product.category.id}
+                    errorMessage={error.categoryId}
+                    required
+                  />
+                </>
+              ) : (
+                <>
+                  <InputField
+                    label="ผู้จัดจำหน่าย"
+                    defaultValue={product.supplier.name}
+                    className="w-full"
+                    readOnly
+                    hiddenIcon
+                  />
+                  <InputField
+                    label="ประเภทสินค้า"
+                    defaultValue={product.category.name}
+                    className="w-full"
+                    readOnly
+                    hiddenIcon
+                  />
+                </>
+              )}
+
+              <div className="col-span-full">
                 <InputField
-                  label="ผู้จัดจำหน่าย"
-                  defaultValue={product.supplier.name}
+                  label="รหัสสินค้า"
                   className="w-full"
+                  defaultValue={product.productCode}
                   readOnly
                   hiddenIcon
                 />
                 <InputField
-                  label="ประเภทสินค้า"
-                  defaultValue={product.category.name}
+                  label="Barcode"
+                  name="product-barcode"
+                  placeholder="กรอกชื่อบาร์โค้ดสินค้า"
                   className="w-full"
-                  readOnly
-                  hiddenIcon
+                  defaultValue={product.barcode}
+                  errorMessage={error.productBarcode}
+                  required
+                  {...fieldChangeIfUpdate()}
                 />
-              </>
-            )}
+              </div>
+              <div className="col-span-full">
+                <InputField
+                  label="ชื่อ"
+                  name="product-name"
+                  placeholder="กรอกชื่อสินค้า"
+                  className="w-full"
+                  defaultValue={product.name}
+                  errorMessage={error.productName}
+                  required
+                  {...fieldChangeIfUpdate()}
+                />
+              </div>
 
-            <div className="col-span-full">
-              <InputField
-                label="Barcode"
-                name="product-barcode"
-                placeholder="กรอกชื่อบาร์โค้ดสินค้า"
-                className="w-full"
-                defaultValue={product.barcode}
-                errorMessage={error.productBarcode}
-                required
-                {...fieldChangeIfUpdate()}
-              />
-            </div>
-            <div className="col-span-full">
-              <InputField
-                label="ชื่อ"
-                name="product-name"
-                placeholder="กรอกชื่อสินค้า"
-                className="w-full"
-                defaultValue={product.name}
-                errorMessage={error.productName}
-                required
-                {...fieldChangeIfUpdate()}
-              />
-            </div>
+              <div className="col-span-full">
+                <TextareaField
+                  label="รายละเอียดสินค้า"
+                  name="product-description"
+                  placeholder="กรอกรายละเอียดสินค้้า"
+                  defaultValue={product.description || ""}
+                  errorMessage={error.productDescription}
+                  {...fieldChangeIfUpdate()}
+                />
+              </div>
+            </TabsContent>
 
-            <div className="col-span-full">
-              <TextareaField
-                label="รายละเอียดสินค้า"
-                name="product-description"
-                placeholder="กรอกรายละเอียดสินค้้า"
-                defaultValue={product.description || ""}
-                errorMessage={error.productDescription}
-                {...fieldChangeIfUpdate()}
-              />
-            </div>
-            <div className="col-span-full">
-              <ImageUploadField
-                label="รูปภาพสินค้า"
-                name="product-images"
-                onImageChange={handleImageChange}
-                existingImages={
-                  product.imageUrl
-                    ? [
-                        {
-                          id: product.imageUrl,
-                          url: product.imageUrl,
-                          isMain: true,
-                        },
-                      ]
-                    : []
-                }
-                disabled={!isUpdate}
-              />
-            </div>
-          </div>
+            {/* Image */}
+            <TabsContent value={"image"}>
+              <div className="col-span-full">
+                <ImageUploadField
+                  label="รูปภาพสินค้า"
+                  className="min-h-60"
+                  onImageChange={handleImageChange}
+                  existingImages={
+                    product.imageUrl
+                      ? [
+                          {
+                            id: product.imageUrl,
+                            url: product.imageUrl,
+                            isMain: true,
+                          },
+                        ]
+                      : []
+                  }
+                  disabled={!isUpdate}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
         </Form>
         {isUpdate ? (
           <div className="grid grid-cols-3 gap-2">
@@ -212,6 +248,7 @@ export function UpdateProductModal({
               form="update-product-form"
               icon={Plus}
               isPending={isPending}
+              onClick={() => handleSubmit()}
             >
               บันทึก
             </SubmitButton>
