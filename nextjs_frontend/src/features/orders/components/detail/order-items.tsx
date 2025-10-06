@@ -27,6 +27,7 @@ export function OrderItems({ order }: OrderItemsProps) {
         <TableHeader>
           <TableRow>
             <TableHead className="text-end">ลำดับ</TableHead>
+            <TableHead>รหัสสินค้า</TableHead>
             <TableHead>ผู้จัดจำหน่าย</TableHead>
             <TableHead>ประเภท</TableHead>
             <TableHead>ชื่อ</TableHead>
@@ -40,6 +41,7 @@ export function OrderItems({ order }: OrderItemsProps) {
             order.items.map((item, index) => (
               <TableRow key={item.id}>
                 <TableCell className="text-end">{index + 1}</TableCell>
+                <TableCell>{item.product.productCode}</TableCell>
                 <TableCell>{item.product.supplier.name}</TableCell>
                 <TableCell>{item.product.category.name}</TableCell>
                 <TableCell>{item.product.name}</TableCell>
