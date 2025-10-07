@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sdp.pos.dto.imagekit.ImageKitResultDTO;
+import com.sdp.pos.dto.cloud.CloudFileResultDTO;
 import com.sdp.pos.dto.product.AdjustStockProductRequestDTO;
 import com.sdp.pos.dto.product.AdjustUnitPriceProductRequestDTO;
 import com.sdp.pos.dto.product.ProductRequestDTO;
@@ -15,24 +15,24 @@ import com.sdp.pos.entity.ProductCategoryEntity;
 import com.sdp.pos.entity.ProductEntity;
 import com.sdp.pos.entity.SupplierEntity;
 import com.sdp.pos.repository.ProductRepository;
+import com.sdp.pos.service.file.contract.CloudFileService;
 import com.sdp.pos.service.product.contract.ProductCodeGenerator;
 import com.sdp.pos.service.product.contract.ProductService;
 import com.sdp.pos.service.product.validator.ProductValidator;
-import com.sdp.pos.util.ImageKitHandler;
 
 @Service
 public class ProductServiceImpl implements ProductService {
         private final ProductRepository productRepository;
         private final ProductValidator productValidator;
         private final ProductCodeGenerator productCodeGenerator;
-        private final ImageKitHandler imageKitHandler;
+        private final CloudFileService cloudFileService;;
 
         public ProductServiceImpl(ProductRepository productRepository, ProductValidator productValidator,
-                        ProductCodeGenerator productCodeGenerator, ImageKitHandler imageKitHandler) {
+                        ProductCodeGenerator productCodeGenerator, CloudFileService cloudFileService) {
                 this.productRepository = productRepository;
                 this.productValidator = productValidator;
                 this.productCodeGenerator = productCodeGenerator;
-                this.imageKitHandler = imageKitHandler;
+                this.cloudFileService = cloudFileService;
         }
 
         @Override
@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
                 // save image
                 if (requestDTO.getImageFile() != null) {
                         // upload image to ImageKit
-                        ImageKitResultDTO result = imageKitHandler.uploadFile(requestDTO.getImageFile());
+                        CloudFileResultDTO result = cloudFileService.uploadFile(requestDTO.getImageFile());
                         productToCreate.setImageId(result.getFileId());
                         productToCreate.setImageUrl(result.getUrl());
                 }
@@ -102,10 +102,10 @@ public class ProductServiceImpl implements ProductService {
                 // update image
                 if (requestDTO.getImageFile() != null) {
                         // delete old image
-                        imageKitHandler.deleteFile(productToUpdate.getImageId());
+                        cloudFileService.deleteFile(productToUpdate.getImageId());
 
                         // upload new image
-                        ImageKitResultDTO result = imageKitHandler.replaceFile(productToUpdate.getImageUrl(),
+                        CloudFileResultDTO result = cloudFileService.replaceFile(productToUpdate.getImageUrl(),
                                         requestDTO.getImageFile());
                         productToUpdate.setImageId(result.getFileId());
                         productToUpdate.setImageUrl(result.getUrl());
@@ -123,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
                 ProductEntity productToDelete = productValidator.validateProductExists(id);
 
                 // delete image
-                imageKitHandler.deleteFile(productToDelete.getImageId());
+                cloudFileService.deleteFile(productToDelete.getImageId());
 
                 // delete
                 productRepository.delete(productToDelete);

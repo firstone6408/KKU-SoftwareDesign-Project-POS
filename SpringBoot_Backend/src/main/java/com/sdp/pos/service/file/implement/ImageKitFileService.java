@@ -1,21 +1,22 @@
-package com.sdp.pos.util;
+package com.sdp.pos.service.file.implement;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sdp.pos.dto.imagekit.ImageKitResultDTO;
+import com.sdp.pos.dto.cloud.CloudFileResultDTO;
+import com.sdp.pos.service.file.contract.CloudFileService;
 
 import io.imagekit.sdk.ImageKit;
 import io.imagekit.sdk.models.FileCreateRequest;
 import io.imagekit.sdk.models.results.Result;
 import net.coobird.thumbnailator.Thumbnails;
 
-@Component
-public class ImageKitHandler {
+@Service
+public class ImageKitFileService implements CloudFileService {
 
     private final ImageKit imageKit = ImageKit.getInstance();
 
@@ -34,7 +35,8 @@ public class ImageKitHandler {
         return uniqueName;
     }
 
-    public ImageKitResultDTO uploadFile(MultipartFile file) {
+    @Override
+    public CloudFileResultDTO uploadFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("Invalid file provided");
         }
@@ -57,7 +59,7 @@ public class ImageKitHandler {
             request.setFolder("pos-kku-sdp-img/");
             Result result = imageKit.upload(request);
 
-            return ImageKitResultDTO.fromEntity(result);
+            return CloudFileResultDTO.fromEntity(result);
         } catch (IOException e) {
             throw new RuntimeException("Failed to resize image before upload", e);
         } catch (Exception e) {
@@ -65,11 +67,13 @@ public class ImageKitHandler {
         }
     }
 
-    public ImageKitResultDTO replaceFile(String oldFileId, MultipartFile newFile) {
+    @Override
+    public CloudFileResultDTO replaceFile(String oldFileId, MultipartFile newFile) {
         deleteFile(oldFileId);
         return uploadFile(newFile);
     }
 
+    @Override
     public boolean deleteFile(String fileId) {
         if (fileId == null || fileId.trim().isEmpty()) {
             return false;
@@ -82,4 +86,5 @@ public class ImageKitHandler {
             return false;
         }
     }
+
 }
