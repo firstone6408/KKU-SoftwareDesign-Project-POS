@@ -1,0 +1,7 @@
+# Admin User
+email: admin01@gmail.com
+password: 12345
+
+# Seller/Employee User
+email: cashier01@gmail.com
+password: 12345
